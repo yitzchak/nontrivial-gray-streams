@@ -398,17 +398,13 @@ that is more consistent with the Gray stream protocol.
 ;; feature :gray-streams-sequence-optional
 (stream-read-sequence stream sequence &optional start end) ; → integer
 
-;; Variant with all required arguments. Indicated by presence of
+;; Variant with all required arguments.Indicated by presence of
 ;; feature :gray-streams-sequence-required
 (stream-read-sequence stream sequence start end) ; → integer
 
-;; Variant with all required arguments. Indicated by presence of
+;; Variant with keyword arguments. Indicated by presence of
 ;; feature :gray-streams-sequence-key
 (stream-read-sequence stream sequence &key start end) ; → integer
-
-;; Variant with named stream-read-vector with all required
-;; arguments. Indicated by feature :gray-streams-read-vector-required
-(stream-read-vector stream sequence start end) ; → integer
 ```
 
 ## STREAM-WRITE-SEQUENCE
@@ -423,13 +419,9 @@ that is more consistent with the Gray stream protocol.
 ;; feature :gray-streams-sequence-required
 (stream-write-sequence stream sequence start end) ; → integer
 
-;; Variant with all required arguments. Indicated by presence of
+;; Variant with keyword arguments. Indicated by presence of
 ;; feature :gray-streams-sequence-key
 (stream-write-sequence stream sequence &key start end) ; → integer
-
-;; Variant with named stream-write-vector with all required
-;; arguments. Indicated by feature :gray-streams-write-vector-required
-(stream-write-vector stream sequence start end) ; → integer
 ```
 
 # File Position Extensions
@@ -438,26 +430,30 @@ that is more consistent with the Gray stream protocol.
 [Generic Function]
 
 ```common-lisp
-; abcl allegro ccl clasp ecl mezzano mkcl sbcl sicl
+;; Variant with optional position. Indicated by presence of
+;; feature :gray-streams-file-position-optional
 (stream-file-position stream &optional position-spec)
 
-(stream-position stream position-spec)
+;; Variant with required position. Indicated by presence of
+;; feature :gray-streams-file-position-required
+(stream-file-position stream position-spec)
 
-(stream-position stream &optional position-spec)
-
-; cmucl
-(stream-position stream)
-((setf stream-position) position stream)
+;; Variant with get and setf. Indicated by presence of
+;; feature :gray-streams-file-position-setf
+(stream-file-position stream)
+((setf stream-file-position) position stream)
 ```
 
-; clasp mezzano sicl
-stream-file-length
+# File Length Extensions
 
-; ccl
-stream-length
+## STREAM-FILE-LENGTH
+[Generic Function]
 
-; ccl clasp cmucl sbcl sicl
-(stream-line-length stream)
+```common-lisp
+(stream-file-length stream)
+```
+
+
 
 ; ecl clasp
 (stream-interactive-p stream)

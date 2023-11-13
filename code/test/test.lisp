@@ -74,12 +74,8 @@
         (value stream) "")
   nil)
 
-#+(or gray-streams-sequence-optional
-      gray-streams-sequence-required
-      gray-streams-sequence-key
-      gray-streams-vector)
-(defmethod #-gray-streams-vector nt-gray:stream-read-sequence
-           #+gray-streams-vector nt-gray:stream-read-vector
+#+gray-streams-sequence
+(defmethod nt-gray:stream-read-sequence
     ((stream test-string-input-stream) sequence
      #+gray-streams-sequence-optional &optional
      #+gray-streams-sequence-key &key
@@ -118,8 +114,16 @@
 
 #+gray-streams-file-position-setf
 (defmethod nt-gray:stream-file-position ((stream test-string-input-stream))
-  (record-invocation :stream-file-position stream)
+  (record-invocation :stream-file-position stream nil)
   (index stream))
+
+#+gray-streams-file-position-setf
+(defmethod (setf nt-gray:stream-file-position) (position (stream test-string-input-stream))
+  (record-invocation :stream-file-position stream position)
+  (let ((typespec `(integer 0 ,(1- (length (value stream))))))
+    (assert (typep position typespec) (position)
+            'type-error :datum position :expected-type typespec)
+    (setf (index stream) position)))
 
 (define-test character-input.read-char.01
   (with-invocations
@@ -160,78 +164,61 @@
     (let ((stream (make-instance 'test-string-input-stream :value "")))
       (false (listen stream)))))
 
+#+gray-streams-sequence
 (define-test character-input.read-sequence.01
-  (skip-on ((not (or :gray-streams-sequence-optional
-                     :gray-streams-sequence-key
-                     :gray-streams-sequence-required
-                     :gray-streams-vector)))
-           "Implementation does not support sequence extensions."
-           (with-invocations
-             (let ((stream (make-instance 'test-string-input-stream :value "ab"))
-                   (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
-               (is eql 2 (read-sequence sequence stream))
-               (is equalp sequence #(#\a #\b nil))
-               (true (or (invoked-p :stream-read-sequence stream sequence 0 nil)
-                         (invoked-p :stream-read-sequence stream sequence 0 3)))))))
+  (with-invocations
+    (let ((stream (make-instance 'test-string-input-stream :value "ab"))
+          (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
+      (is eql 2 (read-sequence sequence stream))
+      (is equalp sequence #(#\a #\b nil))
+      (true (or (invoked-p :stream-read-sequence stream sequence 0 nil)
+                (invoked-p :stream-read-sequence stream sequence 0 3))))))
 
+#+gray-streams-sequence
 (define-test character-input.read-sequence.02
-  (skip-on ((not (or :gray-streams-sequence-optional
-                     :gray-streams-sequence-key
-                     :gray-streams-sequence-required
-                     :gray-streams-vector)))
-           "Implementation does not support sequence extensions."
-           (with-invocations
-             (let ((stream (make-instance 'test-string-input-stream :value "ab"))
-                   (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
-               (is eql 1 (read-sequence sequence stream :end 1))
-               (is equalp sequence #(#\a nil nil))
-               (true (invoked-p :stream-read-sequence stream sequence 0 1))))))
+  (with-invocations
+    (let ((stream (make-instance 'test-string-input-stream :value "ab"))
+          (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
+      (is eql 1 (read-sequence sequence stream :end 1))
+      (is equalp sequence #(#\a nil nil))
+      (true (invoked-p :stream-read-sequence stream sequence 0 1)))))
 
+#+gray-streams-sequence
 (define-test character-input.read-sequence.03
-  (skip-on ((not (or :gray-streams-sequence-optional
-                     :gray-streams-sequence-key
-                     :gray-streams-sequence-required
-                     :gray-streams-vector)))
-           "Implementation does not support sequence extensions."
-           (with-invocations
-             (let ((stream (make-instance 'test-string-input-stream :value "ab"))
-                   (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
-               (is eql 3 (read-sequence sequence stream :start 1))
-               (is equalp sequence #(nil #\a #\b))
-               (true (or (invoked-p :stream-read-sequence stream sequence 1 nil)
-                         (invoked-p :stream-read-sequence stream sequence 1 3)))))))
+  (with-invocations
+    (let ((stream (make-instance 'test-string-input-stream :value "ab"))
+          (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
+      (is eql 3 (read-sequence sequence stream :start 1))
+      (is equalp sequence #(nil #\a #\b))
+      (true (or (invoked-p :stream-read-sequence stream sequence 1 nil)
+                (invoked-p :stream-read-sequence stream sequence 1 3))))))
 
 #+gray-streams-file-length
 (define-test character-input.file-length.01
-  :compile-at :execute
   (with-invocations
     (let ((stream (make-instance 'test-string-input-stream :value "ab")))
       (is eql (file-length stream) 2)
       (true (invoked-p :stream-file-length stream)))))
 
+#+gray-streams-file-position
 (define-test character-input.file-position.01
-  :compile-at :execute
-  (skip-on ((not :gray-streams-file-position-optional))
-           "Implementation does not support file-position extensions."
-           (with-invocations
-             (let ((stream (make-instance 'test-string-input-stream :value "ab")))
-               (is equal 0 (file-position stream))
-               (is eql #\a (peek-char nil stream nil))
-               (is equal 0 (file-position stream))
-               (is eql #\a (read-char stream nil))
-               (is equal 1 (file-position stream))
-               (true (invoked-p :stream-file-position stream nil))))))
+  (with-invocations
+    (let ((stream (make-instance 'test-string-input-stream :value "ab")))
+      (is equal 0 (file-position stream))
+      (is eql #\a (peek-char nil stream nil))
+      (is equal 0 (file-position stream))
+      (is eql #\a (read-char stream nil))
+      (is equal 1 (file-position stream))
+      (true (invoked-p :stream-file-position stream nil)))))
 
+#+gray-streams-file-position
 (define-test character-input.file-position.02
-  :compile-at :execute
-  (skip-on ((not :gray-streams-file-position-optional))
-           "Implementation does not support file-position extensions."
-           (with-invocations
-             (let ((stream (make-instance 'test-string-input-stream :value "ab")))
-               (true (file-position stream 1))
-               (is equal 1 (file-position stream))
-               (is eql #\b (read-char stream nil))
-               (true (invoked-p :stream-file-position stream nil))))))
+  (with-invocations
+    (let ((stream (make-instance 'test-string-input-stream :value "ab")))
+      (true (file-position stream 1))
+      (is equal 1 (file-position stream))
+      (is eql #\b (read-char stream nil))
+      (true (invoked-p :stream-file-position stream nil)))))
 
   #|(defclass test-stream
     (nt-gray:fundamental-binary-input-stream
