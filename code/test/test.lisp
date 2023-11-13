@@ -183,8 +183,8 @@
           (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
       (is eql 1 (read-sequence sequence stream :end 1))
       (is equalp sequence #(#\a nil nil))
-      (true (invoked-p :stream-read-sequence stream sequence 0 1)
-            (invoked-p :stream-read-sequence stream sequence nil 1)))))
+      (true (or (invoked-p :stream-read-sequence stream sequence 0 1)
+                (invoked-p :stream-read-sequence stream sequence nil 1))))))
 
 #+gray-streams-sequence
 (define-test character-input.read-sequence.03
