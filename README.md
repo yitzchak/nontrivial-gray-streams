@@ -7,65 +7,68 @@ they just provide places to hang default methods.
 ## FUNDAMENTAL-STREAM
 [Class]
 
-This class is a subclass of STREAM and of STANDARD-OBJECT.  STREAMP
+This class is a subclass of STREAM and of STANDARD-OBJECT.  [STREAMP][]
 will return true for an instance of any class that includes this.  (It
 may return true for some other things also.)
 
 ## FUNDAMENTAL-INPUT-STREAM
 [Class]
 
-A subclass of FUNDAMENTAL-STREAM.  Its inclusion causes INPUT-STREAM-P
-to return true.
+A subclass of [FUNDAMENTAL-STREAM][].  Its inclusion causes
+INPUT-STREAM-P to return true.
 
 ## FUNDAMENTAL-OUTPUT-STREAM
 [Class]
 
-A subclass of FUNDAMENTAL-STREAM.  Its inclusion causes
-OUTPUT-STREAM-P to return true.  Bi-direction streams may be formed by
-including both FUNDAMENTAL-OUTPUT-STREAM and FUNDAMENTAL-INPUT-STREAM.
+A subclass of [FUNDAMENTAL-STREAM][].  Its inclusion causes
+[OUTPUT-STREAM-P][] to return true.  Bi-direction streams may be
+formed by including both [FUNDAMENTAL-OUTPUT-STREAM][] and
+[FUNDAMENTAL-INPUT-STREAM][].
 
 ## FUNDAMENTAL-CHARACTER-STREAM
 [Class]
 
-A subclass of FUNDAMENTAL-STREAM.  It provides a method for
-STREAM-ELEMENT-TYPE which returns CHARACTER.
+A subclass of [FUNDAMENTAL-STREAM][].  It provides a method for
+[STREAM-ELEMENT-TYPE][] which returns CHARACTER.
 
 ## FUNDAMENTAL-BINARY-STREAM
 [Class]
     
-A subclass of FUNDAMENTAL-STREAM.  Any instantiable class that
-includes this needs to define a method for STREAM-ELEMENT-TYPE.
+A subclass of [FUNDAMENTAL-STREAM][].  Any instantiable class that
+includes this needs to define a method for [STREAM-ELEMENT-TYPE][].
 
 ## FUNDAMENTAL-CHARACTER-INPUT-STREAM
 [Class]
 
-Includes FUNDAMENTAL-INPUT-STREAM and FUNDAMENTAL-CHARACTER-STREAM.
-It provides default methods for several generic functions used for
-character input.
+Includes [FUNDAMENTAL-INPUT-STREAM][] and
+[FUNDAMENTAL-CHARACTER-STREAM][].  It provides default methods for
+several generic functions used for character input.
 
 ## FUNDAMENTAL-CHARACTER-OUTPUT-STREAM
 [Class]
 
-Includes FUNDAMENTAL-OUTPUT-STREAM and FUNDAMENTAL-CHARACTER-STREAM.
-It provides default methods for several generic functions used for
-character output.
+Includes [FUNDAMENTAL-OUTPUT-STREAM][] and
+[FUNDAMENTAL-CHARACTER-STREAM][].  It provides default methods for
+several generic functions used for character output.
 
 ## FUNDAMENTAL-BINARY-INPUT-STREAM
 [Class]
 
-Includes FUNDAMENTAL-INPUT-STREAM and FUNDAMENTAL-BINARY-STREAM.
+Includes [FUNDAMENTAL-INPUT-STREAM][] and
+[FUNDAMENTAL-BINARY-STREAM][].
 
 ## FUNDAMENTAL-BINARY-OUTPUT-STREAM
 [Class]
 
-Includes FUNDAMENTAL-OUTPUT-STREAM and FUNDAMENTAL-BINARY-STREAM.
+Includes [FUNDAMENTAL-OUTPUT-STREAM][] and
+[FUNDAMENTAL-BINARY-STREAM][].
 
 
 # Character Input
 
 A character input stream can be created by defining a class that
-includes FUNDAMENTAL-CHARACTER-INPUT-STREAM and defining methods for
-the generic functions below.
+includes [FUNDAMENTAL-CHARACTER-INPUT-STREAM][] and defining methods
+for the generic functions below.
 
 ## STREAM-READ-CHAR
 [Generic Function]
@@ -76,7 +79,7 @@ the generic functions below.
 
 This reads one character from the stream.  It returns either a
 character object, or the symbol :EOF if the stream is at end-of-file.
-Every subclass of FUNDAMENTAL-CHARACTER-INPUT-STREAM must define a
+Every subclass of [FUNDAMENTAL-CHARACTER-INPUT-STREAM][] must define a
 method for this function.
 
 Note that for all of these generic functions, the stream argument must
@@ -89,9 +92,9 @@ be a stream object, not T or NIL.
 (stream-unread-char stream character) ; → null
 ```
 
-Un-does the last call to STREAM-READ-CHAR, as in UNREAD-CHAR.  Returns
-NIL.  Every subclass of FUNDAMENTAL-CHARACTER-INPUT-STREAM must define
-a method for this function.
+Un-does the last call to [STREAM-READ-CHAR][], as in [UNREAD-CHAR][].
+Returns NIL.  Every subclass of [FUNDAMENTAL-CHARACTER-INPUT-STREAM][]
+must define a method for this function.
 
 ## STREAM-READ-CHAR-NO-HANG
 [Generic Function]
@@ -100,12 +103,12 @@ a method for this function.
 (stream-read-char-no-hang stream) ; → (or character nil (eql :eof))
 ```
 
-This is used to implement READ-CHAR-NO-HANG.  It returns either a
+This is used to implement [READ-CHAR-NO-HANG][].  It returns either a
 character, or NIL if no input is currently available, or :EOF if
 end-of-file is reached.  The default method provided by
-FUNDAMENTAL-CHARACTER-INPUT-STREAM simply calls STREAM-READ-CHAR; this
-is sufficient for file streams, but interactive streams should define
-their own method.
+[FUNDAMENTAL-CHARACTER-INPUT-STREAM][] simply calls
+[STREAM-READ-CHAR][]; this is sufficient for file streams, but
+interactive streams should define their own method.
   
 ## STREAM-PEEK-CHAR
 [Generic Function]
@@ -114,9 +117,9 @@ their own method.
 (stream-peek-char stream) ; → (or character (eql :eof))
 ```
 
-Used to implement PEEK-CHAR; this corresponds to peek-type of NIL.  It
-returns either a character or :EOF.  The default method calls
-STREAM-READ-CHAR and STREAM-UNREAD-CHAR.
+Used to implement [PEEK-CHAR][]; this corresponds to peek-type of NIL.
+It returns either a character or :EOF.  The default method calls
+[STREAM-READ-CHAR][] and [STREAM-UNREAD-CHAR][].
 
 ## STREAM-LISTEN
 [Generic Function]
@@ -125,10 +128,10 @@ STREAM-READ-CHAR and STREAM-UNREAD-CHAR.
 (stream-listen stream) ; → boolean
 ```
 
-Used by LISTEN.  Returns true or false.  The default method uses
-STREAM-READ-CHAR-NO-HANG and STREAM-UNREAD-CHAR.  Most streams should
-define their own method since it will usually be trivial and will
-always be more efficient than the default method.
+Used by [LISTEN][].  Returns true or false.  The default method uses
+[STREAM-READ-CHAR-NO-HANG][] and [STREAM-UNREAD-CHAR][].  Most streams
+should define their own method since it will usually be trivial and
+will always be more efficient than the default method.
 
 ## STREAM-READ-LINE
 [Generic Function]
@@ -137,10 +140,10 @@ always be more efficient than the default method.
 (stream-read-line stream) ; → string, boolean
 ```
 
-Used by READ-LINE.  A string is returned as the first value.  The
+Used by [READ-LINE][].  A string is returned as the first value.  The
 second value is true if the string was terminated by end-of-file
 instead of the end of a line.  The default method uses repeated calls
-to STREAM-READ-CHAR.
+to [STREAM-READ-CHAR][].
 
 ## STREAM-CLEAR-INPUT
 [Generic Function]
@@ -149,14 +152,14 @@ to STREAM-READ-CHAR.
 (stream-clear-input stream) ; → null 
 ```
 
-Implements CLEAR-INPUT for the stream, returning NIL.  The default
+Implements [CLEAR-INPUT][] for the stream, returning NIL.  The default
 method does nothing.
 
 # Character Output
 
 A character output stream can be created by defining a class that
-includes FUNDAMENTAL-CHARACTER-OUTPUT-STREAM and defining methods for
-the generic functions below.
+includes [FUNDAMENTAL-CHARACTER-OUTPUT-STREAM][] and defining methods
+for the generic functions below.
 
 ## STREAM-WRITE-CHAR
 [Generic Function]
@@ -166,7 +169,7 @@ the generic functions below.
 ```
 
 Writes character to the stream and returns the character.  Every
-subclass of FUNDAMENTAL-CHARACTER-OUTPUT-STREAM must have a method
+subclass of [FUNDAMENTAL-CHARACTER-OUTPUT-STREAM][] must have a method
 defined for this function.
 
 ## STREAM-LINE-COLUMN
@@ -193,16 +196,17 @@ return NIL.
 
 This is a predicate which returns T if the stream is positioned at the
 beginning of a line, else NIL.  It is permissible to always return
-NIL.  This is used in the implementation of FRESH-LINE.  Note that
-while a value of 0 from STREAM-LINE-COLUMN also indicates the
-beginning of a line, there are cases where STREAM-START-LINE-P can be
-meaningfully implemented although STREAM-LINE-COLUMN can't be.  For
-example, for a window using variable-width characters, the column
+NIL.  This is used in the implementation of [FRESH-LINE][].  Note that
+while a value of 0 from [STREAM-LINE-COLUMN][] also indicates the
+beginning of a line, there are cases where [STREAM-START-LINE-P][] can
+be meaningfully implemented although [STREAM-LINE-COLUMN][] can't be.
+For example, for a window using variable-width characters, the column
 number isn't very meaningful, but the beginning of the line does have
-a clear meaning.  The default method for STREAM-START-LINE-P on class
-FUNDAMENTAL-CHARACTER-OUTPUT-STREAM uses STREAM-LINE-COLUMN, so if
-that is defined to return NIL, then a method should be provided for
-either STREAM-START-LINE-P or STREAM-FRESH-LINE.
+a clear meaning.  The default method for [STREAM-START-LINE-P][] on
+class [FUNDAMENTAL-CHARACTER-OUTPUT-STREAM][] uses
+[STREAM-LINE-COLUMN][], so if that is defined to return NIL, then a
+method should be provided for either [STREAM-START-LINE-P][] or
+[STREAM-FRESH-LINE][].
 
 ## STREAM-WRITE-STRING
 [Generic Function]
@@ -211,11 +215,11 @@ either STREAM-START-LINE-P or STREAM-FRESH-LINE.
 (stream-write-string stream string &optional start end) ; → string
 ```
 
-This is used by WRITE-STRING.  It writes the string to the stream,
+This is used by [WRITE-STRING][].  It writes the string to the stream,
 optionally delimited by start and end, which default to 0 and NIL.
 The string argument is returned.  The default method provided by
-FUNDAMENTAL-CHARACTER-OUTPUT-STREAM uses repeated calls to
-STREAM-WRITE-CHAR.
+[FUNDAMENTAL-CHARACTER-OUTPUT-STREAM][] uses repeated calls to
+[STREAM-WRITE-CHAR][].
 
 ## STREAM-TERPRI
 [Generic Function]
@@ -224,7 +228,7 @@ STREAM-WRITE-CHAR.
 (stream-terpri stream) ; → null
 ```
 
-Writes an end of line, as for TERPRI.  Returns NIL.  The default
+Writes an end of line, as for [TERPRI][].  Returns NIL.  The default
 method does (STREAM-WRITE-CHAR stream #\NEWLINE).
 
 ## STREAM-FRESH-LINE
@@ -234,8 +238,8 @@ method does (STREAM-WRITE-CHAR stream #\NEWLINE).
 (stream-fresh-line stream) ; → null
 ```
 
-Used by FRESH-LINE.  The default method uses STREAM-START-LINE-P and
-STREAM-TERPRI.
+Used by [FRESH-LINE][].  The default method uses
+[STREAM-START-LINE-P][] and [STREAM-TERPRI][].
 
 ## STREAM-FINISH-OUTPUT
 [Generic Function]
@@ -244,7 +248,7 @@ STREAM-TERPRI.
 (stream-finish-output stream) ; → null
 ```
 
-Implements FINISH-OUTPUT.  The default method does nothing.
+Implements [FINISH-OUTPUT][].  The default method does nothing.
 
 ## STREAM-FORCE-OUTPUT
 [Generic Function]
@@ -253,7 +257,7 @@ Implements FINISH-OUTPUT.  The default method does nothing.
 (stream-force-output stream) ; → null
 ```
 
-Implements FORCE-OUTPUT.  The default method does nothing.
+Implements [FORCE-OUTPUT][].  The default method does nothing.
 
 ## STREAM-CLEAR-OUTPUT
 [Generic Function]
@@ -262,7 +266,7 @@ Implements FORCE-OUTPUT.  The default method does nothing.
 (stream-clear-output stream) ; → null
 ```
 
-Implements CLEAR-OUTPUT.  The default method does nothing.
+Implements [CLEAR-OUTPUT][].  The default method does nothing.
 
 ## STREAM-ADVANCE-TO-COLUMN
 [Generic Function]
@@ -275,9 +279,9 @@ Writes enough blank space so that the next character will be written
 at the specified column.  Returns true if the operation is
 successful, or NIL if it is not supported for this stream.    
 This is intended for use by by PPRINT and FORMAT ~T.  The default
-method uses STREAM-LINE-COLUMN and repeated calls to
-STREAM-WRITE-CHAR with a #\SPACE character; it returns NIL if
-STREAM-LINE-COLUMN returns NIL.
+method uses [STREAM-LINE-COLUMN][] and repeated calls to
+[STREAM-WRITE-CHAR][] with a #\SPACE character; it returns NIL if
+[STREAM-LINE-COLUMN][] returns NIL.
 
 # Other Functions
 
@@ -290,8 +294,9 @@ STREAM-LINE-COLUMN returns NIL.
 
 The existing function CLOSE is redefined to be a generic function, but
 otherwise behaves the same.  The default method provided by class
-FUNDAMENTAL-STREAM sets a flag for OPEN-STREAM-P.  The value returned
-by CLOSE will be as specified by the issue CLOSED-STREAM-OPERATIONS.
+[FUNDAMENTAL-STREAM][] sets a flag for [OPEN-STREAM-P][].  The value
+returned by CLOSE will be as specified by the issue
+CLOSED-STREAM-OPERATIONS.
 
 ## OPEN-STREAM-P
 [Generic Function]
@@ -300,10 +305,9 @@ by CLOSE will be as specified by the issue CLOSED-STREAM-OPERATIONS.
 (open-stream-p stream) ; → boolean
 ```
 
-This function
-[from proposal STREAM-ACCESS] is made generic.  A
-default method is provided by class FUNDAMENTAL-STREAM which returns
-true if CLOSE has not been called on the stream.
+This function [from proposal STREAM-ACCESS] is made generic.  A
+default method is provided by class [FUNDAMENTAL-STREAM][] which
+returns true if CLOSE has not been called on the stream.
 
 ## STREAMP
 [Generic Function]
@@ -329,12 +333,12 @@ true if CLOSE has not been called on the stream.
 These three existing predicates may optionally be implemented as
 generic functions for implementations that want to permit users to
 define streams that are not STANDARD-OBJECTs.  Normally, the default
-methods provided by classes FUNDAMENTAL-INPUT-STREAM and
-FUNDAMENTAL-OUTPUT-STREAM are sufficient.  Note that, for example,
-(INPUT-STREAM-P x) is not equivalent to (TYPEP x
-'FUNDAMENTAL-INPUT-STREAM) because implementations may have additional
-ways of defining their own streams even if they don't make that
-visible by making these predicates generic.
+methods provided by classes [FUNDAMENTAL-INPUT-STREAM][] and
+[FUNDAMENTAL-OUTPUT-STREAM][] are sufficient.  Note that, for example,
+`(INPUT-STREAM-P x)` is not equivalent to 
+`(TYPEP x 'FUNDAMENTAL-INPUT-STREAM)` because implementations may have
+additional ways of defining their own streams even if they don't make
+that visible by making these predicates generic.
 
 ## STREAM-ELEMENT-TYPE
 [Generic Function]
@@ -344,7 +348,7 @@ visible by making these predicates generic.
 ```
 
 This existing function is made generic, but otherwise behaves the
-same.  Class FUNDAMENTAL-CHARACTER-STREAM provides a default method
+same.  Class [FUNDAMENTAL-CHARACTER-STREAM][] provides a default method
 which returns CHARACTER.
 
 PATHNAME and TRUENAME are also permitted to be implemented as generic
@@ -354,8 +358,8 @@ all streams.
 # Binary Streams
 
 Binary streams can be created by defining a class that includes either
-FUNDAMENTAL-BINARY-INPUT-STREAM or FUNDAMENTAL-BINARY-OUTPUT-STREAM
-(or both) and defining a method for STREAM-ELEMENT-TYPE and for one or
+[FUNDAMENTAL-BINARY-INPUT-STREAM][] or [FUNDAMENTAL-BINARY-OUTPUT-STREAM][]
+(or both) and defining a method for [STREAM-ELEMENT-TYPE][] and for one or
 both of the following generic functions.
 
 ## STREAM-READ-BYTE
@@ -365,8 +369,8 @@ both of the following generic functions.
 (stream-read-byte stream) ; → (or integer (eql :eof))
 ```
 
-Used by READ-BYTE; returns either an integer, or the symbol :EOF if
-the stream is at end-of-file.
+Used by [READ-BYTE][]; returns either an integer, or the symbol :EOF
+if the stream is at end-of-file.
 
 ## STREAM-WRITE-BYTE
 [Generic Function]
@@ -375,20 +379,19 @@ the stream is at end-of-file.
 (stream-write-byte stream integer) ; → integer
 ```
 
-Implements WRITE-BYTE; writes the integer to the stream and returns
-the integer as the result.
+Implements [WRITE-BYTE][]; writes the integer to the stream and
+returns the integer as the result.
 
 # Sequence Extensions
 
 Generic functions that provide the implementation for
-[read-sequence](https://novaspec.org/cl/f_read-sequence) and
-[write-sequence](https://novaspec.org/cl/f_write-sequence). This
-extension is not consistently defined by the implementations that
-expose it. Some implementations have the start and end arguments as
-required, some have them as optional, and some have them as keyword
-arguments. Given that that [STREAM-WRITE-STRING](#STREAM-WRITE-STRING)
-has start and end as optional arguments this is probably the choice
-that is more consistent with the Gray stream protocol.
+[READ-SEQUENCE][] and [WRITE-SEQUENCE][]. This extension is not
+consistently defined by the implementations that expose it. Some
+implementations have the start and end arguments as required, some
+have them as optional, and some have them as keyword arguments. Given
+that that [STREAM-WRITE-STRING][] has start and end as optional
+arguments this is probably the choice that is more consistent with the
+Gray stream protocol.
 
 ## STREAM-READ-SEQUENCE
 [Generic Function]
@@ -404,7 +407,7 @@ that is more consistent with the Gray stream protocol.
 
 ;; Variant with keyword arguments. Indicated by presence of
 ;; feature :gray-streams-sequence-key
-(stream-read-sequence stream sequence &key start end) ; → integer
+(stream-read-sequence sequence stream &key start end) ; → integer
 ```
 
 ## STREAM-WRITE-SEQUENCE
@@ -421,7 +424,7 @@ that is more consistent with the Gray stream protocol.
 
 ;; Variant with keyword arguments. Indicated by presence of
 ;; feature :gray-streams-sequence-key
-(stream-write-sequence stream sequence &key start end) ; → integer
+(stream-write-sequence sequence stream &key start end) ; → integer
 ```
 
 # File Position Extensions
@@ -487,3 +490,58 @@ stream-external-format
 
 ; ccl
 stream-filename
+
+
+[CLEAR-INPUT]: https://novaspec.org/cl/f_clear-input
+[CLEAR-OUTPUT]: https://novaspec.org/cl/f_finish-ouput
+[CLOSE]: #CLOSE
+[FINISH-OUTPUT]: https://novaspec.org/cl/f_finish-output
+[FORCE-OUTPUT]: https://novaspec.org/cl/f_finish-output
+[FRESH-LINE]: https://novaspec.org/cl/f_terpri
+[FUNDAMENTAL-BINARY-INPUT-STREAM]: #FUNDAMENTAL-BINARY-INPUT-STREAM
+[FUNDAMENTAL-BINARY-OUTPUT-STREAM]: #FUNDAMENTAL-BINARY-OUTPUT-STREAM
+[FUNDAMENTAL-BINARY-STREAM]: #FUNDAMENTAL-BINARY-STREAM
+[FUNDAMENTAL-CHARACTER-INPUT-STREAM]: #FUNDAMENTAL-CHARACTER-INPUT-STREAM
+[FUNDAMENTAL-CHARACTER-OUTPUT-STREAM]: #FUNDAMENTAL-CHARACTER-OUTPUT-STREAM
+[FUNDAMENTAL-CHARACTER-STREAM]: #FUNDAMENTAL-CHARACTER-STREAM
+[FUNDAMENTAL-INPUT-STREAM]: #FUNDAMENTAL-INPUT-STREAM
+[FUNDAMENTAL-OUTPUT-STREAM]: #FUNDAMENTAL-OUTPUT-STREAM
+[FUNDAMENTAL-STREAM]: #FUNDAMENTAL-STREAM
+[INPUT-STREAM-P]: #INPUT-STREAM-P
+[LISTEN]: https://novaspec.org/cl/f_listen
+[OPEN-STREAM-P]: #OPEN-STREAM-P
+[OUTPUT-STREAM-P]: #OUTPUT-STREAM-P
+[PEEK-CHAR]: https://novaspec.org/cl/f_peek-char
+[READ-BYTE]: https://novaspec.org/cl/f_read-byte
+[READ-CHAR-NO-HANG]: https://novaspec.org/cl/f_read-char-no-hang
+[READ-LINE]: https://novaspec.org/cl/f_read-line
+[READ-SEQUENCE]: https://novaspec.org/cl/f_read-sequence
+[STREAM-ADVANCE-TO-COLUMN]: #STREAM-ADVANCE-TO-COLUMN
+[STREAM-CLEAR-INPUT]: #STREAM-CLEAR-INPUT
+[STREAM-CLEAR-OUTPUT]: #STREAM-CLEAR-OUTPUT
+[STREAM-FILE-LENGTH]: #STREAM-FILE-LENGTH
+[STREAM-FILE-POSITION]: #STREAM-FILE-POSITION
+[STREAM-FINISH-OUTPUT]: #STREAM-FINISH-OUTPUT
+[STREAM-FORCE-OUTPUT]: #STREAM-FORCE-OUTPUT
+[STREAM-FRESH-LINE]: #STREAM-FRESH-LINE
+[STREAM-LINE-COLUMN]: #STREAM-LINE-COLUMN
+[STREAM-LISTEN]: #STREAM-LISTEN
+[STREAM-PEEK-CHAR]: #STREAM-PEEK-CHAR
+[STREAM-READ-BYTE]: #STREAM-READ-BYTE
+[STREAM-READ-CHAR-NO-HANG]: #STREAM-READ-CHAR-NO-HANG
+[STREAM-READ-CHAR]: #STREAM-READ-CHAR
+[STREAM-READ-LINE]: #STREAM-READ-LINE
+[STREAM-READ-SEQUENCE]: #STREAM-READ-SEQUENCE
+[STREAM-START-LINE-P]: #STREAM-START-LINE-P
+[STREAM-TERPRI]: #STREAM-TERPRI
+[STREAM-UNREAD-CHAR]: #STREAM-UNREAD-CHAR
+[STREAM-WRITE-BYTE]: #STREAM-WRITE-BYTE
+[STREAM-WRITE-CHAR]: #STREAM-WRITE-CHAR
+[STREAM-WRITE-SEQUENCE]: #STREAM-WRITE-SEQUENCE
+[STREAM-WRITE-STRING]: #STREAM-WRITE-STRING
+[STREAMP]: #STREAMP
+[TERPRI]: https://novaspec.org/cl/f_terpri
+[UNREAD-CHAR]: https://novaspec.org/cl/f_unread-char
+[WRITE-BYTE]: https://novaspec.org/cl/f_write-byte
+[WRITE-SEQUENCE]: https://novaspec.org/cl/f_write-sequence
+[WRITE-STRING]: https://novaspec.org/cl/f_write-string
