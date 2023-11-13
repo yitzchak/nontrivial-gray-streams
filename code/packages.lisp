@@ -7,7 +7,7 @@
 (defpackage #:nontrivial-gray-streams
   (:use #:common-lisp)
   (:nicknames #:nt-gray)
-  #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl mocl sbcl)
+  #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl mocl sicl sbcl)
   (:import-from #+abcl #:gray-streams
                 #+allegro #:excl
                 #+ccl #:ccl
@@ -20,6 +20,7 @@
                 #+mezzano #:mezzano.gray
                 #+mkcl #:gray
                 #+mocl #:gray
+                #+sicl #:cyclosis
                 #+sbcl #:sb-gray
                 #:fundamental-binary-input-stream
                 #:fundamental-binary-output-stream
@@ -33,17 +34,23 @@
                 #:stream-advance-to-column
                 #:stream-clear-input
                 #:stream-clear-output
+                #+(or mezzano sicl)
+                #:stream-file-length
+                #+(or abcl allegro clasp cmucl ecl general lispworks mezzano mkcl mocl sicl sbcl)
+                #:stream-file-position
                 #:stream-finish-output
                 #:stream-force-output
                 #:stream-fresh-line
                 #:stream-line-column
                 #:stream-listen
                 #:stream-peek-char
+                #+(or ccl clisp)
+                #:stream-position
                 #:stream-read-byte
                 #:stream-read-char
                 #:stream-read-char-no-hang
                 #:stream-read-line
-                #+(or abcl allegro clisp clasp cmucl ecl genera lispworks mezzano mkcl mocl sbcl)
+                #+(or abcl allegro clisp clasp cmucl ecl genera lispworks mezzano mkcl mocl sicl sbcl)
                 #:stream-read-sequence
                 #+ccl
                 #:stream-read-vector
@@ -52,7 +59,7 @@
                 #:stream-unread-char
                 #:stream-write-byte
                 #:stream-write-char
-                #+(or abcl allegro clisp clasp cmucl ecl genera lispworks mezzano mkcl mocl sbcl)
+                #+(or abcl allegro clisp clasp cmucl ecl genera lispworks mezzano mkcl mocl sicl sbcl)
                 #:stream-write-sequence
                 #+ccl
                 #:stream-write-vector
@@ -69,17 +76,23 @@
            #:stream-advance-to-column
            #:stream-clear-input
            #:stream-clear-output
+           #+(or mezzano sicl)
+           #:stream-file-length
+           #+(or abcl allegro clasp cmucl ecl general lispworks mezzano mkcl mocl sicl sbcl)
+           #:stream-file-position
            #:stream-finish-output
            #:stream-force-output
            #:stream-fresh-line
            #:stream-line-column
            #:stream-listen
            #:stream-peek-char
+           #+(or ccl clisp)
+           #:stream-position
            #:stream-read-byte
            #:stream-read-char
            #:stream-read-char-no-hang
            #:stream-read-line
-           #+(or abcl allegro clisp clasp cmucl ecl genera lispworks mezzano mkcl mocl sbcl)
+           #+(or abcl allegro clisp clasp cmucl ecl genera lispworks mezzano mkcl mocl sicl sbcl)
            #:stream-read-sequence
            #+ccl
            #:stream-read-vector
@@ -88,7 +101,7 @@
            #:stream-unread-char
            #:stream-write-byte
            #:stream-write-char
-           #+(or abcl allegro clisp clasp cmucl ecl genera lispworks mezzano mkcl mocl sbcl)
+           #+(or abcl allegro clisp clasp cmucl ecl genera lispworks mezzano mkcl mocl sicl sbcl)
            #:stream-write-sequence
            #+ccl
            #:stream-write-vector

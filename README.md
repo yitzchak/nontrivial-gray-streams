@@ -381,23 +381,21 @@ the integer as the result.
 # Sequence Extensions
 
 Generic functions that provide the implementation for
-[read-sequence](https://novaspec.org/cl/f_red-sequence) and
-[write-sequence](https://novaspec.org/cl/f_write-sequence). Indicated
-by the feature `:gray-streams-sequence`. This extension is not
-consistently defined by the implementations that expose it. Some
-implementations have the start and end arguments as required, some
-have them as optional, and some have them as keyword arguments. Given
-that that
-[STREAM-WRITE-STRING](#STREAM-WRITE-STRING) has start and
-end as optional arguments this is probably the choice that is more
-consistent with the Gray stream protocol.
+[read-sequence](https://novaspec.org/cl/f_read-sequence) and
+[write-sequence](https://novaspec.org/cl/f_write-sequence). This
+extension is not consistently defined by the implementations that
+expose it. Some implementations have the start and end arguments as
+required, some have them as optional, and some have them as keyword
+arguments. Given that that [STREAM-WRITE-STRING](#STREAM-WRITE-STRING)
+has start and end as optional arguments this is probably the choice
+that is more consistent with the Gray stream protocol.
 
 ## STREAM-READ-SEQUENCE
 [Generic Function]
 
 ```common-lisp
 ;; Variant with optional start and end. Indicated by presence of
-;; feature :gray-streams-sequence
+;; feature :gray-streams-sequence-optional
 (stream-read-sequence stream sequence &optional start end) ; → integer
 
 ;; Variant with all required arguments. Indicated by presence of
@@ -418,7 +416,7 @@ consistent with the Gray stream protocol.
 
 ```common-lisp
 ;; Variant with optional start and end. Indicated by presence of
-;; feature :gray-streams-sequence
+;; feature :gray-streams-sequence-optional
 (stream-write-sequence stream sequence &optional start end) ; → integer
 
 ;; Variant with all required arguments. Indicated by presence of
