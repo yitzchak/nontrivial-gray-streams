@@ -17,6 +17,7 @@ jobs:
       matrix:
         lisp:
         - abcl
+        - acl
         - ccl
         - cmucl
         - clasp
