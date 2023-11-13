@@ -76,7 +76,7 @@
 
 #+gray-streams-sequence
 (defmethod nt-gray:stream-read-sequence
-    ((stream test-string-input-stream) sequence
+    (#+gray-streams-sequence-key sequence (stream test-string-input-stream) #-gray-streams-sequence-key sequence
      #+gray-streams-sequence-optional &optional
      #+gray-streams-sequence-key &key
      start end)
@@ -172,7 +172,9 @@
       (is eql 2 (read-sequence sequence stream))
       (is equalp sequence #(#\a #\b nil))
       (true (or (invoked-p :stream-read-sequence stream sequence 0 nil)
-                (invoked-p :stream-read-sequence stream sequence 0 3))))))
+                (invoked-p :stream-read-sequence stream sequence 0 3)
+                (invoked-p :stream-read-sequence stream sequence nil nil)
+                (invoked-p :stream-read-sequence stream sequence nil 3))))))
 
 #+gray-streams-sequence
 (define-test character-input.read-sequence.02
@@ -181,7 +183,8 @@
           (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
       (is eql 1 (read-sequence sequence stream :end 1))
       (is equalp sequence #(#\a nil nil))
-      (true (invoked-p :stream-read-sequence stream sequence 0 1)))))
+      (true (invoked-p :stream-read-sequence stream sequence 0 1)
+            (invoked-p :stream-read-sequence stream sequence nil 1)))))
 
 #+gray-streams-sequence
 (define-test character-input.read-sequence.03

@@ -19,6 +19,7 @@ jobs:
         - abcl
         - acl
         - ccl
+        - clisp
         - cmucl
         - clasp
         - ecl
