@@ -103,7 +103,8 @@
                 #+ccl
                 #:stream-write-vector
                 #:stream-write-string)
-  (:export #:fundamental-binary-input-stream
+  (:export #:close
+           #:fundamental-binary-input-stream
            #:fundamental-binary-output-stream
            #:fundamental-binary-stream
            #:fundamental-character-input-stream
@@ -112,9 +113,13 @@
            #:fundamental-input-stream
            #:fundamental-output-stream
            #:fundamental-stream
+           #:input-stream-p
+           #:open-stream-p
+           #:output-stream-p
            #:stream-advance-to-column
            #:stream-clear-input
            #:stream-clear-output
+           #:stream-element-type
            #+gray-streams-file-length
            #:stream-file-length
            #+gray-streams-file-position
@@ -140,4 +145,5 @@
            #:stream-write-char
            #+gray-streams-sequence
            #:stream-write-sequence
-           #:stream-write-string))
+           #:stream-write-string
+           #:streamp))

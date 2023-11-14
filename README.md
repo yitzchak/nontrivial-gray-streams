@@ -118,8 +118,8 @@ interactive streams should define their own method.
 (stream-peek-char stream) ; → (or character (eql :eof))
 ```
 
-Used to implement [CL:PEEK-CHAR][]; this corresponds to peek-type of NIL.
-It returns either a character or :EOF.  The default method calls
+Used to implement [CL:PEEK-CHAR][]; this corresponds to peek-type of
+NIL.  It returns either a character or :EOF.  The default method calls
 [STREAM-READ-CHAR][] and [STREAM-UNREAD-CHAR][].
 
 ## STREAM-LISTEN
@@ -369,6 +369,10 @@ PATHNAME and TRUENAME are also permitted to be implemented as generic
 functions.  There is no default method since these are not valid for
 all streams.
 
+> There do not appear to be any implementations that make PATHNAME or
+> TRUENAME generic functions. CCL does have a generic
+> CCL:STREAM-FILENAME.
+
 # Binary Streams
 
 Binary streams can be created by defining a class that includes either
@@ -559,6 +563,7 @@ stream-filename-->
 [CL:FORCE-OUTPUT]: https://novaspec.org/cl/f_finish-output
 [CL:FORMAT ~T]: https://novaspec.org/cl/22_3_Formatted_Output#sec_22_3_6_1
 [CL:FRESH-LINE]: https://novaspec.org/cl/f_terpri
+[CL:INTERACTIVE-STREAM-P]: https://novaspec.org/cl/f_interactive-stream-p
 [CL:LISTEN]: https://novaspec.org/cl/f_listen
 [CL:PEEK-CHAR]: https://novaspec.org/cl/f_peek-char
 [CL:PPRINT]: https://novaspec.org/cl/f_write
