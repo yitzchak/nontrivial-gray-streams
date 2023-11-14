@@ -31,11 +31,16 @@
     (pushnew :gray-streams-file-length *features*))
 
   #+(or mezzano sicl)
-  (pushnew :gray-streams-file-length *features*))
+  (pushnew :gray-streams-file-length *features*)
+
+  #+(or ccl clasp ecl mezzano mkcl sbcl sicl)
+  (pushnew :gray-streams-interactive *features*))
 
 (defpackage #:nontrivial-gray-streams
   (:use #:common-lisp)
   (:nicknames #:nt-gray)
+  (:shadow #+(or clasp ecl mkcl)
+           #:interactive-stream-p)
   (:import-from #+abcl #:gray-streams
                 #+allegro #:excl
                 #+ccl #:ccl
@@ -70,6 +75,8 @@
                 #:stream-finish-output
                 #:stream-force-output
                 #:stream-fresh-line
+                #+(or clasp ecl mkcl)
+                #:stream-interactive-p
                 #:stream-line-column
                 #:stream-listen
                 #:stream-peek-char
@@ -112,6 +119,8 @@
            #:stream-finish-output
            #:stream-force-output
            #:stream-fresh-line
+           #+gray-streams-interactive
+           #:interactive-stream-p
            #:stream-line-column
            #:stream-listen
            #:stream-peek-char

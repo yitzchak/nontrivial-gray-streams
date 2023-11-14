@@ -452,16 +452,25 @@ Gray stream protocol.
 ## STREAM-FILE-LENGTH
 [Generic Function]
 
+Allows implementing CL:FILE-LENGTH for Gray streams. 
+Indicated by the presences of feature `:gray-streams-file-length`.
+
 ```common-lisp
 (stream-file-length stream)
 ```
 
+# Interactive Stream Extensions
 
+## INTERACTIVE-STREAM-P
+[Generic Function]
 
-; ecl clasp
-(stream-interactive-p stream)
-; ccl sbcl sicl
+Allows implementing CL:INTERACTIVE-STREAM-P for Gray
+streams. Indicated by the presences of feature
+`:gray-streams-interactive`.
+
+```common-lisp
 (interactive-stream-p stream)
+```
 
 ; clasp
 (defgeneric stream-file-descriptor (stream &optional direction)

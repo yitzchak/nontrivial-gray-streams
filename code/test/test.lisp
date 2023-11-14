@@ -16,7 +16,15 @@
   ((value :reader value
           :initarg :value)
    (index :accessor index
-          :initform 0)))
+          :initform 0)
+   (interactive :reader interactive-p
+                :initform nil
+                :initarg :interactive)))
+
+#+gray-streams-interactive
+(defmethod nt-gray:interactive-stream-p ((stream test-string-input-stream))
+  (record-invocation :interactive-stream-p stream)
+  (interactive-p stream))
 
 (defmethod nt-gray:stream-read-char ((stream test-string-input-stream))
   (record-invocation :stream-read-char stream)
@@ -222,6 +230,21 @@
       (is equal 1 (file-position stream))
       (is eql #\b (read-char stream nil))
       (true (invoked-p :stream-file-position stream nil)))))
+
+#+gray-streams-interactive
+(define-test character-input.interactive-stream-p.01
+  (with-invocations
+    (let ((stream (make-instance 'test-string-input-stream :value "ab")))
+      (false (interactive-stream-p stream))
+      (true (invoked-p :interactive-stream-p stream)))))
+
+#+gray-streams-interactive
+(define-test character-input.interactive-stream-p.02
+  (with-invocations
+    (let ((stream (make-instance 'test-string-input-stream
+                                 :value "ab" :interactive t)))
+      (true (interactive-stream-p stream))
+      (true (invoked-p :interactive-stream-p stream)))))
 
   #|(defclass test-stream
     (nt-gray:fundamental-binary-input-stream
