@@ -134,6 +134,20 @@ uses [STREAM-READ-CHAR-NO-HANG][] and [STREAM-UNREAD-CHAR][].  Most
 streams should define their own method since it will usually be
 trivial and will always be more efficient than the default method.
 
+> The default implementation described by the Gray stream protocol is
+> flawed since binary streams do not support reading or unreading
+> characters. This implementation is probably only appropriate for
+> [FUNDAMENTAL-CHARACTER-INPUT-STREAM][]. This means that
+> [FUNDAMENTAL-BINARY-INPUT-STREAM][] subclasses would need to
+> specialize this generic function at a minimum. A default
+> implementation that followed the pattern described by the Gray
+> stream protocol would require the addition of
+> STREAM-READ-BYTE-NO-HANG and STREAM-UNREAD-BYTE generic
+> functions. These functions do not have a parallel in the ANSI
+> specification as [CL:LISTEN][] seems to assume that the stream is an
+> interactive character input stream versus other types of streams
+> that listening would be used on, i.e. networked binary streams.
+
 ## STREAM-READ-LINE
 [Generic Function]
 
