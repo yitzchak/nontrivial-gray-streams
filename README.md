@@ -387,8 +387,9 @@ returns the integer as the result.
 # Sequence Extensions
 
 Generic functions that provide the implementation for
-[CL:READ-SEQUENCE][] and [CL:WRITE-SEQUENCE][]. This extension is not
-consistently defined by the implementations that expose it. Some
+[CL:READ-SEQUENCE][] and [CL:WRITE-SEQUENCE][]. Indicated by the
+presence of the feature `:gray-streams-sequence`. This extension is
+not consistently defined by the implementations that expose it. Some
 implementations have the start and end arguments as required, some
 have them as optional, and some have them as keyword arguments. Given
 that that [STREAM-WRITE-STRING][] has start and end as optional
@@ -398,36 +399,56 @@ Gray stream protocol.
 ## STREAM-READ-SEQUENCE
 [Generic Function]
 
-```common-lisp
-;; Variant with optional start and end. Indicated by presence of
-;; feature :gray-streams-sequence-optional
-(stream-read-sequence stream sequence &optional start end) ; → integer
+### Variants
 
-;; Variant with all required arguments.Indicated by presence of
-;; feature :gray-streams-sequence-required
-(stream-read-sequence stream sequence start end) ; → integer
+1. Variant with optional start and end arguments. Indicated by
+   presence of feature `:gray-streams-sequence/variant-1`.
 
-;; Variant with keyword arguments. Indicated by presence of
-;; feature :gray-streams-sequence-key
-(stream-read-sequence sequence stream &key start end) ; → integer
-```
+   ```common-lisp
+   (stream-read-sequence stream sequence &optional start end) ; → integer
+   ```
+
+2. Variant with all required arguments. Indicated by presence of feature
+   `:gray-streams-sequence/variant-2`.
+   
+   ```common-lisp
+   (stream-read-sequence stream sequence start end) ; → integer
+   ```
+
+3. Variant with keyword arguments and reversed sequence and stream
+   arguments. Indicated by presence of feature
+   `:gray-streams-sequence/variant-3`.
+
+   ```common-lisp
+   (stream-read-sequence sequence stream &key start end) ; → integer
+   ```
 
 ## STREAM-WRITE-SEQUENCE
 [Generic Function]
 
-```common-lisp
-;; Variant with optional start and end. Indicated by presence of
-;; feature :gray-streams-sequence-optional
-(stream-write-sequence stream sequence &optional start end) ; → integer
+### Variants
 
-;; Variant with all required arguments. Indicated by presence of
-;; feature :gray-streams-sequence-required
-(stream-write-sequence stream sequence start end) ; → integer
+1. Variant with optional start and end arguments. Indicated by
+   presence of feature `:gray-streams-sequence/variant-1`.
 
-;; Variant with keyword arguments. Indicated by presence of
-;; feature :gray-streams-sequence-key
-(stream-write-sequence sequence stream &key start end) ; → integer
-```
+   ```common-lisp
+   (stream-write-sequence stream sequence &optional start end) ; → integer
+   ```
+
+2. Variant with all required arguments. Indicated by presence of feature
+   `:gray-streams-sequence/variant-2`.
+   
+   ```common-lisp
+   (stream-write-sequence stream sequence start end) ; → integer
+   ```
+
+3. Variant with keyword arguments and reversed sequence and stream
+   arguments. Indicated by presence of feature
+   `:gray-streams-sequence/variant-3`.
+
+   ```common-lisp
+   (stream-write-sequence sequence stream &key start end) ; → integer
+   ```
 
 # File Position Extensions
 

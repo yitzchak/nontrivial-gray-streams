@@ -9,10 +9,13 @@
   (pushnew :gray-streams-sequence *features*)
 
   #+(or abcl allegro clasp cmucl ecl genera mezzano mkcl mocl sicl sbcl)
-  (pushnew :gray-streams-sequence-optional *features*)
+  (pushnew :gray-streams-sequence/variant-1 *features*)
+
+  #+(or ccl lispworks)
+  (pushnew :gray-streams-sequence/variant-2 *features*)
 
   #+clisp
-  (pushnew :gray-streams-sequence-key *features*)
+  (pushnew :gray-streams-sequence/variant-3 *features*)
 
   #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl mocl sicl sbcl)
   (pushnew :gray-streams-file-position *features*)

@@ -84,10 +84,12 @@
 
 #+gray-streams-sequence
 (defmethod nt-gray:stream-read-sequence
-    (#+gray-streams-sequence-key sequence (stream test-string-input-stream) #-gray-streams-sequence-key sequence
-     #+gray-streams-sequence-optional &optional
-     #+gray-streams-sequence-key &key
-     start end)
+  #+gray-streams-sequence/variant-1
+  ((stream test-string-input-stream) sequence &optional start end)
+  #+gray-streams-sequence/variant-2
+  ((stream test-string-input-stream) sequence start end)
+  #+gray-streams-sequence/variant-3
+  (sequence (stream test-string-input-stream) &key start end)
   (record-invocation :stream-read-sequence stream sequence start end)
   (unless end
     (setf end (length sequence)))
