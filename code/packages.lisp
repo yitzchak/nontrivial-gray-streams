@@ -21,13 +21,13 @@
   (pushnew :gray-streams-file-position *features*)
 
   #+(or abcl allegro ccl clasp ecl mezzano mkcl mocl sicl sbcl)
-  (pushnew :gray-streams-file-position-optional *features*)
+  (pushnew :gray-streams-file-position/variant-1 *features*)
 
   #+clisp
-  (pushnew :gray-streams-file-position-required *features*)
+  (pushnew :gray-streams-file-position/variant-2 *features*)
 
   #+(or cmucl genera lispworks)
-  (pushnew :gray-streams-file-position-setf *features*)
+  (pushnew :gray-streams-file-position/variant-3 *features*)
 
   #+clasp
   (when (find-symbol (string '#:stream-file-length) '#:gray)

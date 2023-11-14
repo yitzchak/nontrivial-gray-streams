@@ -108,11 +108,11 @@
   (record-invocation :stream-file-length stream)
   (length (value stream)))
 
-#+(or gray-streams-file-position-optional
-      gray-streams-file-position-required)
+#+(or gray-streams-file-position/variant-1
+      gray-streams-file-position/variant-2)
 (defmethod nt-gray:stream-file-position
     ((stream test-string-input-stream)
-     #+gray-streams-file-position-optional &optional position)
+     #+gray-streams-file-position/variant-1 &optional position)
   (record-invocation :stream-file-position stream position)
   (if position
       (let ((typespec `(integer 0 ,(1- (length (value stream))))))
@@ -122,12 +122,12 @@
         t)
       (index stream)))
 
-#+gray-streams-file-position-setf
+#+gray-streams-file-position/variant-3
 (defmethod nt-gray:stream-file-position ((stream test-string-input-stream))
   (record-invocation :stream-file-position stream nil)
   (index stream))
 
-#+gray-streams-file-position-setf
+#+gray-streams-file-position/variant-3
 (defmethod (setf nt-gray:stream-file-position) (position (stream test-string-input-stream))
   (record-invocation :stream-file-position stream position)
   (let ((typespec `(integer 0 ,(1- (length (value stream))))))

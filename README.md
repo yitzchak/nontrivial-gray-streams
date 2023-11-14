@@ -330,7 +330,6 @@ returns true if CLOSE has not been called on the stream.
 ```common-lisp
 (output-stream-p stream) ; → boolean
 ```
-
 These three existing predicates may optionally be implemented as
 generic functions for implementations that want to permit users to
 define streams that are not STANDARD-OBJECTs.  Normally, the default
@@ -455,20 +454,32 @@ Gray stream protocol.
 ## STREAM-FILE-POSITION
 [Generic Function]
 
-```common-lisp
-;; Variant with optional position. Indicated by presence of
-;; feature :gray-streams-file-position-optional
-(stream-file-position stream &optional position-spec)
+Generic functions that allow implementing [CL:FILE-POSITION][] for
+Gray streams. Indicated by feature `:gray-streams-file-position`.
 
-;; Variant with required position. Indicated by presence of
-;; feature :gray-streams-file-position-required
-(stream-file-position stream position-spec)
+### Variants
 
-;; Variant with get and setf. Indicated by presence of
-;; feature :gray-streams-file-position-setf
-(stream-file-position stream)
-((setf stream-file-position) position stream)
-```
+1. Variant with optional position argument. Indicated by presence of
+   feature `:gray-streams-file-position/variant-1`.
+
+   ```common-lisp
+   (stream-file-position stream &optional position) ; → (or integer boolean)
+   ```
+
+2. Variant with required position argument. Indicated by presence of
+   feature `:gray-streams-file-position/variant-2`.
+
+   ```common-lisp
+   (stream-file-position stream position) ; → (or integer boolean)
+   ```
+
+3. Variant with separate SETF function. Indicated by presence of
+   feature `:gray-streams-file-position/variant-3`.
+
+   ```common-lisp
+   (stream-file-position stream) ; → (or integer null)
+   ((setf stream-file-position) position stream) ; → boolean
+   ```
 
 # File Length Extensions
 
@@ -495,6 +506,7 @@ streams. Indicated by the presences of feature
 (interactive-stream-p stream)
 ```
 
+<!--
 ; clasp
 (defgeneric stream-file-descriptor (stream &optional direction)
 
@@ -521,13 +533,14 @@ stream-external-format
 (setf stream-external-format)
 
 ; ccl
-stream-filename
+stream-filename-->
 
 
 [CL:CLEAR-INPUT]: https://novaspec.org/cl/f_clear-input
 [CL:CLEAR-OUTPUT]: https://novaspec.org/cl/f_finish-ouput
 [CL:CLOSE]: #CLOSE
 [CL:FILE-LENGTH]: https://novaspec.org/cl/f_file-length
+[CL:FILE-POSITION]: https://novaspec.org/cl/f_file-position
 [CL:FINISH-OUTPUT]: https://novaspec.org/cl/f_finish-output
 [CL:FORCE-OUTPUT]: https://novaspec.org/cl/f_finish-output
 [CL:FORMAT ~T]: https://novaspec.org/cl/22_3_Formatted_Output#sec_22_3_6_1
