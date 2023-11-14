@@ -92,9 +92,10 @@ be a stream object, not T or NIL.
 (stream-unread-char stream character) ; → null
 ```
 
-Un-does the last call to [STREAM-READ-CHAR][], as in [UNREAD-CHAR][].
-Returns NIL.  Every subclass of [FUNDAMENTAL-CHARACTER-INPUT-STREAM][]
-must define a method for this function.
+Un-does the last call to [STREAM-READ-CHAR][], as in
+[CL:UNREAD-CHAR][].  Returns NIL.  Every subclass of
+[FUNDAMENTAL-CHARACTER-INPUT-STREAM][] must define a method for this
+function.
 
 ## STREAM-READ-CHAR-NO-HANG
 [Generic Function]
@@ -103,8 +104,8 @@ must define a method for this function.
 (stream-read-char-no-hang stream) ; → (or character nil (eql :eof))
 ```
 
-This is used to implement [READ-CHAR-NO-HANG][].  It returns either a
-character, or NIL if no input is currently available, or :EOF if
+This is used to implement [CL:READ-CHAR-NO-HANG][].  It returns either
+a character, or NIL if no input is currently available, or :EOF if
 end-of-file is reached.  The default method provided by
 [FUNDAMENTAL-CHARACTER-INPUT-STREAM][] simply calls
 [STREAM-READ-CHAR][]; this is sufficient for file streams, but
@@ -117,7 +118,7 @@ interactive streams should define their own method.
 (stream-peek-char stream) ; → (or character (eql :eof))
 ```
 
-Used to implement [PEEK-CHAR][]; this corresponds to peek-type of NIL.
+Used to implement [CL:PEEK-CHAR][]; this corresponds to peek-type of NIL.
 It returns either a character or :EOF.  The default method calls
 [STREAM-READ-CHAR][] and [STREAM-UNREAD-CHAR][].
 
@@ -128,10 +129,10 @@ It returns either a character or :EOF.  The default method calls
 (stream-listen stream) ; → boolean
 ```
 
-Used by [LISTEN][].  Returns true or false.  The default method uses
-[STREAM-READ-CHAR-NO-HANG][] and [STREAM-UNREAD-CHAR][].  Most streams
-should define their own method since it will usually be trivial and
-will always be more efficient than the default method.
+Used by [CL:LISTEN][].  Returns true or false.  The default method
+uses [STREAM-READ-CHAR-NO-HANG][] and [STREAM-UNREAD-CHAR][].  Most
+streams should define their own method since it will usually be
+trivial and will always be more efficient than the default method.
 
 ## STREAM-READ-LINE
 [Generic Function]
@@ -140,7 +141,7 @@ will always be more efficient than the default method.
 (stream-read-line stream) ; → string, boolean
 ```
 
-Used by [READ-LINE][].  A string is returned as the first value.  The
+Used by [CL:READ-LINE][].  A string is returned as the first value.  The
 second value is true if the string was terminated by end-of-file
 instead of the end of a line.  The default method uses repeated calls
 to [STREAM-READ-CHAR][].
@@ -152,8 +153,8 @@ to [STREAM-READ-CHAR][].
 (stream-clear-input stream) ; → null 
 ```
 
-Implements [CLEAR-INPUT][] for the stream, returning NIL.  The default
-method does nothing.
+Implements [CL:CLEAR-INPUT][] for the stream, returning NIL.  The
+default method does nothing.
 
 # Character Output
 
@@ -182,8 +183,8 @@ defined for this function.
 This function returns the column number where the next character will
 be written, or NIL if that is not meaningful for this stream.  The
 first column on a line is numbered 0.  This function is used in the
-implementation of PPRINT and the FORMAT ~T directive.  For every
-character output stream class that is defined, a method must be
+implementation of [CL:PPRINT][] and the [CL:FORMAT ~T][] directive.  For
+every character output stream class that is defined, a method must be
 defined for this function, although it is permissible for it to always
 return NIL.
 
@@ -196,8 +197,8 @@ return NIL.
 
 This is a predicate which returns T if the stream is positioned at the
 beginning of a line, else NIL.  It is permissible to always return
-NIL.  This is used in the implementation of [FRESH-LINE][].  Note that
-while a value of 0 from [STREAM-LINE-COLUMN][] also indicates the
+NIL.  This is used in the implementation of [CL:FRESH-LINE][].  Note
+that while a value of 0 from [STREAM-LINE-COLUMN][] also indicates the
 beginning of a line, there are cases where [STREAM-START-LINE-P][] can
 be meaningfully implemented although [STREAM-LINE-COLUMN][] can't be.
 For example, for a window using variable-width characters, the column
@@ -215,9 +216,9 @@ method should be provided for either [STREAM-START-LINE-P][] or
 (stream-write-string stream string &optional start end) ; → string
 ```
 
-This is used by [WRITE-STRING][].  It writes the string to the stream,
-optionally delimited by start and end, which default to 0 and NIL.
-The string argument is returned.  The default method provided by
+This is used by [CL:WRITE-STRING][].  It writes the string to the
+stream, optionally delimited by start and end, which default to 0 and
+NIL.  The string argument is returned.  The default method provided by
 [FUNDAMENTAL-CHARACTER-OUTPUT-STREAM][] uses repeated calls to
 [STREAM-WRITE-CHAR][].
 
@@ -228,8 +229,8 @@ The string argument is returned.  The default method provided by
 (stream-terpri stream) ; → null
 ```
 
-Writes an end of line, as for [TERPRI][].  Returns NIL.  The default
-method does (STREAM-WRITE-CHAR stream #\NEWLINE).
+Writes an end of line, as for [CL:TERPRI][].  Returns NIL.  The
+default method does `(STREAM-WRITE-CHAR stream #\NEWLINE)`.
 
 ## STREAM-FRESH-LINE
 [Generic Function]
@@ -238,7 +239,7 @@ method does (STREAM-WRITE-CHAR stream #\NEWLINE).
 (stream-fresh-line stream) ; → null
 ```
 
-Used by [FRESH-LINE][].  The default method uses
+Used by [CL:FRESH-LINE][].  The default method uses
 [STREAM-START-LINE-P][] and [STREAM-TERPRI][].
 
 ## STREAM-FINISH-OUTPUT
@@ -248,7 +249,7 @@ Used by [FRESH-LINE][].  The default method uses
 (stream-finish-output stream) ; → null
 ```
 
-Implements [FINISH-OUTPUT][].  The default method does nothing.
+Implements [CL:FINISH-OUTPUT][].  The default method does nothing.
 
 ## STREAM-FORCE-OUTPUT
 [Generic Function]
@@ -257,7 +258,7 @@ Implements [FINISH-OUTPUT][].  The default method does nothing.
 (stream-force-output stream) ; → null
 ```
 
-Implements [FORCE-OUTPUT][].  The default method does nothing.
+Implements [CL:FORCE-OUTPUT][].  The default method does nothing.
 
 ## STREAM-CLEAR-OUTPUT
 [Generic Function]
@@ -266,7 +267,7 @@ Implements [FORCE-OUTPUT][].  The default method does nothing.
 (stream-clear-output stream) ; → null
 ```
 
-Implements [CLEAR-OUTPUT][].  The default method does nothing.
+Implements [CL:CLEAR-OUTPUT][].  The default method does nothing.
 
 ## STREAM-ADVANCE-TO-COLUMN
 [Generic Function]
@@ -348,8 +349,8 @@ that visible by making these predicates generic.
 ```
 
 This existing function is made generic, but otherwise behaves the
-same.  Class [FUNDAMENTAL-CHARACTER-STREAM][] provides a default method
-which returns CHARACTER.
+same.  Class [FUNDAMENTAL-CHARACTER-STREAM][] provides a default
+method which returns CHARACTER.
 
 PATHNAME and TRUENAME are also permitted to be implemented as generic
 functions.  There is no default method since these are not valid for
@@ -358,9 +359,10 @@ all streams.
 # Binary Streams
 
 Binary streams can be created by defining a class that includes either
-[FUNDAMENTAL-BINARY-INPUT-STREAM][] or [FUNDAMENTAL-BINARY-OUTPUT-STREAM][]
-(or both) and defining a method for [STREAM-ELEMENT-TYPE][] and for one or
-both of the following generic functions.
+[FUNDAMENTAL-BINARY-INPUT-STREAM][] or
+[FUNDAMENTAL-BINARY-OUTPUT-STREAM][] (or both) and defining a method
+for [STREAM-ELEMENT-TYPE][] and for one or both of the following
+generic functions.
 
 ## STREAM-READ-BYTE
 [Generic Function]
@@ -369,8 +371,8 @@ both of the following generic functions.
 (stream-read-byte stream) ; → (or integer (eql :eof))
 ```
 
-Used by [READ-BYTE][]; returns either an integer, or the symbol :EOF
-if the stream is at end-of-file.
+Used by [CL:READ-BYTE][]; returns either an integer, or the symbol
+:EOF if the stream is at end-of-file.
 
 ## STREAM-WRITE-BYTE
 [Generic Function]
@@ -379,13 +381,13 @@ if the stream is at end-of-file.
 (stream-write-byte stream integer) ; → integer
 ```
 
-Implements [WRITE-BYTE][]; writes the integer to the stream and
+Implements [CL:WRITE-BYTE][]; writes the integer to the stream and
 returns the integer as the result.
 
 # Sequence Extensions
 
 Generic functions that provide the implementation for
-[READ-SEQUENCE][] and [WRITE-SEQUENCE][]. This extension is not
+[CL:READ-SEQUENCE][] and [CL:WRITE-SEQUENCE][]. This extension is not
 consistently defined by the implementations that expose it. Some
 implementations have the start and end arguments as required, some
 have them as optional, and some have them as keyword arguments. Given
@@ -452,8 +454,8 @@ Gray stream protocol.
 ## STREAM-FILE-LENGTH
 [Generic Function]
 
-Allows implementing CL:FILE-LENGTH for Gray streams. 
-Indicated by the presences of feature `:gray-streams-file-length`.
+Allows implementing [CL:FILE-LENGTH][] for Gray streams.  Indicated by
+the presences of feature `:gray-streams-file-length`.
 
 ```common-lisp
 (stream-file-length stream)
@@ -464,7 +466,7 @@ Indicated by the presences of feature `:gray-streams-file-length`.
 ## INTERACTIVE-STREAM-P
 [Generic Function]
 
-Allows implementing CL:INTERACTIVE-STREAM-P for Gray
+Allows implementing [CL:INTERACTIVE-STREAM-P][] for Gray
 streams. Indicated by the presences of feature
 `:gray-streams-interactive`.
 
@@ -501,12 +503,26 @@ stream-external-format
 stream-filename
 
 
-[CLEAR-INPUT]: https://novaspec.org/cl/f_clear-input
-[CLEAR-OUTPUT]: https://novaspec.org/cl/f_finish-ouput
-[CLOSE]: #CLOSE
-[FINISH-OUTPUT]: https://novaspec.org/cl/f_finish-output
-[FORCE-OUTPUT]: https://novaspec.org/cl/f_finish-output
-[FRESH-LINE]: https://novaspec.org/cl/f_terpri
+[CL:CLEAR-INPUT]: https://novaspec.org/cl/f_clear-input
+[CL:CLEAR-OUTPUT]: https://novaspec.org/cl/f_finish-ouput
+[CL:CLOSE]: #CLOSE
+[CL:FILE-LENGTH]: https://novaspec.org/cl/f_file-length
+[CL:FINISH-OUTPUT]: https://novaspec.org/cl/f_finish-output
+[CL:FORCE-OUTPUT]: https://novaspec.org/cl/f_finish-output
+[CL:FORMAT ~T]: https://novaspec.org/cl/22_3_Formatted_Output#sec_22_3_6_1
+[CL:FRESH-LINE]: https://novaspec.org/cl/f_terpri
+[CL:LISTEN]: https://novaspec.org/cl/f_listen
+[CL:PEEK-CHAR]: https://novaspec.org/cl/f_peek-char
+[CL:PPRINT]: https://novaspec.org/cl/f_write
+[CL:READ-BYTE]: https://novaspec.org/cl/f_read-byte
+[CL:READ-CHAR-NO-HANG]: https://novaspec.org/cl/f_read-char-no-hang
+[CL:READ-LINE]: https://novaspec.org/cl/f_read-line
+[CL:READ-SEQUENCE]: https://novaspec.org/cl/f_read-sequence
+[CL:TERPRI]: https://novaspec.org/cl/f_terpri
+[CL:UNREAD-CHAR]: https://novaspec.org/cl/f_unread-char
+[CL:WRITE-BYTE]: https://novaspec.org/cl/f_write-byte
+[CL:WRITE-SEQUENCE]: https://novaspec.org/cl/f_write-sequence
+[CL:WRITE-STRING]: https://novaspec.org/cl/f_write-string
 [FUNDAMENTAL-BINARY-INPUT-STREAM]: #FUNDAMENTAL-BINARY-INPUT-STREAM
 [FUNDAMENTAL-BINARY-OUTPUT-STREAM]: #FUNDAMENTAL-BINARY-OUTPUT-STREAM
 [FUNDAMENTAL-BINARY-STREAM]: #FUNDAMENTAL-BINARY-STREAM
@@ -517,14 +533,8 @@ stream-filename
 [FUNDAMENTAL-OUTPUT-STREAM]: #FUNDAMENTAL-OUTPUT-STREAM
 [FUNDAMENTAL-STREAM]: #FUNDAMENTAL-STREAM
 [INPUT-STREAM-P]: #INPUT-STREAM-P
-[LISTEN]: https://novaspec.org/cl/f_listen
 [OPEN-STREAM-P]: #OPEN-STREAM-P
 [OUTPUT-STREAM-P]: #OUTPUT-STREAM-P
-[PEEK-CHAR]: https://novaspec.org/cl/f_peek-char
-[READ-BYTE]: https://novaspec.org/cl/f_read-byte
-[READ-CHAR-NO-HANG]: https://novaspec.org/cl/f_read-char-no-hang
-[READ-LINE]: https://novaspec.org/cl/f_read-line
-[READ-SEQUENCE]: https://novaspec.org/cl/f_read-sequence
 [STREAM-ADVANCE-TO-COLUMN]: #STREAM-ADVANCE-TO-COLUMN
 [STREAM-CLEAR-INPUT]: #STREAM-CLEAR-INPUT
 [STREAM-CLEAR-OUTPUT]: #STREAM-CLEAR-OUTPUT
@@ -549,8 +559,3 @@ stream-filename
 [STREAM-WRITE-SEQUENCE]: #STREAM-WRITE-SEQUENCE
 [STREAM-WRITE-STRING]: #STREAM-WRITE-STRING
 [STREAMP]: #STREAMP
-[TERPRI]: https://novaspec.org/cl/f_terpri
-[UNREAD-CHAR]: https://novaspec.org/cl/f_unread-char
-[WRITE-BYTE]: https://novaspec.org/cl/f_write-byte
-[WRITE-SEQUENCE]: https://novaspec.org/cl/f_write-sequence
-[WRITE-STRING]: https://novaspec.org/cl/f_write-string
