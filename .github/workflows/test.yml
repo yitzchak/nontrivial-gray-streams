@@ -23,6 +23,7 @@ jobs:
         - cmucl
         - clasp
         - ecl
+        - mkcl
         - sbcl
     runs-on: ubuntu-latest
     container:
