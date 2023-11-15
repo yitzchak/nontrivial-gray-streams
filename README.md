@@ -508,7 +508,7 @@ Allows implementing [CL:FILE-LENGTH][] for Gray streams.  Indicated by
 the presences of feature `:gray-streams-file-length`.
 
 ```common-lisp
-(stream-file-length stream)
+(stream-file-length stream) ; → (or integer null)
 ```
 
 # Interactive Stream Extensions
@@ -521,7 +521,20 @@ streams. Indicated by the presences of feature
 `:gray-streams-interactive`.
 
 ```common-lisp
-(interactive-stream-p stream)
+(interactive-stream-p stream) ; → boolean
+```
+
+# Line Length Extensions
+
+## STREAM-LINE-LENGTH
+[Generic Function]
+
+Allows stream specific line length for Gray streams. Indicated by the
+presences of feature `:gray-streams-line-length`. Used primarily for the
+[CL:FORMAT ~<][] directive and the [pretty printer][].
+
+```common-lisp
+(stream-line-length stream) ; → (or real null)
 ```
 
 <!--
@@ -562,6 +575,7 @@ stream-filename-->
 [CL:FINISH-OUTPUT]: https://novaspec.org/cl/f_finish-output
 [CL:FORCE-OUTPUT]: https://novaspec.org/cl/f_finish-output
 [CL:FORMAT ~T]: https://novaspec.org/cl/22_3_Formatted_Output#sec_22_3_6_1
+[CL:FORMAT ~<]: https://novaspec.org/cl/22_3_Formatted_Output#sec_22_3_6_2
 [CL:FRESH-LINE]: https://novaspec.org/cl/f_terpri
 [CL:INTERACTIVE-STREAM-P]: https://novaspec.org/cl/f_interactive-stream-p
 [CL:LISTEN]: https://novaspec.org/cl/f_listen
@@ -588,6 +602,7 @@ stream-filename-->
 [INPUT-STREAM-P]: #INPUT-STREAM-P
 [OPEN-STREAM-P]: #OPEN-STREAM-P
 [OUTPUT-STREAM-P]: #OUTPUT-STREAM-P
+[pretty printer]: https://novaspec.org/cl/22_2_The_Lisp_Pretty_Printer#_j5
 [STREAM-ADVANCE-TO-COLUMN]: #STREAM-ADVANCE-TO-COLUMN
 [STREAM-CLEAR-INPUT]: #STREAM-CLEAR-INPUT
 [STREAM-CLEAR-OUTPUT]: #STREAM-CLEAR-OUTPUT
