@@ -240,172 +240,39 @@
       (false (interactive-stream-p stream))
       (true (invoked-p :interactive-stream-p stream)))))
 
-#+gray-streams-interactive
-(define-test character-input.interactive-stream-p.02
-  (with-invocations
-    (let ((stream (make-instance 'test-string-input-stream
-                                 :value "ab" :interactive t)))
-      (true (interactive-stream-p stream))
-      (true (invoked-p :interactive-stream-p stream)))))
+(defclass test-string-output-stream
+    (nt-gray:fundamental-character-output-stream)
+  ((value :accessor value
+          :initform (make-array 16 :element-type 'character
+                                   :adjustable t :fill-pointer 0))
+   (line-column :accessor line-column
+                :initform 0)
+   (line-length :reader line-length
+                :initform nil
+                :initarg :line-length)))
 
-  #|(defclass test-stream
-    (nt-gray:fundamental-binary-input-stream
-     nt-gray:fundamental-binary-output-stream
-     nt-gray:fundamental-character-input-stream
-     nt-gray:fundamental-character-output-stream)
-  ())
-
-(defmacro define-invoked-test (name form &rest calls)
-  `(define-test ,name
-     (let ((stream (make-instance 'test-stream))
-           *invocations*)
-       ,form
-       (is equal
-          (list ,@(mapcar (lambda (call)
-                            `(list ',(first call) ,@(rest call)))
-                          calls))
-          *invocations*))))
-
-(defmethod nt-gray:stream-read-char ((stream test-stream))
-  (record-invocation :stream-read-char stream)
-  #\a)
-
-(defmethod nt-gray:stream-unread-char ((stream test-stream) char)
-  (record-invocation :stream-unread-char stream char)
-  char)
-
-(defmethod nt-gray:stream-read-char-no-hang ((stream test-stream))
-  (record-invocation :stream-read-char-no-hang stream)
-  nil)
-
-(defmethod nt-gray:stream-peek-char ((stream test-stream))
-  (record-invocation :stream-peek-char stream)
-  #\b)
-
-(defmethod nt-gray:stream-listen ((stream test-stream))
-  (record-invocation :stream-listen stream)
-  t)
-
-(defmethod nt-gray:stream-read-line ((stream test-stream))
-  (record-invocation :stream-read-line stream)
-  "ab")
-
-(defmethod nt-gray:stream-clear-input ((stream test-stream))
-  (record-invocation :stream-clear-input stream)
-  nil)
-
-(defmethod nt-gray:stream-write-char ((stream test-stream) char)
-  (record-invocation :stream-write-char stream char)
-  char)
-
-(defmethod nt-gray:stream-line-column ((stream test-stream))
+(defmethod nt-gray:stream-line-column ((stream test-string-output-stream))
   (record-invocation :stream-line-column stream)
-  0)
+  (line-column stream))
 
-(defmethod nt-gray:stream-start-line-p ((stream test-stream))
-  (record-invocation :stream-start-line-p stream)
-  nil)
+(defmethod nt-gray:stream-write-char ((stream test-string-output-stream) char)
+  (record-invocation :stream-write-char stream char)
+  (vector-push-extend char (value stream))
+  (if (char= char #\Newline)
+      (setf (line-column stream) 0)
+      (incf (line-column stream)))
+  char)
 
-(defmethod nt-gray:stream-write-string ((stream test-stream) string &optional start end)
-  (record-invocation :stream-write-string stream string start end))
+#+gray-streams-line-length
+(defmethod nt-gray:stream-line-length ((stream test-string-output-stream))
+  (record-invocation :stream-line-length stream)
+  (line-length stream))
 
-(defmethod nt-gray:stream-terpri ((stream test-stream))
-  (record-invocation :stream-terpri stream))
-
-(defmethod nt-gray:stream-fresh-line ((stream test-stream))
-  (record-invocation :stream-fresh-line stream))
-
-(defmethod nt-gray:stream-finish-output ((stream test-stream))
-  (record-invocation :stream-finish-output stream))
-
-(defmethod nt-gray:stream-force-output ((stream test-stream))
-  (record-invocation :stream-force-output stream))
-
-(defmethod nt-gray:stream-clear-output ((stream test-stream))
-  (record-invocation :stream-clear-output stream))
-
-(defmethod nt-gray:stream-advance-to-column ((stream test-stream) column)
-  (record-invocation :stream-advance-to-column stream column))
-
-(defmethod nt-gray:stream-read-byte ((stream test-stream))
-  (record-invocation :stream-read-byte stream))
-
-(defmethod nt-gray:stream-write-byte ((stream test-stream) byte)
-  (record-invocation ':stream-write-byte stream byte))
-
-(define-invoked-test invoke.stream-read-char
-    (read-char stream)
-  (nt-gray:stream-read-char stream))
-
-(define-invoked-test invoke.stream-unread-char
-    (unread-char #\a stream)
-  (nt-gray:stream-unread-char stream #\a))
-
-(define-invoked-test invoke.stream-read-char-no-hang
-    (read-char-no-hang stream)
-  (nt-gray:stream-read-char-no-hang stream))
-
-(define-invoked-test invoke.stream-peek-char
-    (peek-char nil stream)
-  (nt-gray:stream-peek-char stream))
-
-(define-invoked-test invoke.stream-listen
-    (listen stream)
-  (nt-gray:stream-listen stream))
-
-(define-invoked-test invoke.stream-read-line
-    (read-line stream)
-  (nt-gray:stream-read-line stream))
-
-(define-invoked-test invoke.clear-input
-    (clear-input stream)
-  (nt-gray:stream-clear-input stream))
-
-(define-invoked-test invoke.write-char
-    (write-char #\a stream)
-  (nt-gray:stream-write-char stream #\a))
-
-(define-invoked-test invoke.stream-line-column
-    (format stream "~10,t")
-  (nt-gray:stream-line-column stream))
-
-(define-invoked-test invoke.stream-start-line-p
-    (fresh-line stream)
-  (nt-gray:stream-start-line-p stream))
-
-(define-invoked-test invoke.stream-write-string
-    (write-string "hello" stream :start 1 :end 4)
-  (nt-gray:stream-write-string stream "hello" 1 4))
-
-(define-invoked-test invoke.stream-terpri
-    (terpri stream)
-  (nt-gray:stream-terpri stream))
-
-(define-invoked-test invoke.stream-fresh-line
-    (fresh-line stream)
-  (nt-gray:stream-fresh-line stream))
-
-(define-invoked-test invoke.stream-finish-output
-    (finish-output stream)
-  (nt-gray:stream-finish-output stream))
-
-(define-invoked-test invoke.stream-force-output
-    (force-output stream)
-  (nt-gray:stream-force-output stream))
-
-(define-invoked-test invoke.stream-clear-output
-    (clear-output stream)
-  (nt-gray:stream-clear-output stream))
-
-(define-invoked-test invoke.stream-advance-to-column
-    (format stream "~10,t")
-  (nt-gray:stream-advance-to-column stream 10))
-
-(define-invoked-test invoke.stream-read-byte
-    (read-byte stream)
-  (nt-gray:stream-read-byte stream))
-
-(define-invoked-test invoke.stream-write-byte
-    (write-byte 1 stream)
-  (nt-gray:stream-write-byte stream 1))
-|#
+#+gray-streams-line-length
+(define-test character-input.line-length.01
+  (with-invocations
+    (let ((stream (make-instance 'test-string-output-stream))
+          (*print-right-margin* nil)
+          (*print-pretty* nil))
+      (format stream "~<aaaa~:;bbbb~>")
+      (true (invoked-p :stream-line-length stream)))))
