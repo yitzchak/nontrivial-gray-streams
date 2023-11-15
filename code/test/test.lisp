@@ -316,7 +316,8 @@
 (defmethod nt-gray:close ((stream test-string-output-stream) &key abort)
   (record-invocation :close stream)
   (cond ((openp stream)
-         (clear-output stream)
+         (when abort
+           (clear-output stream))
          (setf (openp stream) nil)
          t)
         (t
@@ -368,7 +369,9 @@
       (write-sequence "abcd" stream)
       (write-sequence "efgh" stream :start 1 :end 3)
       (is equal "abcdfg" (value stream))
-      (true (invoked-p :stream-write-sequence stream "abcd" 0 nil))
+      (true (or (invoked-p :stream-write-sequence stream "abcd" nil nil)
+                (invoked-p :stream-write-sequence stream "abcd" 0 nil)
+                (invoked-p :stream-write-sequence stream "abcd" 0 4)))
       (true (invoked-p :stream-write-sequence stream "efgh" 1 3)))))
 
 #+gray-streams-line-length
