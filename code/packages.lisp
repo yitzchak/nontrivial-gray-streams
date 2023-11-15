@@ -5,10 +5,19 @@
   (gray::redefine-cl-functions))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl mocl sicl sbcl)
+  #+(or abcl ccl clasp ecl lispworks mezzano mkcl sicl)
+  (pushnew :gray-streams-streamp *features*)
+
+  #+(or abcl acl ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
+  (pushnew :gray-streams-input-stream-p *features*)
+
+  #+(or abcl acl ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
+  (pushnew :gray-streams-output-stream-p *features*)
+
+  #+(or abcl acl ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-sequence *features*)
 
-  #+(or abcl allegro clasp cmucl ecl genera mezzano mkcl mocl sicl sbcl)
+  #+(or abcl acl clasp cmucl ecl genera mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-sequence/variant-1 *features*)
 
   #+(or ccl lispworks)
@@ -17,10 +26,10 @@
   #+clisp
   (pushnew :gray-streams-sequence/variant-3 *features*)
 
-  #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl mocl sicl sbcl)
+  #+(or abcl acl ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-file-position *features*)
 
-  #+(or abcl allegro ccl clasp ecl mezzano mkcl mocl sicl sbcl)
+  #+(or abcl acl ccl clasp ecl mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-file-position/variant-1 *features*)
 
   #+clisp
@@ -39,7 +48,7 @@
   #+(or ccl clasp ecl mezzano mkcl sbcl sicl)
   (pushnew :gray-streams-interactive *features*)
 
-  #+(or clasp cmucl mezzano sbcl sicl)
+  #+(or clasp cmucl mezzano lispworks sbcl sicl)
   (pushnew :gray-streams-line-length *features*))
 
 (defpackage #:nontrivial-gray-streams
@@ -48,7 +57,7 @@
   (:shadow #+(or clasp ecl mkcl)
            #:interactive-stream-p)
   (:import-from #+abcl #:gray-streams
-                #+allegro #:excl
+                #+acl #:excl
                 #+ccl #:ccl
                 #+clasp #:gray
                 #+clisp #:gray
@@ -58,7 +67,6 @@
                 #+lispworks #:stream
                 #+mezzano #:mezzano.gray
                 #+mkcl #:gray
-                #+mocl #:gray
                 #+sicl #:cyclosis
                 #+sbcl #:sb-gray
                 #:fundamental-binary-input-stream
@@ -87,6 +95,8 @@
                 #+gray-streams-line-length
                 #:stream-line-length
                 #:stream-listen
+                #+lispworks
+                #:stream-output-width
                 #:stream-peek-char
                 #+(or ccl clisp)
                 #:stream-position

@@ -19,7 +19,38 @@
           :initform 0)
    (interactive :reader interactive-p
                 :initform nil
-                :initarg :interactive)))
+                :initarg :interactive)
+   (openp :accessor openp
+          :initform t)))
+
+(defmethod nt-gray:close ((stream test-string-input-stream) &key abort)
+  (record-invocation :close stream)
+  (cond ((openp stream)
+         (when abort
+           (clear-input stream))
+         (setf (openp stream) nil)
+         t)
+        (t
+         nil)))
+
+#+gray-streams-streamp
+(defmethod nt-gray:streamp ((stream test-string-input-stream))
+  (record-invocation :streamp stream)
+  t)
+
+#+gray-streams-input-stream-p
+(defmethod nt-gray:input-stream-p ((stream test-string-input-stream))
+  (record-invocation :input-stream-p stream)
+  t)
+
+#+gray-streams-output-stream-p
+(defmethod nt-gray:output-stream-p ((stream test-string-input-stream))
+  (record-invocation :output-stream-p stream)
+  nil)
+
+(defmethod nt-gray:stream-element-type ((stream test-string-input-stream))
+  (record-invocation :stream-element-type stream)
+  'character)
 
 #+gray-streams-interactive
 (defmethod nt-gray:interactive-stream-p ((stream test-string-input-stream))
@@ -282,7 +313,7 @@
            (start1 (fill-pointer value))
            (end1 (+ start1 len)))
       (if (< (array-total-size value) end1)
-          (adjust-array value end1 :fill-pointer end1)
+          (setf value (adjust-array value end1 :fill-pointer end1))
           (setf (fill-pointer value) end1))
       (replace value sequence
                :start1 start1 :end1 end1
@@ -347,7 +378,7 @@
            (start1 (fill-pointer value))
            (end1 (+ start1 len)))
       (if (< (array-total-size value) end1)
-          (adjust-array value end1 :fill-pointer end1)
+          (setf value (adjust-array value end1 :fill-pointer end1))
           (setf (fill-pointer value) end1))
       (replace value sequence
                :start1 start1 :end1 end1

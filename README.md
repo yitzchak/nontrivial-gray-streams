@@ -324,36 +324,6 @@ This function [from proposal STREAM-ACCESS] is made generic.  A
 default method is provided by class [FUNDAMENTAL-STREAM][] which
 returns true if CLOSE has not been called on the stream.
 
-## STREAMP
-[Generic Function]
-
-```common-lisp
-(streamp stream) ; → boolean
-```
-
-## INPUT-STREAM-P
-[Generic Function]
-
-```common-lisp
-(input-stream-p stream) ; → boolean
-```
-
-## OUTPUT-STREAM-P
-[Generic Function]
-
-```common-lisp
-(output-stream-p stream) ; → boolean
-```
-These three existing predicates may optionally be implemented as
-generic functions for implementations that want to permit users to
-define streams that are not STANDARD-OBJECTs.  Normally, the default
-methods provided by classes [FUNDAMENTAL-INPUT-STREAM][] and
-[FUNDAMENTAL-OUTPUT-STREAM][] are sufficient.  Note that, for example,
-`(INPUT-STREAM-P x)` is not equivalent to 
-`(TYPEP x 'FUNDAMENTAL-INPUT-STREAM)` because implementations may have
-additional ways of defining their own streams even if they don't make
-that visible by making these predicates generic.
-
 ## STREAM-ELEMENT-TYPE
 [Generic Function]
 
@@ -372,6 +342,45 @@ all streams.
 > There do not appear to be any implementations that make PATHNAME or
 > TRUENAME generic functions. CCL does have a generic
 > CCL:STREAM-FILENAME.
+
+# Optional Predicates
+
+These three existing predicates may optionally be implemented as
+generic functions for implementations that want to permit users to
+define streams that are not STANDARD-OBJECTs.  Normally, the default
+methods provided by classes [FUNDAMENTAL-INPUT-STREAM][] and
+[FUNDAMENTAL-OUTPUT-STREAM][] are sufficient.  Note that, for example,
+`(INPUT-STREAM-P x)` is not equivalent to 
+`(TYPEP x 'FUNDAMENTAL-INPUT-STREAM)` because implementations may have
+additional ways of defining their own streams even if they don't make
+that visible by making these predicates generic.
+
+## STREAMP
+[Generic Function]
+
+```common-lisp
+(streamp stream) ; → boolean
+```
+
+Indicated by the presence of feature `:gray-streams-streamp`.
+
+## INPUT-STREAM-P
+[Generic Function]
+
+```common-lisp
+(input-stream-p stream) ; → boolean
+```
+
+Indicated by the presence of feature `:gray-streams-input-stream-p`.
+
+## OUTPUT-STREAM-P
+[Generic Function]
+
+```common-lisp
+(output-stream-p stream) ; → boolean
+```
+
+Indicated by the presence of feature `:gray-streams-output-stream-p`.
 
 # Binary Streams
 
@@ -606,6 +615,7 @@ stream-filename-->
 [STREAM-ADVANCE-TO-COLUMN]: #STREAM-ADVANCE-TO-COLUMN
 [STREAM-CLEAR-INPUT]: #STREAM-CLEAR-INPUT
 [STREAM-CLEAR-OUTPUT]: #STREAM-CLEAR-OUTPUT
+[STREAM-ELEMENT-TYPE]: #STREAM-ELEMENT-TYPE
 [STREAM-FILE-LENGTH]: #STREAM-FILE-LENGTH
 [STREAM-FILE-POSITION]: #STREAM-FILE-POSITION
 [STREAM-FINISH-OUTPUT]: #STREAM-FINISH-OUTPUT

@@ -10,3 +10,7 @@
 #+(or clasp ecl mkcl)
 (setf (fdefinition 'nontrivial-gray-streams:interactive-stream-p)
       #'stream-interactive-p)
+
+#+lispworks
+(setf (fdefinition 'nontrivial-gray-streams:stream-line-length)
+      #'stream-output-width)
