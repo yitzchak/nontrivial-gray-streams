@@ -8,16 +8,16 @@
   #+(or abcl ccl clasp ecl lispworks mezzano mkcl sicl)
   (pushnew :gray-streams-streamp *features*)
 
-  #+(or abcl acl ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
+  #+(or abcl allegro ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
   (pushnew :gray-streams-input-stream-p *features*)
 
-  #+(or abcl acl ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
+  #+(or abcl allegro ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
   (pushnew :gray-streams-output-stream-p *features*)
 
-  #+(or abcl acl ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
+  #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-sequence *features*)
 
-  #+(or abcl acl clasp cmucl ecl genera mezzano mkcl sicl sbcl)
+  #+(or abcl allegro clasp cmucl ecl genera mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-sequence/variant-1 *features*)
 
   #+(or ccl lispworks)
@@ -26,10 +26,10 @@
   #+clisp
   (pushnew :gray-streams-sequence/variant-3 *features*)
 
-  #+(or abcl acl ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
+  #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-file-position *features*)
 
-  #+(or abcl acl ccl clasp ecl mezzano mkcl sicl sbcl)
+  #+(or abcl allegro ccl clasp ecl mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-file-position/variant-1 *features*)
 
   #+clisp
@@ -53,11 +53,11 @@
 
 (defpackage #:nontrivial-gray-streams
   (:use #:common-lisp)
-  (:nicknames #:nt-gray)
-  (:shadow #+(or clasp ecl mkcl)
-           #:interactive-stream-p)
+  (:nicknames :nt-gray)
+  #+(or clasp ecl mkcl)
+  (:shadow #:interactive-stream-p)
   (:import-from #+abcl #:gray-streams
-                #+acl #:excl
+                #+allegro #:excl
                 #+ccl #:ccl
                 #+clasp #:gray
                 #+clisp #:gray
