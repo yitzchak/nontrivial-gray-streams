@@ -83,8 +83,8 @@
         (t
          nil)))
 
-(defmethod nt-gray:advance-to-column ((stream test-string-output-stream) column)
-  (record-invocation :advance-to-column stream column)
+(defmethod nt-gray:stream-advance-to-column ((stream test-string-output-stream) column)
+  (record-invocation :stream-advance-to-column stream column)
   (prog ((current (stream-line-column stream)))
    repeat
      (when (and current (< column current))
