@@ -514,7 +514,7 @@ Gray streams. Indicated by feature `:gray-streams-file-position`.
 [Generic Function]
 
 Allows implementing [CL:FILE-LENGTH][] for Gray streams.  Indicated by
-the presences of feature `:gray-streams-file-length`.
+the presence of feature `:gray-streams-file-length`.
 
 ```common-lisp
 (stream-file-length stream) ; → (or integer null)
@@ -526,7 +526,7 @@ the presences of feature `:gray-streams-file-length`.
 [Generic Function]
 
 Allows implementing [CL:INTERACTIVE-STREAM-P][] for Gray
-streams. Indicated by the presences of feature
+streams. Indicated by the presence of feature
 `:gray-streams-interactive`.
 
 ```common-lisp
@@ -539,8 +539,8 @@ streams. Indicated by the presences of feature
 [Generic Function]
 
 Allows stream specific line length for Gray streams. Indicated by the
-presences of feature `:gray-streams-line-length`. Used primarily for the
-[CL:FORMAT ~<][] directive and the [pretty printer][].
+presence of feature `:gray-streams-line-length`. Used primarily for
+the [CL:FORMAT ~<][] directive and the [pretty printer][].
 
 ```common-lisp
 (stream-line-length stream) ; → (or real null)

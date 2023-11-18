@@ -38,7 +38,7 @@
   #+(or cmucl genera lispworks)
   (pushnew :gray-streams-file-position/variant-3 *features*)
 
-  #+clasp
+  #+(or clasp ecl)
   (when (find-symbol (string '#:stream-file-length) '#:gray)
     (pushnew :gray-streams-file-length *features*))
 

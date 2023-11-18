@@ -83,6 +83,15 @@
         (t
          nil)))
 
+(defmethod nt-gray:advance-to-column ((stream test-string-output-stream) column)
+  (record-invocation :advance-to-column stream column)
+  (prog ((current (stream-line-column stream)))
+   repeat
+     (when (and current (< column current))
+       (stream-write-char stream #\Space)
+       (setf current (stream-line-column stream))
+       (go repeat))))
+
 #+gray-streams-line-length
 (defmethod nt-gray:stream-line-length ((stream test-string-output-stream))
   (record-invocation :stream-line-length stream)

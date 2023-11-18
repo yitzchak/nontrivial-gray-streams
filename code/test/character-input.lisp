@@ -56,6 +56,16 @@
           (incf index))
         :eof)))
 
+(defmethod nt-gray:stream-read-char-no-hang ((stream test-string-input-stream))
+  (record-invocation :stream-read-char-no-hang stream)
+  (with-accessors ((value value)
+                   (index index))
+      stream
+    (if (< index (length value))
+        (prog1 (char value index)
+          (incf index))
+        (if (interactive-p stream) nil :eof))))
+
 (defmethod nt-gray:stream-unread-char ((stream test-string-input-stream) character)
   (record-invocation :stream-unread-char stream character)
   (with-accessors ((value value)
