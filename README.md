@@ -144,9 +144,10 @@ trivial and will always be more efficient than the default method.
 > stream protocol would require the addition of
 > STREAM-READ-BYTE-NO-HANG and STREAM-UNREAD-BYTE generic
 > functions. These functions do not have a parallel in the ANSI
-> specification as [CL:LISTEN][] seems to assume that the stream is an
-> interactive character input stream versus other types of streams
-> that listening would be used on, i.e. networked binary streams.
+> specification. Also, the description of [CL:LISTEN][] seems to
+> assume that the stream is an interactive character input stream
+> versus other types of streams that listening would be used on,
+> i.e. networked binary streams.
 
 ## STREAM-READ-LINE
 [Generic Function]

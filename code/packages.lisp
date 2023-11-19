@@ -38,8 +38,10 @@
   #+(or cmucl genera lispworks)
   (pushnew :gray-streams-file-position/variant-3 *features*)
 
-  #+(or clasp ecl)
-  (when (find-symbol (string '#:stream-file-length) '#:gray)
+  #+(or abcl clasp ecl)
+  (when (find-symbol (string '#:stream-file-length)
+                     #+abcl '#:gray-streams
+                     #+(or clasp ecl) '#:gray)
     (pushnew :gray-streams-file-length *features*))
 
   #+(or mezzano sicl)

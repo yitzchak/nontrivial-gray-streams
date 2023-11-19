@@ -1,5 +1,73 @@
 (in-package #:nontrivial-gray-streams/test)
 
+(defclass character-output-stream
+    (nt-gray:fundamental-character-output-stream)
+  ((value :accessor value
+          :initform (make-array 16 :element-type 'character
+                                   :adjustable t :fill-pointer 0))))
+
+(defmethod nt-gray:stream-write-char ((stream character-output-stream) char)
+  (record-invocation :stream-write-char stream char)
+  (vector-push-extend char (value stream))
+  char)
+
+(defmethod nt-gray:stream-line-column ((stream character-output-stream))
+  (record-invocation :stream-line-column stream)
+  nil)
+
+(define-test character-input.write-char.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (is equal #\a (write-char #\a stream))
+      (is equal "a" (value stream))
+      (true (invoked-p :stream-write-char stream #\a)))))
+
+(define-test character-input.stream-start-line-p.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (false (nt-gray:stream-start-line-p stream))
+      (true (invoked-p :stream-line-column stream)))))
+
+(define-test character-input.write-string.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (is equal "ab" (write-string "ab" stream))
+      (is equal "ab" (value stream))
+      (true (invoked-p :stream-write-char stream #\a))
+      (true (invoked-p :stream-write-char stream #\b)))))
+
+(define-test character-input.terpri.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (false (terpri stream))
+      (true (invoked-p :stream-write-char stream #\Newline)))))
+
+(define-test character-input.fresh-line.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (true (fresh-line stream))
+      (true (invoked-p :stream-write-char stream #\Newline)))))
+
+(define-test character-input.finish-output.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (false (finish-output stream)))))
+
+(define-test character-input.force-output.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (false (force-output stream)))))
+
+(define-test character-input.clear-output.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (false (clear-output stream)))))
+
+(define-test character-input.advance-to-column.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (false (nt-gray:stream-advance-to-column stream 10)))))
+
 (defclass test-string-output-stream
     (nt-gray:fundamental-character-output-stream)
   ((value :accessor value
@@ -85,11 +153,11 @@
 
 (defmethod nt-gray:stream-advance-to-column ((stream test-string-output-stream) column)
   (record-invocation :stream-advance-to-column stream column)
-  (prog ((current (stream-line-column stream)))
+  (prog ((current (nt-gray:stream-line-column stream)))
    repeat
      (when (and current (< column current))
-       (stream-write-char stream #\Space)
-       (setf current (stream-line-column stream))
+       (nt-gray:stream-write-char stream #\Space)
+       (setf current (nt-gray:stream-line-column stream))
        (go repeat))))
 
 #+gray-streams-line-length

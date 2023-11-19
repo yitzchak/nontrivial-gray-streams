@@ -1,5 +1,72 @@
 (in-package #:nontrivial-gray-streams/test)
 
+(defclass character-input-stream
+    (nt-gray:fundamental-character-input-stream)
+  ((value :reader value
+          :initarg :value)
+   (index :accessor index
+          :initform 0)))
+
+(defmethod nt-gray:stream-read-char ((stream character-input-stream))
+  (record-invocation :stream-read-char stream)
+  (with-accessors ((value value)
+                   (index index))
+      stream
+    (if (< index (length value))
+        (prog1 (char value index)
+          (incf index))
+        :eof)))
+
+(defmethod nt-gray:stream-unread-char ((stream character-input-stream) character)
+  (record-invocation :stream-unread-char stream character)
+  (with-accessors ((value value)
+                   (index index))
+      stream
+    (when (zerop index)
+      (error "Stream is at beginning, cannot unread character"))
+    (when (char/= character (char value (decf index)))
+      (error "Cannot unread a character that does not match."))
+    nil))
+
+(define-test character-input.read-char.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream :value "a")))
+      (is equal #\a (read-char stream))
+      (true (invoked-p :stream-read-char stream)))))
+
+(define-test character-input.read-char-no-hang.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream :value "a")))
+      (is equal #\a (read-char-no-hang stream))
+      (true (invoked-p :stream-read-char stream)))))
+
+(define-test character-input.peek-char.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream :value "a")))
+      (is equal #\a (peek-char nil stream))
+      (true (invoked-p :stream-read-char stream))
+      (true (invoked-p :stream-unread-char stream #\a)))))
+
+(define-test character-input.listen.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream :value "a")))
+      (true (listen stream))
+      (true (invoked-p :stream-read-char stream))
+      (true (invoked-p :stream-unread-char stream #\a)))))
+
+(define-test character-input.read-line.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream :value "a")))
+      (is-values (read-line stream nil)
+                 (equal "a")
+                 (eql t))
+      (true (invoked-p :stream-read-char stream)))))
+
+(define-test character-input.clear-input.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream :value "a")))
+      (false (clear-input stream)))))
+
 (defclass test-string-input-stream
     (nt-gray:fundamental-character-input-stream)
   ((value :reader value
@@ -71,7 +138,7 @@
   (with-accessors ((value value)
                    (index index))
       stream
-    (when (zerop value)
+    (when (zerop index)
       (error "Stream is at beginning, cannot unread character"))
     (when (char/= character (char value (decf index)))
       (error "Cannot unread a character that does not match."))
