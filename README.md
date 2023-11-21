@@ -515,7 +515,9 @@ Gray streams. Indicated by feature `:gray-streams-file-position`.
 [Generic Function]
 
 Allows implementing [CL:FILE-LENGTH][] for Gray streams.  Indicated by
-the presence of feature `:gray-streams-file-length`.
+the presence of feature `:gray-streams-file-length`. The default
+method signals a `type-error` with an expected type of `file-stream`
+as required by the ANSI specification.
 
 ```common-lisp
 (stream-file-length stream) ; → (or integer null)

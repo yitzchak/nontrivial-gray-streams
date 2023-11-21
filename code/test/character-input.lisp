@@ -28,6 +28,12 @@
       (error "Cannot unread a character that does not match."))
     nil))
 
+#+gray-streams-file-length
+(define-test character-input.file-length.default-method.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream :value "a")))
+      (fail (file-length stream) 'type-error))))
+
 (define-test character-input.read-char.default-method.01
   (with-invocations
     (let ((stream (make-instance 'character-input-stream :value "a")))
