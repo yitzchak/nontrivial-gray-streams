@@ -47,8 +47,19 @@
   #+(or mezzano sicl)
   (pushnew :gray-streams-file-length *features*)
 
+  #+abcl
+  (when (find-symbol (string '#:gray-interactive-stream-p)
+                     '#:gray-streams)
+    (pushnew :gray-streams-interactive *features*))
+
   #+(or ccl clasp ecl mezzano mkcl sbcl sicl)
   (pushnew :gray-streams-interactive *features*)
+
+  #+(or abcl ecl)
+  (when (find-symbol (string '#:stream-line-length)
+                     #+abcl '#:gray-streams
+                     #+ecl '#:gray)
+    (pushnew :gray-streams-line-length *features*))
 
   #+(or clasp cmucl mezzano lispworks sbcl sicl)
   (pushnew :gray-streams-line-length *features*))
