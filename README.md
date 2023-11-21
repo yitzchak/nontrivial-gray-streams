@@ -514,40 +514,45 @@ Gray streams. Indicated by feature `:gray-streams-file-position`.
 ## STREAM-FILE-LENGTH
 [Generic Function]
 
+```common-lisp
+(stream-file-length stream) ; → (or integer null)
+```
+
 Allows implementing [CL:FILE-LENGTH][] for Gray streams.  Indicated by
 the presence of feature `:gray-streams-file-length`. The default
 method signals a `type-error` with an expected type of `file-stream`
 as required by the ANSI specification.
-
-```common-lisp
-(stream-file-length stream) ; → (or integer null)
-```
 
 # Interactive Stream Extensions
 
 ## INTERACTIVE-STREAM-P
 [Generic Function]
 
-Allows implementing [CL:INTERACTIVE-STREAM-P][] for Gray
-streams. Indicated by the presence of feature
-`:gray-streams-interactive`.
-
 ```common-lisp
 (interactive-stream-p stream) ; → boolean
 ```
+
+Allows implementing [CL:INTERACTIVE-STREAM-P][] for Gray
+streams. Indicated by the presence of feature
+`:gray-streams-interactive`.
 
 # Line Length Extensions
 
 ## STREAM-LINE-LENGTH
 [Generic Function]
 
+```common-lisp
+(stream-line-length stream) ; → (or real null)
+```
+
 Allows stream specific line length for Gray streams. Indicated by the
 presence of feature `:gray-streams-line-length`. Used primarily for
 the [CL:FORMAT ~<][] directive and the [pretty printer][].
 
-```common-lisp
-(stream-line-length stream) ; → (or real null)
-```
+> Some implementations do not permit returning `nil`. These
+> implementations tend to assume that the return is the default line
+> length which itself is implementation specific. One solution to this
+> is to `(call-next-method)` when a `nil` return is desired.
 
 <!--
 ; clasp

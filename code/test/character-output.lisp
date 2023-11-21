@@ -163,7 +163,8 @@
 #+gray-streams-line-length
 (defmethod nt-gray:stream-line-length ((stream test-string-output-stream))
   (record-invocation :stream-line-length stream)
-  (line-length stream))
+  (or (line-length stream)
+      (call-next-method)))
 
 #+gray-streams-sequence
 (defmethod nt-gray:stream-write-sequence

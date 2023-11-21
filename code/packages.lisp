@@ -62,7 +62,7 @@
                      #+ecl '#:gray)
     (pushnew :gray-streams-line-length *features*))
 
-  #+(or clasp cmucl mezzano lispworks sbcl sicl)
+  #+(or ccl clasp cmucl mezzano lispworks sbcl sicl)
   (pushnew :gray-streams-line-length *features*))
 
 (defpackage #:nontrivial-gray-streams
