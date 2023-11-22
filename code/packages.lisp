@@ -38,15 +38,25 @@
   #+(or cmucl genera lispworks)
   (pushnew :gray-streams-file-position/variant-3 *features*)
 
+  #+(or cmucl genera lispworks)
+  (pushnew :gray-streams-file-position/variant-4 *features*)
+
   #+(or abcl clasp cmucl ecl)
   (when (find-symbol (string '#:stream-file-length)
                      #+abcl '#:gray-streams
                      #+cmucl '#:ext
                      #+(or clasp ecl) '#:gray)
-    (pushnew :gray-streams-file-length *features*))
+    (pushnew :gray-streams-file-length *features*)
+    (pushnew :gray-streams-file-length/variant-3 *features*))
+
+  #+(or ccl mezzano sicl)
+  (pushnew :gray-streams-file-length *features*)
+
+  #+ccl
+  (pushnew :gray-streams-file-length/variant-1 *features*)
 
   #+(or mezzano sicl)
-  (pushnew :gray-streams-file-length *features*)
+  (pushnew :gray-streams-file-length/variant-3 *features*)
 
   #+abcl
   (when (find-symbol (string '#:gray-interactive-stream-p)
@@ -95,7 +105,8 @@
                 #:stream-advance-to-column
                 #:stream-clear-input
                 #:stream-clear-output
-                #+gray-streams-file-length
+                #+(and gray-streams-file-length
+                       (not ccl))
                 #:stream-file-length
                 #+(and gray-streams-file-position
                        (not (or ccl clisp)))
@@ -105,6 +116,8 @@
                 #:stream-fresh-line
                 #+(or clasp ecl mkcl)
                 #:stream-interactive-p
+                #+ccl
+                #:stream-length
                 #:stream-line-column
                 #+gray-streams-line-length
                 #:stream-line-length

@@ -74,7 +74,7 @@
       (false (clear-input stream)))))
 
 (defclass test-string-input-stream
-    (nt-gray:fundamental-character-input-stream)
+    (nt-gray:fundamental-character-input-stream #+ccl file-stream)
   ((value :reader value
           :initarg :value)
    (index :accessor index
@@ -206,9 +206,14 @@
          (go next)))
      (return index)))
 
-#+gray-streams-file-length
+#+gray-streams-file-length/variant-3
 (defmethod nt-gray:stream-file-length ((stream test-string-input-stream))
-  (record-invocation :stream-file-length stream)
+  (record-invocation :stream-file-length stream nil)
+  (length (value stream)))
+
+#+gray-streams-file-length/variant-1
+(defmethod nt-gray:stream-file-length ((stream test-string-input-stream) &optional length)
+  (record-invocation :stream-file-length stream length)
   (length (value stream)))
 
 #+(or gray-streams-file-position/variant-1
@@ -230,7 +235,7 @@
   (record-invocation :stream-file-position stream nil)
   (index stream))
 
-#+gray-streams-file-position/variant-3
+#+gray-streams-file-position/variant-4
 (defmethod (setf nt-gray:stream-file-position) (position (stream test-string-input-stream))
   (record-invocation :stream-file-position stream position)
   (let ((typespec `(integer 0 ,(1- (length (value stream))))))
@@ -314,7 +319,7 @@
   (with-invocations
     (let ((stream (make-instance 'test-string-input-stream :value "ab")))
       (is eql (file-length stream) 2)
-      (true (invoked-p :stream-file-length stream)))))
+      (true (invoked-p :stream-file-length stream nil)))))
 
 #+gray-streams-file-position
 (define-test character-input.file-position.01

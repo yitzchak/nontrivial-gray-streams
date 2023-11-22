@@ -482,9 +482,6 @@ Gray stream protocol.
 ## STREAM-FILE-POSITION
 [Generic Function]
 
-Generic functions that allow implementing [CL:FILE-POSITION][] for
-Gray streams. Indicated by feature `:gray-streams-file-position`.
-
 ### Variants
 
 1. Variant with optional position argument. Indicated by presence of
@@ -501,22 +498,57 @@ Gray streams. Indicated by feature `:gray-streams-file-position`.
    (stream-file-position stream position) ; → (or integer boolean)
    ```
 
-3. Variant with separate SETF function. Indicated by presence of
-   feature `:gray-streams-file-position/variant-3`.
+3. Variant without position argument. Indicated by presence of feature
+   `:gray-streams-file-position/variant-3`.
 
    ```common-lisp
    (stream-file-position stream) ; → (or integer null)
+   ```
+
+3. Variant with SETF function. Indicated by presence of feature
+   `:gray-streams-file-position/variant-4`.
+
+   ```common-lisp
    ((setf stream-file-position) position stream) ; → boolean
    ```
+
+Generic functions that allow implementing [CL:FILE-POSITION][] for
+Gray streams. Indicated by feature `:gray-streams-file-position`.
 
 # File Length Extensions
 
 ## STREAM-FILE-LENGTH
 [Generic Function]
 
-```common-lisp
-(stream-file-length stream) ; → (or integer null)
-```
+### Variants
+
+1. Variant with optional length argument. Indicated by presence of
+   feature `:gray-streams-file-length/variant-1`.
+
+   ```common-lisp
+   (stream-file-length stream &optional length) ; → (or integer boolean)
+   ```
+
+2. Variant with required length argument. Indicated by presence of
+   feature `:gray-streams-file-length/variant-2`.
+
+   ```common-lisp
+   (stream-file-length stream length) ; → (or integer boolean)
+   ```
+
+3. Variant without length argument. Indicated by presence of feature
+   `:gray-streams-file-length/variant-3`.
+
+   ```common-lisp
+   (stream-file-length stream) ; → (or integer null)
+   ```
+
+3. Variant with SETF function. Indicated by presence of feature
+   `:gray-streams-file-length/variant-4`.
+
+   ```common-lisp
+   ((setf stream-file-length) length stream) ; → boolean
+   ```
 
 Allows implementing [CL:FILE-LENGTH][] for Gray streams.  Indicated by
 the presence of feature `:gray-streams-file-length`. The default
