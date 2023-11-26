@@ -58,6 +58,15 @@
   #+(or mezzano sicl)
   (pushnew :gray-streams-file-length/variant-3 *features*)
 
+  #+ccl
+  (pushnew :gray-streams-external-format *features*)
+
+  #+ccl
+  (pushnew :gray-streams-external-format/variant-3 *features*)
+
+  #+ccl
+  (pushnew :gray-streams-external-format/variant-4 *features*)
+
   #+abcl
   (when (find-symbol (string '#:gray-interactive-stream-p)
                      '#:gray-streams)
@@ -105,6 +114,8 @@
                 #:stream-advance-to-column
                 #:stream-clear-input
                 #:stream-clear-output
+                #+gray-streams-external-format
+                #:stream-external-format
                 #+(and gray-streams-file-length
                        (not ccl))
                 #:stream-file-length
@@ -162,6 +173,8 @@
            #:stream-clear-input
            #:stream-clear-output
            #:stream-element-type
+           #+gray-streams-external-format
+           #:stream-external-format
            #+gray-streams-file-length
            #:stream-file-length
            #+gray-streams-file-position

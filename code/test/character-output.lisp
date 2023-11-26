@@ -15,20 +15,40 @@
   (record-invocation :stream-line-column stream)
   nil)
 
-(define-test character-input.write-char.default-method.01
+#+gray-streams-streamp
+(defmethod nt-gray:streamp ((stream character-output-stream))
+  (record-invocation :streamp stream)
+  (call-next-method))
+
+#+gray-streams-input-stream-p
+(defmethod nt-gray:input-stream-p ((stream character-output-stream))
+  (record-invocation :input-stream-p stream)
+  (call-next-method))
+
+#+gray-streams-output-stream-p
+(defmethod nt-gray:output-stream-p ((stream character-output-stream))
+  (record-invocation :output-stream-p stream)
+  (call-next-method))
+
+#+gray-streams-interactive-stream-p
+(defmethod nt-gray:interactive-stream-p ((stream character-output-stream))
+  (record-invocation :interactive-stream-p stream)
+  (call-next-method))
+
+(define-test character-output.write-char.default-method.01
   (with-invocations
     (let ((stream (make-instance 'character-output-stream)))
       (is equal #\a (write-char #\a stream))
       (is equal "a" (value stream))
       (true (invoked-p :stream-write-char stream #\a)))))
 
-(define-test character-input.stream-start-line-p.default-method.01
+(define-test character-output.stream-start-line-p.default-method.01
   (with-invocations
     (let ((stream (make-instance 'character-output-stream)))
       (false (nt-gray:stream-start-line-p stream))
       (true (invoked-p :stream-line-column stream)))))
 
-(define-test character-input.write-string.default-method.01
+(define-test character-output.write-string.default-method.01
   (with-invocations
     (let ((stream (make-instance 'character-output-stream)))
       (is equal "ab" (write-string "ab" stream))
@@ -36,37 +56,65 @@
       (true (invoked-p :stream-write-char stream #\a))
       (true (invoked-p :stream-write-char stream #\b)))))
 
-(define-test character-input.terpri.default-method.01
+(define-test character-output.terpri.default-method.01
   (with-invocations
     (let ((stream (make-instance 'character-output-stream)))
       (false (terpri stream))
       (true (invoked-p :stream-write-char stream #\Newline)))))
 
-(define-test character-input.fresh-line.default-method.01
+(define-test character-output.fresh-line.default-method.01
   (with-invocations
     (let ((stream (make-instance 'character-output-stream)))
       (true (fresh-line stream))
       (true (invoked-p :stream-write-char stream #\Newline)))))
 
-(define-test character-input.finish-output.default-method.01
+(define-test character-output.finish-output.default-method.01
   (with-invocations
     (let ((stream (make-instance 'character-output-stream)))
       (false (finish-output stream)))))
 
-(define-test character-input.force-output.default-method.01
+(define-test character-output.force-output.default-method.01
   (with-invocations
     (let ((stream (make-instance 'character-output-stream)))
       (false (force-output stream)))))
 
-(define-test character-input.clear-output.default-method.01
+(define-test character-output.clear-output.default-method.01
   (with-invocations
     (let ((stream (make-instance 'character-output-stream)))
       (false (clear-output stream)))))
 
-(define-test character-input.advance-to-column.default-method.01
+(define-test character-output.advance-to-column.default-method.01
   (with-invocations
     (let ((stream (make-instance 'character-output-stream)))
       (false (nt-gray:stream-advance-to-column stream 10)))))
+
+(define-test character-output.streamp.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (true (streamp stream))
+      #+gray-streams-streamp
+      (true (invoked-p :streamp stream)))))
+
+(define-test character-output.input-stream-p.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (false (input-stream-p stream))
+      #+gray-streams-input-stream-p
+      (true (invoked-p :input-stream-p stream)))))
+
+(define-test character-output.output-stream-p.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (true (output-stream-p stream))
+      #+gray-streams-output-stream-p
+      (true (invoked-p :output-stream-p stream)))))
+
+#+gray-streams-interactive-stream-p
+(define-test character-output.interactive-stream-p.01
+  (with-invocations
+    (let ((stream (make-instance 'character-output-stream)))
+      (false (interactive-stream-p stream))
+      (true (invoked-p :interactive-stream-p stream)))))
 
 (defclass test-string-output-stream
     (nt-gray:fundamental-character-output-stream)

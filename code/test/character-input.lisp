@@ -28,6 +28,26 @@
       (error "Cannot unread a character that does not match."))
     nil))
 
+#+gray-streams-streamp
+(defmethod nt-gray:streamp ((stream character-input-stream))
+  (record-invocation :streamp stream)
+  (call-next-method))
+
+#+gray-streams-input-stream-p
+(defmethod nt-gray:input-stream-p ((stream character-input-stream))
+  (record-invocation :input-stream-p stream)
+  (call-next-method))
+
+#+gray-streams-output-stream-p
+(defmethod nt-gray:output-stream-p ((stream character-input-stream))
+  (record-invocation :output-stream-p stream)
+  (call-next-method))
+
+#+gray-streams-interactive-stream-p
+(defmethod nt-gray:interactive-stream-p ((stream character-input-stream))
+  (record-invocation :interactive-stream-p stream)
+  (call-next-method))
+
 #+gray-streams-file-length
 (define-test character-input.file-length.default-method.01
   (with-invocations
@@ -72,6 +92,34 @@
   (with-invocations
     (let ((stream (make-instance 'character-input-stream :value "a")))
       (false (clear-input stream)))))
+
+(define-test character-input.streamp.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream)))
+      (true (streamp stream))
+      #+gray-streams-streamp
+      (true (invoked-p :streamp stream)))))
+
+(define-test character-input.input-stream-p.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream)))
+      (true (input-stream-p stream))
+      #+gray-streams-input-stream-p
+      (true (invoked-p :input-stream-p stream)))))
+
+(define-test character-input.output-stream-p.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream)))
+      (false (output-stream-p stream))
+      #+gray-streams-output-stream-p
+      (true (invoked-p :output-stream-p stream)))))
+
+#+gray-streams-interactive-stream-p
+(define-test character-input.interactive-stream-p.01
+  (with-invocations
+    (let ((stream (make-instance 'character-input-stream)))
+      (false (interactive-stream-p stream))
+      (true (invoked-p :interactive-stream-p stream)))))
 
 (defclass test-string-input-stream
     (nt-gray:fundamental-character-input-stream #+ccl file-stream)

@@ -27,3 +27,13 @@
   (defmethod stream-start-line-p
       ((stream fundamental-character-output-stream))
     (equal (stream-line-column stream) 0)))
+
+#+cmucl
+(defmethod input-stream-p (stream)
+  (declare (ignore stream))
+  nil)
+
+#+cmucl
+(defmethod output-stream-p (stream)
+  (declare (ignore stream))
+  nil)
