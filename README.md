@@ -411,6 +411,20 @@ Used by [CL:READ-BYTE][]; returns either an integer, or the symbol
 Implements [CL:WRITE-BYTE][]; writes the integer to the stream and
 returns the integer as the result.
 
+# Implementation Support of Extensions and Optional Interfaces
+
+| Interface/Extension      | [ABCL][] | [Allegro][] | [CCL][] | [Clasp][] | [CLISP][] | [CMUCL][] | [ECL][] | [LispWorks][] | [Mezzano][] | [MKCL][] | [SBCL][] |
+|--------------------------|:--------:|:-----------:|:-------:|:---------:|:---------:|:---------:|:-------:|:-------------:|:-----------:|:--------:|:--------:|
+| [STREAMP][]              | ✓        |             | ✓       | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
+| [INPUT-STREAM-P][]       | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
+| [OUTPUT-STREAM-P][]      | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
+| [Sequence][]             | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
+| [File Position][]        | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
+| [File Length][]          | ✓        |             | ✓       | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
+| [External Format][]      |          |             | ✓       |           |           |           |         |               |             |          |          |
+| [INTERACTIVE-STREAM-P][] | ✓        |             | ✓       | ✓         |           |           | ✓       |               | ✓           | ✓        | ✓        |
+| [Line Length][]          | ✓        |             | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
+
 # Sequence Extensions
 
 Generic functions that provide the implementation for
@@ -615,7 +629,9 @@ stream-external-format
 ; ccl
 stream-filename-->
 
-
+[ABCL]: https://armedbear.common-lisp.dev/
+[Allegro]: https://franz.com/products/allegro-common-lisp/
+[CCL]: https://github.com/Clozure/ccl
 [CL:CLEAR-INPUT]: https://novaspec.org/cl/f_clear-input
 [CL:CLEAR-OUTPUT]: https://novaspec.org/cl/f_finish-ouput
 [CL:CLOSE]: #CLOSE
@@ -623,8 +639,8 @@ stream-filename-->
 [CL:FILE-POSITION]: https://novaspec.org/cl/f_file-position
 [CL:FINISH-OUTPUT]: https://novaspec.org/cl/f_finish-output
 [CL:FORCE-OUTPUT]: https://novaspec.org/cl/f_finish-output
-[CL:FORMAT ~T]: https://novaspec.org/cl/22_3_Formatted_Output#sec_22_3_6_1
 [CL:FORMAT ~<]: https://novaspec.org/cl/22_3_Formatted_Output#sec_22_3_6_2
+[CL:FORMAT ~T]: https://novaspec.org/cl/22_3_Formatted_Output#sec_22_3_6_1
 [CL:FRESH-LINE]: https://novaspec.org/cl/f_terpri
 [CL:INTERACTIVE-STREAM-P]: https://novaspec.org/cl/f_interactive-stream-p
 [CL:LISTEN]: https://novaspec.org/cl/f_listen
@@ -639,6 +655,11 @@ stream-filename-->
 [CL:WRITE-BYTE]: https://novaspec.org/cl/f_write-byte
 [CL:WRITE-SEQUENCE]: https://novaspec.org/cl/f_write-sequence
 [CL:WRITE-STRING]: https://novaspec.org/cl/f_write-string
+[CLISP]: https://gitlab.com/gnu-clisp/clisp
+[CMUCL]: https://gitlab.common-lisp.net/cmucl/cmucl
+[Clasp]: https://clasp-developers.github.io/
+[ECL]: https://ecl.common-lisp.dev/
+[External Format]: #EXTERNAL-FORMAT-EXTENSIONS
 [FUNDAMENTAL-BINARY-INPUT-STREAM]: #FUNDAMENTAL-BINARY-INPUT-STREAM
 [FUNDAMENTAL-BINARY-OUTPUT-STREAM]: #FUNDAMENTAL-BINARY-OUTPUT-STREAM
 [FUNDAMENTAL-BINARY-STREAM]: #FUNDAMENTAL-BINARY-STREAM
@@ -648,10 +669,17 @@ stream-filename-->
 [FUNDAMENTAL-INPUT-STREAM]: #FUNDAMENTAL-INPUT-STREAM
 [FUNDAMENTAL-OUTPUT-STREAM]: #FUNDAMENTAL-OUTPUT-STREAM
 [FUNDAMENTAL-STREAM]: #FUNDAMENTAL-STREAM
+[File Length]: #FILE-LENGTH-EXTENSIONS
+[File Position]: #FILE-POSITION-EXTENSIONS
 [INPUT-STREAM-P]: #INPUT-STREAM-P
+[INTERACTIVE-STREAM-P]: #INTERACTIVE-STREAM-P
+[Line Length]: #LINE-LENGTH-EXTENSIONS
+[LispWorks]: https://www.lispworks.com/products/lispworks.html
+[MKCL]: https://mkcl.common-lisp.dev/
+[Mezzano]: https://github.com/froggey/Mezzano
 [OPEN-STREAM-P]: #OPEN-STREAM-P
 [OUTPUT-STREAM-P]: #OUTPUT-STREAM-P
-[pretty printer]: https://novaspec.org/cl/22_2_The_Lisp_Pretty_Printer#_j5
+[SBCL]: http://sbcl.org/
 [STREAM-ADVANCE-TO-COLUMN]: #STREAM-ADVANCE-TO-COLUMN
 [STREAM-CLEAR-INPUT]: #STREAM-CLEAR-INPUT
 [STREAM-CLEAR-OUTPUT]: #STREAM-CLEAR-OUTPUT
@@ -677,3 +705,5 @@ stream-filename-->
 [STREAM-WRITE-SEQUENCE]: #STREAM-WRITE-SEQUENCE
 [STREAM-WRITE-STRING]: #STREAM-WRITE-STRING
 [STREAMP]: #STREAMP
+[Sequence]: #SEQUENCE-EXTENSIONS
+[pretty printer]: https://novaspec.org/cl/22_2_The_Lisp_Pretty_Printer#_j5
