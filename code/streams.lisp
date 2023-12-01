@@ -38,6 +38,6 @@
   (declare (ignore stream))
   nil)
 
-#+(or clasp ecl mkcl sbcl)
+#+(or allegro clasp cmucl ecl mkcl sbcl)
 (defmethod stream-clear-input (stream)
   nil)
