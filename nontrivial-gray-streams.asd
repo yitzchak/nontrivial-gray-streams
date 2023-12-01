@@ -24,5 +24,6 @@
                 :pathname "code/test/"
                 :components ((:file "packages")
                              (:file "utility")
+                             (:file "binary-input")
                              (:file "character-input")
                              (:file "character-output")))))
