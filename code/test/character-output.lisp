@@ -92,7 +92,7 @@
   (with-invocations
     (let ((stream (make-instance 'character-output-stream)))
       (true (streamp stream))
-      #+gray-streams-streamp
+      #+(and gray-streams-streamp (not ccl))
       (true (invoked-p :streamp stream)))))
 
 (define-test character-output.input-stream-p.01

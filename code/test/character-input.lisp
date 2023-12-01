@@ -97,7 +97,7 @@
   (with-invocations
     (let ((stream (make-instance 'character-input-stream)))
       (true (streamp stream))
-      #+gray-streams-streamp
+      #+(and gray-streams-streamp (not ccl))
       (true (invoked-p :streamp stream)))))
 
 (define-test character-input.input-stream-p.01
@@ -303,6 +303,18 @@
   (with-invocations
     (let ((stream (make-instance 'test-string-input-stream :value "")))
       (false (read-char stream nil))
+      (true (invoked-p :stream-read-char stream)))))
+
+(define-test character-input.read-char.03
+  (with-invocations
+    (let ((stream (make-instance 'test-string-input-stream :value "")))
+      (eql :wibble (read-char stream nil :wibble))
+      (true (invoked-p :stream-read-char stream)))))
+
+(define-test character-input.read-char.04
+  (with-invocations
+    (let ((stream (make-instance 'test-string-input-stream :value "")))
+      (fail (read-char stream))
       (true (invoked-p :stream-read-char stream)))))
 
 (define-test character-input.peek-char.01

@@ -19,7 +19,6 @@
   :depends-on ("nontrivial-gray-streams"
                "parachute")
   :perform (asdf:test-op (op c)
-             (defparameter cl-user::*exit-on-test-failures* t)
              (uiop:symbol-call :parachute :test :nontrivial-gray-streams/test))
   :components ((:module "code"
                 :pathname "code/test/"
