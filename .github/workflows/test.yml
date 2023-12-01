@@ -37,4 +37,4 @@ jobs:
         asdf-add
     - name: Run Tests
       run: |
-        lisp -i ${{ matrix.lisp }} -e "(ql:quickload :nontrivial-gray-streams/test)" -e "(defparameter cl-user::*exit-on-test-failures* t)" -e "(asdf:test-system :nontrivial-gray-streams)"
+        lisp -i ${{ matrix.lisp }} -e "(ql:quickload :nontrivial-gray-streams/test)" -e "(nontrivial-gray-streams/test:run-all-tests t)"

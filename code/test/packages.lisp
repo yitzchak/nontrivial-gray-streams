@@ -1,3 +1,3 @@
 (defpackage #:nontrivial-gray-streams/test
-  (:use #:common-lisp #:parachute)
-  (:export))
+  (:use #:common-lisp #:lisp-unit2)
+  (:export #:run-all-tests))

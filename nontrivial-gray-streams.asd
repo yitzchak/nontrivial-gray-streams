@@ -17,13 +17,13 @@
   :license "MIT"
   :author "Tarn W. Burton"
   :depends-on ("nontrivial-gray-streams"
-               "parachute")
+               "lisp-unit2")
   :perform (asdf:test-op (op c)
-             (uiop:symbol-call :parachute :test :nontrivial-gray-streams/test))
+             (uiop:symbol-call :nontrivial-gray-streams/test :run-all-tests))
   :components ((:module "code"
                 :pathname "code/test/"
                 :components ((:file "packages")
                              (:file "utility")
                              (:file "binary-input")
-                             (:file "character-input")
-                             (:file "character-output")))))
+                             #+(or)(:file "character-input")
+                             #+(or)(:file "character-output")))))

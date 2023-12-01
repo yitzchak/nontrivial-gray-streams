@@ -47,54 +47,62 @@
 
 #+gray-streams-file-length
 (define-test binary-input.file-length.default-method.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'binary-input-stream :value #(10))))
-      (fail (file-length stream) 'type-error))))
+      (assert-signal 'type-error (file-length stream)))))
 
 (define-test binary-input.read-byte.default-method.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'binary-input-stream :value #(10))))
-      (is equal 10 (read-byte stream))
-      (true (invoked-p :stream-read-byte stream)))))
+      (assert-eql 10 (read-byte stream))
+      (assert-true (invoked-p :stream-read-byte stream)))))
 
 (define-test binary-input.listen.default-method.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'binary-input-stream :value #(10))))
-      (true (listen stream))
-      (true (invoked-p :stream-listen stream)))))
+      (assert-true (listen stream))
+      (assert-true (invoked-p :stream-listen stream)))))
 
 (define-test binary-input.clear-input.default-method.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'binary-input-stream :value #(10))))
-      (false (clear-input stream)))))
+      (assert-false (clear-input stream)))))
 
 (define-test binary-input.streamp.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'binary-input-stream)))
-      (true (streamp stream))
+      (assert-true (streamp stream))
       #+(and gray-streams-streamp (not ccl))
-      (true (invoked-p :streamp stream)))))
+      (assert-true (invoked-p :streamp stream)))))
 
 (define-test binary-input.input-stream-p.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'binary-input-stream)))
-      (true (input-stream-p stream))
+      (assert-true (input-stream-p stream))
       #+gray-streams-input-stream-p
-      (true (invoked-p :input-stream-p stream)))))
+      (assert-true (invoked-p :input-stream-p stream)))))
 
 (define-test binary-input.output-stream-p.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'binary-input-stream)))
-      (false (output-stream-p stream))
+      (assert-false (output-stream-p stream))
       #+gray-streams-output-stream-p
-      (true (invoked-p :output-stream-p stream)))))
+      (assert-true (invoked-p :output-stream-p stream)))))
 
 #+gray-streams-interactive-stream-p
 (define-test binary-input.interactive-stream-p.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'binary-input-stream)))
-      (false (interactive-stream-p stream))
-      (true (invoked-p :interactive-stream-p stream)))))
+      (assert-false (interactive-stream-p stream))
+      (assert-true (invoked-p :interactive-stream-p stream)))))
 
 (defclass test-binary-input-stream
     (ngray:fundamental-binary-input-stream #+ccl file-stream)
@@ -225,101 +233,114 @@
     (setf (index stream) position)))
 
 (define-test binary-input.read-byte.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'test-binary-input-stream :value #(10 11))))
-      (is eql 10 (read-byte stream nil))
-      (is eql 11 (read-byte stream nil))
-      (false (read-byte stream nil))
-      (true (invoked-p :stream-read-byte stream)))))
+      (assert-eql 10 (read-byte stream nil))
+      (assert-eql 11 (read-byte stream nil))
+      (assert-false (read-byte stream nil))
+      (assert-true (invoked-p :stream-read-byte stream)))))
 
 (define-test binary-input.read-byte.02
+    ()
   (with-invocations
-    (let ((stream (make-instance 'test-binary-input-stream :value "")))
-      (false (read-byte stream nil))
-      (true (invoked-p :stream-read-byte stream)))))
+    (let ((stream (make-instance 'test-binary-input-stream :value #())))
+      (assert-false (read-byte stream nil))
+      (assert-true (invoked-p :stream-read-byte stream)))))
 
 (define-test binary-input.read-byte.03
+    ()
   (with-invocations
-    (let ((stream (make-instance 'test-binary-input-stream :value "")))
-      (eql :wibble (read-byte stream nil :wibble))
-      (true (invoked-p :stream-read-byte stream)))))
+    (let ((stream (make-instance 'test-binary-input-stream :value #())))
+      (assert-eql :wibble (read-byte stream nil :wibble))
+      (assert-true (invoked-p :stream-read-byte stream)))))
 
 (define-test binary-input.read-byte.04
+    ()
   (with-invocations
-    (let ((stream (make-instance 'test-binary-input-stream :value "")))
-      (fail (read-byte stream))
-      (true (invoked-p :stream-read-byte stream)))))
+    (let ((stream (make-instance 'test-binary-input-stream :value #())))
+      (assert-signal 'end-of-file (read-byte stream))
+      (assert-true (invoked-p :stream-read-byte stream)))))
 
 (define-test binary-input.listen.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'test-binary-input-stream :value #(10 11))))
-      (true (listen stream)))))
+      (assert-true (listen stream)))))
 
 (define-test binary-input.listen.02
+    ()
   (with-invocations
-    (let ((stream (make-instance 'test-binary-input-stream :value "")))
-      (false (listen stream)))))
+    (let ((stream (make-instance 'test-binary-input-stream :value #())))
+      (assert-false (listen stream)))))
 
 #+gray-streams-sequence
 (define-test binary-input.read-sequence.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'test-binary-input-stream :value #(10 11)))
           (sequence (make-array 3 :element-type '(or (unsigned-byte 8) null) :initial-element nil)))
-      (is eql 2 (read-sequence sequence stream))
-      (is equalp sequence #(10 11 nil))
-      (true (or (invoked-p :stream-read-sequence stream sequence 0 nil)
+      (assert-eql 2 (read-sequence sequence stream))
+      (assert-equalp sequence #(10 11 nil))
+      (assert-true (or (invoked-p :stream-read-sequence stream sequence 0 nil)
                 (invoked-p :stream-read-sequence stream sequence 0 3)
                 (invoked-p :stream-read-sequence stream sequence nil nil)
                 (invoked-p :stream-read-sequence stream sequence nil 3))))))
 
 #+gray-streams-sequence
 (define-test binary-input.read-sequence.02
+    ()
   (with-invocations
     (let ((stream (make-instance 'test-binary-input-stream :value #(10 11)))
           (sequence (make-array 3 :element-type '(or (unsigned-byte 8) null) :initial-element nil)))
-      (is eql 1 (read-sequence sequence stream :end 1))
-      (is equalp sequence #(10 nil nil))
-      (true (or (invoked-p :stream-read-sequence stream sequence 0 1)
+      (assert-eql 1 (read-sequence sequence stream :end 1))
+      (assert-equalp sequence #(10 nil nil))
+      (assert-true (or (invoked-p :stream-read-sequence stream sequence 0 1)
                 (invoked-p :stream-read-sequence stream sequence nil 1))))))
 
 #+gray-streams-sequence
 (define-test binary-input.read-sequence.03
+    ()
   (with-invocations
     (let ((stream (make-instance 'test-binary-input-stream :value #(10 11)))
           (sequence (make-array 3 :element-type '(or (unsigned-byte 8) null) :initial-element nil)))
-      (is eql 3 (read-sequence sequence stream :start 1))
-      (is equalp sequence #(nil 10 11))
-      (true (or (invoked-p :stream-read-sequence stream sequence 1 nil)
+      (assert-eql 3 (read-sequence sequence stream :start 1))
+      (assert-equalp sequence #(nil 10 11))
+      (assert-true (or (invoked-p :stream-read-sequence stream sequence 1 nil)
                 (invoked-p :stream-read-sequence stream sequence 1 3))))))
 
 #+gray-streams-file-length
 (define-test binary-input.file-length.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'test-binary-input-stream :value #(10 11))))
-      (is eql (file-length stream) 2)
-      (true (invoked-p :stream-file-length stream nil)))))
+      (assert-eql (file-length stream) 2)
+      (assert-true (invoked-p :stream-file-length stream nil)))))
 
 #+gray-streams-file-position
 (define-test binary-input.file-position.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'test-binary-input-stream :value #(10 11))))
-      (is equal 0 (file-position stream))
-      (is eql 10 (read-byte stream nil))
-      (is equal 1 (file-position stream))
-      (true (invoked-p :stream-file-position stream nil)))))
+      (assert-equal 0 (file-position stream))
+      (assert-eql 10 (read-byte stream nil))
+      (assert-equal 1 (file-position stream))
+      (assert-true (invoked-p :stream-file-position stream nil)))))
 
 #+gray-streams-file-position
 (define-test binary-input.file-position.02
+    ()
   (with-invocations
     (let ((stream (make-instance 'test-binary-input-stream :value #(10 11))))
-      (true (file-position stream 1))
-      (is equal 1 (file-position stream))
-      (is eql 11 (read-byte stream nil))
-      (true (invoked-p :stream-file-position stream nil)))))
+      (assert-true (file-position stream 1))
+      (assert-equal 1 (file-position stream))
+      (assert-eql 11 (read-byte stream nil))
+      (assert-true (invoked-p :stream-file-position stream nil)))))
 
 #+gray-streams-interactive
 (define-test binary-input.interactive-stream-p.01
+    ()
   (with-invocations
     (let ((stream (make-instance 'test-binary-input-stream :value #(10 11))))
-      (false (interactive-stream-p stream))
-      (true (invoked-p :interactive-stream-p stream)))))
+      (assert-false (interactive-stream-p stream))
+      (assert-true (invoked-p :interactive-stream-p stream)))))
