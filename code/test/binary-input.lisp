@@ -163,7 +163,7 @@
 (defmethod ngray:stream-clear-input ((stream test-binary-input-stream))
   (record-invocation :stream-clear-input stream)
   (setf (index stream) 0
-        (value stream) "")
+        (value stream) #())
   nil)
 
 #+gray-streams-sequence
@@ -234,19 +234,19 @@
 
 (define-test binary-input.read-byte.02
   (with-invocations
-    (let ((stream (make-instance 'test-binary-input-stream :value "")))
+    (let ((stream (make-instance 'test-binary-input-stream :value #())))
       (false (read-byte stream nil))
       (true (invoked-p :stream-read-byte stream)))))
 
 (define-test binary-input.read-byte.03
   (with-invocations
-    (let ((stream (make-instance 'test-binary-input-stream :value "")))
+    (let ((stream (make-instance 'test-binary-input-stream :value #())))
       (eql :wibble (read-byte stream nil :wibble))
       (true (invoked-p :stream-read-byte stream)))))
 
 (define-test binary-input.read-byte.04
   (with-invocations
-    (let ((stream (make-instance 'test-binary-input-stream :value "")))
+    (let ((stream (make-instance 'test-binary-input-stream :value #())))
       (fail (read-byte stream))
       (true (invoked-p :stream-read-byte stream)))))
 
@@ -257,7 +257,7 @@
 
 (define-test binary-input.listen.02
   (with-invocations
-    (let ((stream (make-instance 'test-binary-input-stream :value "")))
+    (let ((stream (make-instance 'test-binary-input-stream :value #())))
       (false (listen stream)))))
 
 #+gray-streams-sequence
