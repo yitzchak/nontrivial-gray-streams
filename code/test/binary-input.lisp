@@ -1,13 +1,13 @@
 (in-package #:nontrivial-gray-streams/test)
 
 (defclass binary-input-stream
-    (nt-gray:fundamental-binary-input-stream)
+    (ngray:fundamental-binary-input-stream)
   ((value :reader value
           :initarg :value)
    (index :accessor index
           :initform 0)))
 
-(defmethod nt-gray:stream-read-byte ((stream binary-input-stream))
+(defmethod ngray:stream-read-byte ((stream binary-input-stream))
   (record-invocation :stream-read-byte stream)
   (with-accessors ((value value)
                    (index index))
@@ -17,31 +17,31 @@
           (incf index))
         :eof)))
 
-(defmethod nt-gray:stream-listen ((stream binary-input-stream))
+(defmethod ngray:stream-listen ((stream binary-input-stream))
   (record-invocation :stream-listen stream)
   (< (index stream) (length (value stream))))
 
-(defmethod nt-gray:stream-element-type ((stream binary-input-stream))
+(defmethod ngray:stream-element-type ((stream binary-input-stream))
   (record-invocation :stream-element-type stream)
   '(unsigned-byte 8))
 
 #+gray-streams-streamp
-(defmethod nt-gray:streamp ((stream binary-input-stream))
+(defmethod ngray:streamp ((stream binary-input-stream))
   (record-invocation :streamp stream)
   (call-next-method))
 
 #+gray-streams-input-stream-p
-(defmethod nt-gray:input-stream-p ((stream binary-input-stream))
+(defmethod ngray:input-stream-p ((stream binary-input-stream))
   (record-invocation :input-stream-p stream)
   (call-next-method))
 
 #+gray-streams-output-stream-p
-(defmethod nt-gray:output-stream-p ((stream binary-input-stream))
+(defmethod ngray:output-stream-p ((stream binary-input-stream))
   (record-invocation :output-stream-p stream)
   (call-next-method))
 
 #+gray-streams-interactive-stream-p
-(defmethod nt-gray:interactive-stream-p ((stream binary-input-stream))
+(defmethod ngray:interactive-stream-p ((stream binary-input-stream))
   (record-invocation :interactive-stream-p stream)
   (call-next-method))
 
@@ -97,7 +97,7 @@
       (true (invoked-p :interactive-stream-p stream)))))
 
 (defclass test-binary-input-stream
-    (nt-gray:fundamental-binary-input-stream #+ccl file-stream)
+    (ngray:fundamental-binary-input-stream #+ccl file-stream)
   ((value :reader value
           :initarg :value)
    (index :accessor index
@@ -108,7 +108,7 @@
    (openp :accessor openp
           :initform t)))
 
-(defmethod nt-gray:close ((stream test-binary-input-stream) &key abort)
+(defmethod ngray:close ((stream test-binary-input-stream) &key abort)
   (record-invocation :close stream)
   (cond ((openp stream)
          (when abort
@@ -118,35 +118,35 @@
         (t
          nil)))
 
-(defmethod nt-gray:stream-listen ((stream binary-input-stream))
+(defmethod ngray:stream-listen ((stream binary-input-stream))
   (record-invocation :stream-listen stream)
   t)
 
 #+gray-streams-streamp
-(defmethod nt-gray:streamp ((stream test-binary-input-stream))
+(defmethod ngray:streamp ((stream test-binary-input-stream))
   (record-invocation :streamp stream)
   t)
 
 #+gray-streams-input-stream-p
-(defmethod nt-gray:input-stream-p ((stream test-binary-input-stream))
+(defmethod ngray:input-stream-p ((stream test-binary-input-stream))
   (record-invocation :input-stream-p stream)
   t)
 
 #+gray-streams-output-stream-p
-(defmethod nt-gray:output-stream-p ((stream test-binary-input-stream))
+(defmethod ngray:output-stream-p ((stream test-binary-input-stream))
   (record-invocation :output-stream-p stream)
   nil)
 
-(defmethod nt-gray:stream-element-type ((stream test-binary-input-stream))
+(defmethod ngray:stream-element-type ((stream test-binary-input-stream))
   (record-invocation :stream-element-type stream)
   '(unsigned-byte 8))
 
 #+gray-streams-interactive
-(defmethod nt-gray:interactive-stream-p ((stream test-binary-input-stream))
+(defmethod ngray:interactive-stream-p ((stream test-binary-input-stream))
   (record-invocation :interactive-stream-p stream)
   (interactive-p stream))
 
-(defmethod nt-gray:stream-read-byte ((stream test-binary-input-stream))
+(defmethod ngray:stream-read-byte ((stream test-binary-input-stream))
   (record-invocation :stream-read-byte stream)
   (with-accessors ((value value)
                    (index index))
@@ -156,18 +156,18 @@
           (incf index))
         :eof)))
 
-(defmethod nt-gray:stream-listen ((stream test-binary-input-stream))
+(defmethod ngray:stream-listen ((stream test-binary-input-stream))
   (record-invocation :stream-listen stream)
   (< (index stream) (length (value stream))))
 
-(defmethod nt-gray:stream-clear-input ((stream test-binary-input-stream))
+(defmethod ngray:stream-clear-input ((stream test-binary-input-stream))
   (record-invocation :stream-clear-input stream)
   (setf (index stream) 0
         (value stream) "")
   nil)
 
 #+gray-streams-sequence
-(defmethod nt-gray:stream-read-sequence
+(defmethod ngray:stream-read-sequence
   #+gray-streams-sequence/variant-1
   ((stream test-binary-input-stream) sequence &optional start end)
   #+gray-streams-sequence/variant-2
@@ -180,7 +180,7 @@
   (prog ((index (or start 0)) ch)
    next
      (when (< index end)
-       (setf ch (nt-gray:stream-read-byte stream))
+       (setf ch (ngray:stream-read-byte stream))
        (unless (eq ch :eof)
          (setf (elt sequence index) ch)
          (incf index)
@@ -188,18 +188,18 @@
      (return index)))
 
 #+gray-streams-file-length/variant-3
-(defmethod nt-gray:stream-file-length ((stream test-binary-input-stream))
+(defmethod ngray:stream-file-length ((stream test-binary-input-stream))
   (record-invocation :stream-file-length stream nil)
   (length (value stream)))
 
 #+gray-streams-file-length/variant-1
-(defmethod nt-gray:stream-file-length ((stream test-binary-input-stream) &optional length)
+(defmethod ngray:stream-file-length ((stream test-binary-input-stream) &optional length)
   (record-invocation :stream-file-length stream length)
   (length (value stream)))
 
 #+(or gray-streams-file-position/variant-1
       gray-streams-file-position/variant-2)
-(defmethod nt-gray:stream-file-position
+(defmethod ngray:stream-file-position
     ((stream test-binary-input-stream)
      #+gray-streams-file-position/variant-1 &optional position)
   (record-invocation :stream-file-position stream position)
@@ -212,12 +212,12 @@
       (index stream)))
 
 #+gray-streams-file-position/variant-3
-(defmethod nt-gray:stream-file-position ((stream test-binary-input-stream))
+(defmethod ngray:stream-file-position ((stream test-binary-input-stream))
   (record-invocation :stream-file-position stream nil)
   (index stream))
 
 #+gray-streams-file-position/variant-4
-(defmethod (setf nt-gray:stream-file-position) (position (stream test-binary-input-stream))
+(defmethod (setf ngray:stream-file-position) (position (stream test-binary-input-stream))
   (record-invocation :stream-file-position stream position)
   (let ((typespec `(integer 0 ,(1- (length (value stream))))))
     (assert (typep position typespec) (position)

@@ -86,7 +86,7 @@
 
 (defpackage #:nontrivial-gray-streams
   (:use #:common-lisp)
-  (:nicknames :nt-gray)
+  (:nicknames :ngray)
   #+(or clasp ecl mkcl)
   (:shadow #:interactive-stream-p)
   (:import-from #+abcl #:gray-streams
