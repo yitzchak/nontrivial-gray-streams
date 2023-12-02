@@ -187,11 +187,6 @@
 
 (defmethod ngray:close ((stream open-mixin) &key abort)
   (cond ((openp stream)
-         (when abort
-           (when (input-stream-p stream)
-             (clear-input stream))
-           (when (output-stream-p stream)
-             (clear-output stream)))
          (setf (openp stream) nil)
          t)
         (t
@@ -486,6 +481,9 @@
 (defmethod ngray:stream-write-char ((stream character-output-mixin-a) char)
   (vector-push-extend char (output-value stream))
   char)
+
+(defmethod ngray:stream-line-column ((stream character-output-mixin-a))
+  nil)
 
 (defclass character-output-mixin-b (character-output-mixin-a
                                     open-mixin)
