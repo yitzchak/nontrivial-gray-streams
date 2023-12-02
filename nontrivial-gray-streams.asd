@@ -28,6 +28,8 @@
                              (:file "binary-input-b")
                              (:file "binary-output-a")
                              (:file "binary-output-b")
+                             (:file "binary-io-a")
+                             (:file "binary-io-b")
                              (:file "character-input-a")
                              (:file "character-input-b")
                              (:file "character-output-a")

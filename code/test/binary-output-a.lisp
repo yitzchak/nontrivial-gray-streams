@@ -1,14 +1,12 @@
 (in-package #:nontrivial-gray-streams/test)
 
 (defclass binary-output-stream-a
-    (ngray:fundamental-binary-output-stream)
-  ((value :accessor value
-          :initform (make-array 16 :element-type '(unsigned-byte 8)
-                                   :adjustable t :fill-pointer 0))))
+    (ngray:fundamental-binary-output-stream binary-output-mixin)
+  ())
 
 (defmethod ngray:stream-write-byte ((stream binary-output-stream-a) byte)
   (record-invocation :stream-write-byte stream byte)
-  (vector-push-extend byte (value stream))
+  (vector-push-extend byte (output-value stream))
   byte)
 
 (defmethod ngray:stream-line-column ((stream binary-output-stream-a))
@@ -42,7 +40,7 @@
   (with-invocations
     (let ((stream (make-instance 'binary-output-stream-a)))
       (is equal 10 (write-byte 10 stream))
-      (is equalp #(10) (value stream))
+      (is equalp #(10) (output-value stream))
       (true (invoked-p :stream-write-byte stream 10)))))
 
 (define-test binary-output-a.finish-output.01

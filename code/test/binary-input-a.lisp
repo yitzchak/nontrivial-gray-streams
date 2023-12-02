@@ -1,25 +1,22 @@
 (in-package #:nontrivial-gray-streams/test)
 
 (defclass binary-input-stream-a
-    (ngray:fundamental-binary-input-stream)
-  ((value :reader value
-          :initarg :value)
-   (index :accessor index
-          :initform 0)))
+    (ngray:fundamental-binary-input-stream binary-input-mixin)
+  ())
 
 (defmethod ngray:stream-read-byte ((stream binary-input-stream-a))
   (record-invocation :stream-read-byte stream)
-  (with-accessors ((value value)
-                   (index index))
+  (with-accessors ((input-value input-value)
+                   (input-index input-index))
       stream
-    (if (< index (length value))
-        (prog1 (elt value index)
-          (incf index))
+    (if (< input-index (length input-value))
+        (prog1 (elt input-value input-index)
+          (incf input-index))
         :eof)))
 
 (defmethod ngray:stream-listen ((stream binary-input-stream-a))
   (record-invocation :stream-listen stream)
-  (< (index stream) (length (value stream))))
+  (< (input-index stream) (length (input-value stream))))
 
 (defmethod ngray:stream-element-type ((stream binary-input-stream-a))
   (record-invocation :stream-element-type stream)
@@ -51,27 +48,27 @@
 (define-test binary-input-a.file-length.01
     :parent binary-input-a
   (with-invocations
-    (let ((stream (make-instance 'binary-input-stream-a :value #(10))))
+    (let ((stream (make-instance 'binary-input-stream-a :input-value #(10))))
       (fail (file-length stream) 'type-error))))
 
 (define-test binary-input-a.read-byte.01
     :parent binary-input-a
   (with-invocations
-    (let ((stream (make-instance 'binary-input-stream-a :value #(10))))
+    (let ((stream (make-instance 'binary-input-stream-a :input-value #(10))))
       (is equal 10 (read-byte stream))
       (true (invoked-p :stream-read-byte stream)))))
 
 (define-test binary-input-a.listen.01
     :parent binary-input-a
   (with-invocations
-    (let ((stream (make-instance 'binary-input-stream-a :value #(10))))
+    (let ((stream (make-instance 'binary-input-stream-a :input-value #(10))))
       (true (listen stream))
       (true (invoked-p :stream-listen stream)))))
 
 (define-test binary-input-a.clear-input.01
     :parent binary-input-a
   (with-invocations
-    (let ((stream (make-instance 'binary-input-stream-a :value #(10))))
+    (let ((stream (make-instance 'binary-input-stream-a :input-value #(10))))
       (false (clear-input stream)))))
 
 (define-test binary-input-a.streamp.01
