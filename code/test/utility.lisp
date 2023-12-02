@@ -9,4 +9,4 @@
   (pushnew args *invocations* :test #'equal))
 
 (defun invoked-p (&rest args)
-  (and (position args *invocations* :test #'equal) t))
+  (and (position args *invocations* :test #'equalp) t))
