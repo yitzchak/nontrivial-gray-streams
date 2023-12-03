@@ -115,3 +115,17 @@
   (let ((stream (make-instance 'binary-input-stream-b :input-value #(10 11))))
     (false (interactive-stream-p stream))
     (true (invoked-p stream :interactive-stream-p stream))))
+
+#+gray-streams-pathname
+(define-test binary-input-b.pathname.01
+  :parent binary-input-b
+  (let ((stream (make-instance 'binary-input-stream-b :pathname #P"fu.bar")))
+    (is equalp #P"fu.bar" (pathname stream))
+    (true (invoked-p stream :pathname stream))))
+
+#+gray-streams-truename
+(define-test binary-input-b.pathname.01
+  :parent binary-input-b
+  (let ((stream (make-instance 'binary-input-stream-b :pathname #P"fu.bar")))
+    (is equalp #P"fu.bar" (truename stream))
+    (true (invoked-p stream :truename stream))))

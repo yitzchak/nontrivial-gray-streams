@@ -36,3 +36,17 @@
         (*print-pretty* nil))
     (format stream "~<aaaa~:;bbbb~>")
     (true (invoked-p stream :stream-line-length stream))))
+
+#+gray-streams-pathname
+(define-test character-output-b.pathname.01
+  :parent character-output-b
+  (let ((stream (make-instance 'character-output-stream-b :pathname #P"fu.bar")))
+    (is equalp #P"fu.bar" (pathname stream))
+    (true (invoked-p stream :pathname stream))))
+
+#+gray-streams-truename
+(define-test character-output-b.pathname.01
+  :parent character-output-b
+  (let ((stream (make-instance 'character-output-stream-b :pathname #P"fu.bar")))
+    (is equalp #P"fu.bar" (truename stream))
+    (true (invoked-p stream :truename stream))))

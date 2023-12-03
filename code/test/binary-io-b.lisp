@@ -138,3 +138,17 @@
               (invoked-p stream :stream-write-sequence stream #(10 11 12 13) 0 nil)
               (invoked-p stream :stream-write-sequence stream #(10 11 12 13) 0 4)))
     (true (invoked-p stream :stream-write-sequence stream #(14 15 16 17) 1 3))))
+
+#+gray-streams-pathname
+(define-test binary-io-b.pathname.01
+  :parent binary-io-b
+  (let ((stream (make-instance 'binary-io-stream-b :pathname #P"fu.bar")))
+    (is equalp #P"fu.bar" (pathname stream))
+    (true (invoked-p stream :pathname stream))))
+
+#+gray-streams-truename
+(define-test binary-io-b.pathname.01
+  :parent binary-io-b
+  (let ((stream (make-instance 'binary-io-stream-b :pathname #P"fu.bar")))
+    (is equalp #P"fu.bar" (truename stream))
+    (true (invoked-p stream :truename stream))))
