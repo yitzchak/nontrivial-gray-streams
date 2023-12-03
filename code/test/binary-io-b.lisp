@@ -36,6 +36,14 @@
     (fail (read-byte stream))
     (true (invoked-p stream :stream-read-byte stream))))
 
+(define-test binary-io-b.clear-input.01
+  :parent binary-io-b
+  (let ((stream (make-instance 'binary-io-stream-b :input-value #(10))))
+    (false (clear-input stream))
+    (fail (read-byte stream))
+    (true (invoked-p stream :stream-clear-input stream))
+    (true (invoked-p stream :stream-read-byte stream))))
+
 (define-test binary-io-b.listen.01
   :parent binary-io-b
   (let ((stream (make-instance 'binary-io-stream-b :input-value #(10 11))))

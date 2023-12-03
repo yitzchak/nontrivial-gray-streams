@@ -23,7 +23,7 @@
   :components ((:module "code"
                 :pathname "code/test/"
                 :components ((:file "packages")
-                             (:file "utility")
+                             (:file "mixins")
                              (:file "binary-input-a")
                              (:file "binary-input-b")
                              (:file "binary-output-a")

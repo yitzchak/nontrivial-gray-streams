@@ -124,3 +124,17 @@
   (let ((stream (make-instance 'character-input-stream-b :input-value "ab")))
     (false (interactive-stream-p stream))
     (true (invoked-p stream :interactive-stream-p stream))))
+
+#+gray-streams-pathname
+(define-test character-input-b.pathname.01
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b :pathname #P"fu.bar")))
+    (is equalp #P"fu.bar" (pathname stream))
+    (true (invoked-p stream :pathname stream))))
+
+#+gray-streams-truename
+(define-test character-input-b.pathname.01
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b :pathname #P"fu.bar")))
+    (is equalp #P"fu.bar" (truename stream))
+    (true (invoked-p stream :truename stream))))

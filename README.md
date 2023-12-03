@@ -338,11 +338,9 @@ method which returns CHARACTER.
 
 PATHNAME and TRUENAME are also permitted to be implemented as generic
 functions.  There is no default method since these are not valid for
-all streams.
-
-> There do not appear to be any implementations that make PATHNAME or
-> TRUENAME generic functions. CCL does have a generic
-> CCL:STREAM-FILENAME.
+all streams. If PATHNAME is made generic then the feature
+`:gray-streams-pathname` will be present.  If TRUENAME is made generic
+then the feature `:gray-streams-truename` will be present.
 
 # Optional Predicates
 
@@ -418,6 +416,8 @@ returns the integer as the result.
 | [STREAMP][]              | ✓        |             | ✓       | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
 | [INPUT-STREAM-P][]       | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [OUTPUT-STREAM-P][]      | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
+| PATHNAME                 |          |             | ✓       |           |           |           |         |               |             |          |          |
+| TRUENAME                 |          |             |         |           |           |           |         |               |             |          |          |
 | [Sequence][]             | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]        | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Length][]          | ✓        |             | ✓       | ✓         |           | ✓         | ✓       |               | ✓           |          |          |

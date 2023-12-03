@@ -14,6 +14,9 @@
   #+(or abcl allegro ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
   (pushnew :gray-streams-output-stream-p *features*)
 
+  #+ccl
+  (pushnew :gray-streams-pathname *features*)
+
   #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-sequence *features*)
 
@@ -87,8 +90,11 @@
 (defpackage #:nontrivial-gray-streams
   (:use #:common-lisp)
   (:nicknames :ngray)
-  #+(or clasp ecl mkcl)
-  (:shadow #:interactive-stream-p)
+  #+(or ccl clasp ecl mkcl)
+  (:shadow #+(or clasp ecl mkcl)
+           #:interactive-stream-p
+           #+ccl
+           #:pathname)
   (:import-from #+abcl #:gray-streams
                 #+allegro #:excl
                 #+ccl #:ccl
@@ -122,6 +128,8 @@
                 #+(and gray-streams-file-position
                        (not (or ccl clisp)))
                 #:stream-file-position
+                #+ccl
+                #:stream-filename
                 #:stream-finish-output
                 #:stream-force-output
                 #:stream-fresh-line
@@ -169,6 +177,8 @@
            #:input-stream-p
            #:open-stream-p
            #:output-stream-p
+           #+gray-streams-pathname
+           #:pathname
            #:stream-advance-to-column
            #:stream-clear-input
            #:stream-clear-output

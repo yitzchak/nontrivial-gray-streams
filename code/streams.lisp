@@ -6,7 +6,8 @@
 #+ccl
 (setf (fdefinition 'stream-read-sequence) #'stream-read-vector
       (fdefinition 'stream-write-sequence) #'stream-write-vector
-      (fdefinition 'stream-file-length) #'stream-length)
+      (fdefinition 'stream-file-length) #'stream-length
+      (fdefinition 'pathname) #'stream-filename)
 
 #+(or clasp ecl mkcl)
 (setf (fdefinition 'nontrivial-gray-streams:interactive-stream-p)

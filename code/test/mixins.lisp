@@ -105,6 +105,16 @@
   (vector-push-extend (list :output-stream-p stream)
                       (invocations stream)))
 
+#+gray-streams-pathname
+(defmethod ngray:pathname :before ((stream invocation-mixin))
+  (vector-push-extend (list :pathname stream)
+                      (invocations stream)))
+
+#+gray-streams-truename
+(defmethod ngray:truename :before ((stream invocation-mixin))
+  (vector-push-extend (list :truename stream)
+                      (invocations stream)))
+
 (defmethod ngray:stream-read-byte :before ((stream invocation-mixin))
   (vector-push-extend (list :stream-read-byte stream)
                       (invocations stream)))
@@ -181,16 +191,30 @@
   (vector-push-extend (list :stream-line-length stream)
                       (invocations stream)))
 
-(defclass open-mixin ()
+(defclass stream-mixin-b ()
   ((openp :accessor openp
-          :initform t)))
+          :initform t)
+   (pathname :accessor %pathname
+             :initarg :pathname
+             :initform nil)
+   (truename :accessor %truename
+             :initarg :truename
+             :initform nil)))
 
-(defmethod ngray:close ((stream open-mixin) &key abort)
+(defmethod ngray:close ((stream stream-mixin-b) &key abort)
   (cond ((openp stream)
          (setf (openp stream) nil)
          t)
         (t
          nil)))
+
+#+gray-streams-pathname
+(defmethod ngray:pathname ((stream stream-mixin-b))
+  (%pathname stream))
+
+#+gray-streams-truename
+(defmethod ngray:truename ((stream stream-mixin-b))
+  (%truename stream))
 
 (defclass interactive-mixin ()
   ((interactive :reader interactive-p
@@ -202,7 +226,7 @@
   (interactive-p stream))
 
 (defclass binary-input-mixin-a (invocation-mixin)
-  ((input-value :reader input-value
+  ((input-value :accessor input-value
                 :initarg :input-value
                 :initform #())
    (input-index :accessor input-index
@@ -225,7 +249,7 @@
 
 (defclass binary-input-mixin-b (binary-input-mixin-a
                                 interactive-mixin
-                                open-mixin)
+                                stream-mixin-b)
   ())
 
 #+gray-streams-streamp
@@ -310,7 +334,7 @@
   byte)
 
 (defclass binary-output-mixin-b (binary-output-mixin-a
-                                 open-mixin)
+                                 stream-mixin-b)
   ())
 
 (defmethod ngray:stream-clear-output ((stream binary-output-mixin-b))
@@ -374,7 +398,7 @@
 
 (defclass character-input-mixin-b (character-input-mixin-a
                                    interactive-mixin
-                                   open-mixin)
+                                   stream-mixin-b)
   ())
 
 #+gray-streams-interactive
@@ -486,7 +510,7 @@
   nil)
 
 (defclass character-output-mixin-b (character-output-mixin-a
-                                    open-mixin)
+                                    stream-mixin-b)
   ((line-column :accessor line-column
                 :initform 0)
    (line-length :reader line-length
