@@ -418,12 +418,25 @@ returns the integer as the result.
 | [OUTPUT-STREAM-P][]      | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | PATHNAME                 |          |             | ✓       |           |           |           |         |               |             |          |          |
 | TRUENAME                 |          |             |         |           |           |           |         |               |             |          |          |
+| SETF STREAM-ELEMENT-TYPE |          |             |         |           | ✓         |           |         |               |             |          |          |
 | [Sequence][]             | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]        | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Length][]          | ✓        |             | ✓       | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
 | [External Format][]      |          |             | ✓       |           |           |           |         |               |             |          |          |
 | [INTERACTIVE-STREAM-P][] | ✓        |             | ✓       | ✓         |           |           | ✓       |               | ✓           | ✓        | ✓        |
 | [Line Length][]          | ✓        |             | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
+
+# Bivalent Extensions
+
+The Gray stream protocol makes [CL:STREAM-ELEMENT-TYPE][] a generic
+function but does not provide for bivalent streams which can change
+the element type at any time. In order support bivalent streams one
+needs a SETF for [CL:STREAM-ELEMENT-TYPE][]. The existance of this
+extension is indicated by the feature `:gray-streams-element-type`.
+
+```common-lisp
+((setf stream-element-type) new-value stream) ; → new-value
+```
 
 # Sequence Extensions
 

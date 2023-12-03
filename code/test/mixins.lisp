@@ -123,6 +123,11 @@
   (vector-push-extend (list :stream-write-byte stream integer)
                       (invocations stream)))
 
+#+gray-streams-element-type
+(defmethod (setf ngray:stream-element-type) :before (new-value (stream invocation-mixin))
+  (vector-push-extend (list :stream-element-type stream new-value)
+                      (invocations stream)))
+
 #+gray-streams-interactive
 (defmethod ngray:interactive-stream-p :before ((stream invocation-mixin))
   (vector-push-extend (list :interactive-stream-p stream)
@@ -432,13 +437,13 @@
     (if (< (input-index stream) (length (input-value stream)))
         (let ((pos (position #\Newline input-value :start input-index)))
           (if pos
-              (multiple-input-value-prog1
-                  (input-values (subseq input-value input-index pos) nil)
+              (multiple-value-prog1
+                  (values (subseq input-value input-index pos) nil)
                 (setf input-index (1+ pos)))
-              (multiple-input-value-prog1
-                  (input-values (subseq input-value input-index) t)
+              (multiple-value-prog1
+                  (values (subseq input-value input-index) t)
                 (setf input-index (length input-value)))))
-        (input-values :eof nil))))
+        (values :eof nil))))
 
 (defmethod ngray:stream-clear-input ((stream character-input-mixin-b))
   (setf (input-index stream) 0
@@ -604,3 +609,92 @@
       (replace output-value sequence
                :start1 start1 :end1 end1
                :start2 start :end2 end))))
+
+(defclass bivalent-mixin-a ()
+  ((element-type :accessor element-type
+                 :initarg :element-type
+                 :initform '(unsigned-byte 8))))
+
+(defun character-stream-p (stream)
+  (subtypep (element-type stream) 'character))
+
+(defun check-character-stream (stream)
+  (unless (character-stream-p stream)
+    (error "Not a character stream")))
+
+(defun binary-stream-p (stream)
+  (subtypep (element-type stream) 'integer))
+
+(defun check-binary-stream (stream)
+  (unless (binary-stream-p stream)
+    (error "Not a binary stream")))
+
+(defmethod ngray:stream-element-type ((stream bivalent-mixin-a))
+  (element-type stream))
+
+#+gray-streams-element-type
+(defmethod (setf ngray:stream-element-type) (new-value (stream bivalent-mixin-a))
+  (setf (element-type stream) new-value))
+
+(defclass bivalent-input-mixin-a (bivalent-mixin-a
+                                  character-input-mixin-a)
+  ())
+
+(defmethod ngray:stream-read-byte ((stream bivalent-input-mixin-a))
+  (check-binary-stream stream)
+  (with-accessors ((input-value input-value)
+                   (input-index input-index))
+      stream
+    (if (< input-index (length input-value))
+        (prog1 (char-code (char input-value input-index))
+          (incf input-index))
+        :eof)))
+
+(defmethod ngray:stream-read-char ((stream bivalent-input-mixin-a))
+  (check-character-stream stream)
+  (call-next-method))
+
+(defmethod ngray:stream-unread-char ((stream bivalent-input-mixin-a) char)
+  (check-character-stream stream)
+  (call-next-method))
+
+(defclass bivalent-input-mixin-b (bivalent-input-mixin-a
+                                  character-input-mixin-b)
+  ())
+
+(defmethod ngray:stream-read-char-no-hang ((stream bivalent-input-mixin-b))
+  (check-character-stream stream)
+  (call-next-method))
+
+(defmethod ngray:stream-peek-char ((stream bivalent-input-mixin-b))
+  (check-character-stream stream)
+  (call-next-method))
+
+(defmethod ngray:stream-read-line ((stream bivalent-input-mixin-b))
+  (check-character-stream stream)
+  (call-next-method))
+
+#+gray-streams-sequence
+(defmethod ngray:stream-read-sequence
+  #+gray-streams-sequence/variant-1
+  ((stream bivalent-input-mixin-b) sequence &optional start end)
+  #+gray-streams-sequence/variant-2
+  ((stream bivalent-input-mixin-b) sequence start end)
+  #+gray-streams-sequence/variant-3
+  (sequence (stream bivalent-input-mixin-b) &key start end)
+  (cond ((character-stream-p stream)
+         (call-next-method))
+        ((binary-stream-p stream)
+         (unless end
+           (setf end (length sequence)))
+         (prog ((input-index (or start 0)) value)
+          next
+            (when (< input-index end)
+              (setf value (ngray:stream-read-byte stream))
+              (unless (eq value :eof)
+                (setf (elt sequence input-index) value)
+                (incf input-index)
+                (go next)))
+            (return input-index)))
+        (t
+         (error "Unknown stream element type"))))

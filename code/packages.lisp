@@ -5,6 +5,9 @@
   (gray::redefine-cl-functions))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
+  #+clisp
+  (pushnew :gray-streams-element-type *features*)
+
   #+(or abcl ccl clasp ecl lispworks mezzano mkcl sicl)
   (pushnew :gray-streams-streamp *features*)
 

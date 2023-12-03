@@ -33,4 +33,5 @@
                              (:file "character-input-a")
                              (:file "character-input-b")
                              (:file "character-output-a")
-                             (:file "character-output-b")))))
+                             (:file "character-output-b")
+                             (:file "bivalent-input-a")))))
