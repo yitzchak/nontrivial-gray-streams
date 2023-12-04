@@ -43,6 +43,6 @@
 (defmethod stream-clear-input (stream)
   nil)
 
-#+(or abcl ccl ecl mkcl)
-(defmethod stream-interactive-p ((stream fundamental-stream))
+#+(or abcl clasp ecl mkcl)
+(defmethod interactive-stream-p ((stream fundamental-stream))
   nil)
