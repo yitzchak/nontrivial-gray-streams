@@ -44,5 +44,5 @@
   nil)
 
 #+(or abcl clasp ecl mkcl)
-(defmethod interactive-stream-p ((stream fundamental-stream))
+(defmethod interactive-stream-p ((stream fundamental-input-stream))
   nil)
