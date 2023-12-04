@@ -8,100 +8,56 @@
 
 (define-test character-input-b)
 
-(define-test character-input-b.read-char.01
+(define-test character-input-b.clear-input.01
   :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "ab")))
-    (is eql #\a (read-char stream nil))
-    (is eql #\b (read-char stream nil))
-    (false (read-char stream nil))
-    (true (invoked-p stream :stream-read-char stream))))
+  (let ((stream (make-instance 'character-input-stream-a
+                               :input-value "a")))
+    (false (clear-input stream))
+    (true (invoked-p stream :stream-clear-input stream))))
 
-(define-test character-input-b.read-char.02
+(define-test character-input-b.interactive-stream-p.01
   :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "")))
-    (false (read-char stream nil))
-    (true (invoked-p stream :stream-read-char stream))))
+  (skip-on
+   ((not :gray-streams-interactive))
+   "Interactive extension not present"
+   (let ((stream (make-instance 'character-input-stream-b
+                                :input-value "ab")))
+     (false (interactive-stream-p stream))
+     (true (invoked-p stream :interactive-stream-p stream)))))
 
-(define-test character-input-b.read-char.03
+(define-test character-input-b.interactive-stream-p.02
   :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "")))
-    (eql :wibble (read-char stream nil :wibble))
-    (true (invoked-p stream :stream-read-char stream))))
+  (skip-on
+   ((not :gray-streams-interactive))
+   "Interactive extension not present"
+   (let ((stream (make-instance 'character-input-stream-b
+                                :input-value "ab"
+                                :interactive t)))
+     (true (interactive-stream-p stream))
+     (true (invoked-p stream :interactive-stream-p stream)))))
 
-(define-test character-input-b.read-char.04
+(define-test character-input-b.input-stream-p.01
   :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "")))
-    (fail (read-char stream))
-    (true (invoked-p stream :stream-read-char stream))))
-
-(define-test character-input-b.peek-char.01
-  :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "ab")))
-    (is eql #\a (peek-char nil stream nil))
-    (is eql #\a (read-char stream nil))
-    (is eql #\b (read-char stream nil))
-    (false (read-char stream nil))
-    (true (invoked-p stream :stream-peek-char stream))
-    (true (invoked-p stream :stream-read-char stream))))
-
-(define-test character-input-b.peek-char.02
-  :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "")))
-    (false (peek-char nil stream nil))))
-
-(define-test character-input-b.listen.01
-  :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "ab")))
-    (true (listen stream))))
-
-(define-test character-input-b.listen.02
-  :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "")))
-    (false (listen stream))))
-
-#+gray-streams-sequence
-(define-test character-input-b.read-sequence.01
-  :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "ab"))
-        (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
-    (is eql 2 (read-sequence sequence stream))
-    (is equalp sequence #(#\a #\b nil))
-    (true (or (invoked-p stream :stream-read-sequence stream sequence 0 nil)
-              (invoked-p stream :stream-read-sequence stream sequence 0 3)
-              (invoked-p stream :stream-read-sequence stream sequence nil nil)
-              (invoked-p stream :stream-read-sequence stream sequence nil 3)))))
-
-#+gray-streams-sequence
-(define-test character-input-b.read-sequence.02
-  :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "ab"))
-        (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
-    (is eql 1 (read-sequence sequence stream :end 1))
-    (is equalp sequence #(#\a nil nil))
-    (true (or (invoked-p stream :stream-read-sequence stream sequence 0 1)
-              (invoked-p stream :stream-read-sequence stream sequence nil 1)))))
-
-#+gray-streams-sequence
-(define-test character-input-b.read-sequence.03
-  :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "ab"))
-        (sequence (make-array 3 :element-type '(or character null) :initial-element nil)))
-    (is eql 3 (read-sequence sequence stream :start 1))
-    (is equalp sequence #(nil #\a #\b))
-    (true (or (invoked-p stream :stream-read-sequence stream sequence 1 nil)
-              (invoked-p stream :stream-read-sequence stream sequence 1 3)))))
+  (let ((stream (make-instance 'character-input-stream-b)))
+    (true (input-stream-p stream))
+    (skip-on
+     ((not :gray-streams-input-stream-p))
+     "INPUT-STREAM-P extension not present"
+     (true (invoked-p stream :input-stream-p stream)))))
 
 #+gray-streams-file-length
 (define-test character-input-b.file-length.01
   :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "ab")))
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "ab")))
     (is eql (file-length stream) 2)
     (true (invoked-p stream :stream-file-length stream nil))))
 
 #+gray-streams-file-position
 (define-test character-input-b.file-position.01
   :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "ab")))
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "ab")))
     (is equal 0 (file-position stream))
     (is eql #\a (peek-char nil stream nil))
     (is equal 0 (file-position stream))
@@ -112,29 +68,139 @@
 #+gray-streams-file-position
 (define-test character-input-b.file-position.02
   :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "ab")))
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "ab")))
     (true (file-position stream 1))
     (is equal 1 (file-position stream))
     (is eql #\b (read-char stream nil))
     (true (invoked-p stream :stream-file-position stream nil))))
 
-#+gray-streams-interactive
-(define-test character-input-b.interactive-stream-p.01
+(define-test character-input-b.listen.01
   :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :input-value "ab")))
-    (false (interactive-stream-p stream))
-    (true (invoked-p stream :interactive-stream-p stream))))
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "ab")))
+    (true (listen stream))))
+
+(define-test character-input-b.listen.02
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "")))
+    (false (listen stream))))
+
+(define-test character-input-b.output-stream-p.01
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b)))
+    (false (output-stream-p stream))
+    (skip-on
+     ((not :gray-streams-output-stream-p))
+     "OUTPUT-STREAM-P extension not present"
+     (true (invoked-p stream :output-stream-p stream)))))
 
 #+gray-streams-pathname
 (define-test character-input-b.pathname.01
   :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :pathname #P"fu.bar")))
+  (let ((stream (make-instance 'character-input-stream-b
+                               :pathname #P"fu.bar")))
     (is equalp #P"fu.bar" (pathname stream))
     (true (invoked-p stream :pathname stream))))
 
 #+gray-streams-truename
 (define-test character-input-b.pathname.01
   :parent character-input-b
-  (let ((stream (make-instance 'character-input-stream-b :pathname #P"fu.bar")))
+  (let ((stream (make-instance 'character-input-stream-b
+                               :pathname #P"fu.bar")))
     (is equalp #P"fu.bar" (truename stream))
     (true (invoked-p stream :truename stream))))
+
+(define-test character-input-b.peek-char.01
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "ab")))
+    (is eql #\a (peek-char nil stream nil))
+    (is eql #\a (read-char stream nil))
+    (is eql #\b (read-char stream nil))
+    (false (read-char stream nil))
+    (true (invoked-p stream :stream-peek-char stream))
+    (true (invoked-p stream :stream-read-char stream))))
+
+(define-test character-input-b.peek-char.02
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "")))
+    (false (peek-char nil stream nil))))
+
+(define-test character-input-b.read-char.01
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "ab")))
+    (is eql #\a (read-char stream nil))
+    (is eql #\b (read-char stream nil))
+    (false (read-char stream nil))
+    (true (invoked-p stream :stream-read-char stream))))
+
+(define-test character-input-b.read-char.02
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "")))
+    (false (read-char stream nil))
+    (true (invoked-p stream :stream-read-char stream))))
+
+(define-test character-input-b.read-char.03
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "")))
+    (eql :wibble (read-char stream nil :wibble))
+    (true (invoked-p stream :stream-read-char stream))))
+
+(define-test character-input-b.read-char.04
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "")))
+    (fail (read-char stream))
+    (true (invoked-p stream :stream-read-char stream))))
+
+(define-test character-input-b.read-sequence.01
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "ab"))
+        (sequence (make-array 3 :element-type '(or character null)
+                                :initial-element nil)))
+    (is eql 2 (read-sequence sequence stream))
+    (is equalp sequence #(#\a #\b nil))
+    (skip-on ((not :gray-streams-sequence))
+             "Sequence extension not present"
+             (true (or (invoked-p stream :stream-read-sequence stream sequence 0 nil)
+                       (invoked-p stream :stream-read-sequence stream sequence 0 3)
+                       (invoked-p stream :stream-read-sequence stream sequence nil nil)
+                       (invoked-p stream :stream-read-sequence stream sequence nil 3))))))
+
+#+gray-streams-sequence
+(define-test character-input-b.read-sequence.02
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "ab"))
+        (sequence (make-array 3 :element-type '(or character null)
+                                :initial-element nil)))
+    (is eql 1 (read-sequence sequence stream :end 1))
+    (is equalp sequence #(#\a nil nil))
+    (true (or (invoked-p stream :stream-read-sequence stream sequence 0 1)
+              (invoked-p stream :stream-read-sequence stream sequence nil 1)))))
+
+#+gray-streams-sequence
+(define-test character-input-b.read-sequence.03
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-b
+                               :input-value "ab"))
+        (sequence (make-array 3 :element-type '(or character null)
+                                :initial-element nil)))
+    (is eql 3 (read-sequence sequence stream :start 1))
+    (is equalp sequence #(nil #\a #\b))
+    (true (or (invoked-p stream :stream-read-sequence stream sequence 1 nil)
+              (invoked-p stream :stream-read-sequence stream sequence 1 3)))))
+
+(define-test character-input-b.streamp.01
+  :parent character-input-b
+  (let ((stream (make-instance 'character-input-stream-a)))
+    (true (streamp stream))
+    #+(and gray-streams-streamp (not ccl))
+    (true (invoked-p stream :streamp stream))))
