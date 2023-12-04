@@ -161,9 +161,11 @@ second value is true if the string was terminated by end-of-file
 instead of the end of a line.  The default method uses repeated calls
 to [STREAM-READ-CHAR][].
 
-> The proposal does not specify what should be returned if end-of-file
-> is encountered with no characters, newline or otherwise,
-> are read. Presumably it is `(values "" t)`.
+> The proposal does not explicitly state what should be returned if
+> end-of-file is encountered when no characters, newline or otherwise,
+> have been read. Presumably it is `(values "" t)` since the example
+> method provided in the proposal returns these values in this
+> situation.
 
 ## STREAM-CLEAR-INPUT
 [Generic Function]
