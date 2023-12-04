@@ -376,7 +376,7 @@
                :start2 start :end2 end))))
 
 (defclass character-input-mixin-a (invocation-mixin)
-  ((input-value :reader input-value
+  ((input-value :accessor input-value
                 :initarg :input-value
                 :initform "")
    (input-index :accessor input-index
@@ -443,7 +443,7 @@
               (multiple-value-prog1
                   (values (subseq input-value input-index) t)
                 (setf input-index (length input-value)))))
-        (values :eof nil))))
+        (values "" t))))
 
 (defmethod ngray:stream-clear-input ((stream character-input-mixin-b))
   (setf (input-index stream) 0
