@@ -179,10 +179,10 @@
   :parent character-input-b
   (let ((stream (make-instance 'character-input-stream-b
                                :input-value "ab"))
-        (sequence (make-array 3 :element-type '(or character null)
-                                :initial-element nil)))
+        (sequence (make-array 3 :element-type 'character
+                                :initial-element #\Space)))
     (is eql 2 (read-sequence sequence stream))
-    (is equalp sequence #(#\a #\b nil))
+    (is equalp sequence #(#\a #\b #\Space))
     (skip-on ((not :gray-streams-sequence))
              "Sequence extension not present"
              (true (or (invoked-p stream :stream-read-sequence stream sequence 0 nil)
@@ -194,10 +194,10 @@
   :parent character-input-b
   (let ((stream (make-instance 'character-input-stream-b
                                :input-value "ab"))
-        (sequence (make-array 3 :element-type '(or character null)
-                                :initial-element nil)))
+        (sequence (make-array 3 :element-type 'character
+                                :initial-element #\Space)))
     (is eql 1 (read-sequence sequence stream :end 1))
-    (is equalp sequence #(#\a nil nil))
+    (is equalp sequence #(#\a #\Space #\Space))
     (skip-on ((not :gray-streams-sequence))
              "Sequence extension not present"
     (true (or (invoked-p stream :stream-read-sequence stream sequence 0 1)
@@ -207,10 +207,10 @@
   :parent character-input-b
   (let ((stream (make-instance 'character-input-stream-b
                                :input-value "ab"))
-        (sequence (make-array 3 :element-type '(or character null)
-                                :initial-element nil)))
+        (sequence (make-array 3 :element-type 'character
+                                :initial-element #\Space)))
     (is eql 3 (read-sequence sequence stream :start 1))
-    (is equalp sequence #(nil #\a #\b))
+    (is equalp sequence #(#\Space #\a #\b))
     (skip-on ((not :gray-streams-sequence))
              "Sequence extension not present"
              (true (or (invoked-p stream :stream-read-sequence stream sequence 1 nil)

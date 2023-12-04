@@ -46,3 +46,33 @@
 #+(or abcl clasp ecl mkcl)
 (defmethod interactive-stream-p ((stream fundamental-input-stream))
   nil)
+
+#+cmucl
+(defmethod stream-read-sequence
+    ((stream fundamental-character-input-stream) sequence &optional start end)
+  (unless end
+    (setf end (length sequence)))
+  (prog ((input-index (or start 0)) value)
+   next
+     (when (< input-index end)
+       (setf value (stream-read-char stream))
+       (unless (eq value :eof)
+         (setf (elt sequence input-index) value)
+         (incf input-index)
+         (go next)))
+     (return input-index)))
+
+#+cmucl
+(defmethod stream-read-sequence
+    ((stream fundamental-binary-input-stream) sequence &optional start end)
+  (unless end
+    (setf end (length sequence)))
+  (prog ((input-index (or start 0)) value)
+   next
+     (when (< input-index end)
+       (setf value (stream-read-byte stream))
+       (unless (eq value :eof)
+         (setf (elt sequence input-index) value)
+         (incf input-index)
+         (go next)))
+     (return input-index)))
