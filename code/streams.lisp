@@ -42,3 +42,7 @@
 #+(or allegro clasp cmucl ecl mkcl sbcl)
 (defmethod stream-clear-input (stream)
   nil)
+
+#+(or abcl ccl ecl mkcl)
+(defmethod stream-interactive-p ((stream fundamental-stream))
+  nil)
