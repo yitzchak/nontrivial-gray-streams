@@ -62,8 +62,44 @@
   (let ((stream (make-instance 'character-input-stream-a
                                :input-value "a")))
     (is equal #\a (peek-char nil stream))
+    (true (invoked-p stream :stream-peek-char stream))
     (true (invoked-p stream :stream-read-char stream))
     (true (invoked-p stream :stream-unread-char stream #\a))))
+
+(define-test character-input-a.peek-char.02
+  :parent character-input-a
+  (let ((stream (make-instance 'character-input-stream-a)))
+    (fail (peek-char nil stream))
+    (true (invoked-p stream :stream-peek-char stream))
+    (true (invoked-p stream :stream-read-char stream))))
+
+(define-test character-input-a.peek-char.03
+  :parent character-input-a
+  (let ((stream (make-instance 'character-input-stream-a)))
+    (is eql :wibble (peek-char nil stream nil :wibble))
+    (true (invoked-p stream :stream-peek-char stream))
+    (true (invoked-p stream :stream-read-char stream))))
+
+(define-test character-input-a.peek-char.04
+  :parent character-input-a
+  (let ((stream (make-instance 'character-input-stream-a
+                               :input-value "ab")))
+    (is equal #\b (peek-char #\b stream))
+    (true (invoked-p stream :stream-read-char stream))))
+
+(define-test character-input-a.peek-char.05
+  :parent character-input-a
+  (let ((stream (make-instance 'character-input-stream-a
+                               :input-value "a")))
+    (fail (peek-char #\b stream))
+    (true (invoked-p stream :stream-read-char stream))))
+
+(define-test character-input-a.peek-char.06
+  :parent character-input-a
+  (let ((stream (make-instance 'character-input-stream-a
+                               :input-value "a")))
+    (is equal :wibble (peek-char #\b stream nil :wibble))
+    (true (invoked-p stream :stream-read-char stream))))
 
 (define-test character-input-a.read-char.01
   :parent character-input-a
@@ -74,22 +110,19 @@
 
 (define-test character-input-a.read-char.02
   :parent character-input-a
-  (let ((stream (make-instance 'character-input-stream-a
-                               :input-value "")))
+  (let ((stream (make-instance 'character-input-stream-a)))
     (false (read-char stream nil))
     (true (invoked-p stream :stream-read-char stream))))
 
 (define-test character-input-a.read-char.03
   :parent character-input-a
-  (let ((stream (make-instance 'character-input-stream-a
-                               :input-value "")))
+  (let ((stream (make-instance 'character-input-stream-a)))
     (eql :wibble (read-char stream nil :wibble))
     (true (invoked-p stream :stream-read-char stream))))
 
 (define-test character-input-a.read-char.04
   :parent character-input-a
-  (let ((stream (make-instance 'character-input-stream-b
-                               :input-value "")))
+  (let ((stream (make-instance 'character-input-stream-b)))
     (fail (read-char stream))
     (true (invoked-p stream :stream-read-char stream))))
 
@@ -124,16 +157,14 @@ b")))
 
 (define-test character-input-a.read-line.03
   :parent character-input-a
-  (let ((stream (make-instance 'character-input-stream-a
-                               :input-value "")))
+  (let ((stream (make-instance 'character-input-stream-a)))
     (fail (read-line stream))
     (true (invoked-p stream :stream-read-line stream))
     (true (invoked-p stream :stream-read-char stream))))
 
 (define-test character-input-a.read-line.04
   :parent character-input-a
-  (let ((stream (make-instance 'character-input-stream-a
-                               :input-value "")))
+  (let ((stream (make-instance 'character-input-stream-a)))
     (is-values (read-line stream nil :wibble)
                (eql :wibble)
                (eql t))
