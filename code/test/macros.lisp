@@ -470,9 +470,11 @@ b")))
                (let ((stream (make-instance ',class)))
                  (is equal "ab" (write-string "ab" stream))
                  (is equal "ab" (output-value stream))
-                 (true (or (invoked-p stream :stream-write-string stream "ab" nil nil)
-                           (invoked-p stream :stream-write-string stream "ab" 0 nil)
-                           (invoked-p stream :stream-write-string stream "ab" 0 2)))
+                 (skip-on (:clisp)
+                          "CLISP doesn't call stream-write-string"
+                          (true (or (invoked-p stream :stream-write-string stream "ab" nil nil)
+                                    (invoked-p stream :stream-write-string stream "ab" 0 nil)
+                                    (invoked-p stream :stream-write-string stream "ab" 0 2))))
                  ,@(unless extended
                      `((true (invoked-p stream :stream-write-char stream #\a))
                        (true (invoked-p stream :stream-write-char stream #\b))))))
@@ -495,8 +497,8 @@ b")))
                (let ((stream (make-instance ',class)))
                  (false (terpri stream))
                  (print (invocations stream))
-                 (skip-on (:ccl)
-                          "CCL skips the call to stream-terpri"
+                 (skip-on (:ccl :clisp)
+                          "CCL and CLISP skip the call to stream-terpri"
                           (true (invoked-p stream :stream-terpri stream)))
                  (true (invoked-p stream :stream-write-char stream #\Newline))))))
 
