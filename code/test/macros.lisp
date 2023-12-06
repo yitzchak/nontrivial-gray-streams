@@ -482,15 +482,6 @@ b")))
                (let ((stream (make-instance ',class)))
                  (false (ngray:stream-advance-to-column stream 10))))
 
-             #+gray-streams-line-length
-             (define-test ,(test-name '#:stream-line-length.01)
-               :parent ,parent
-               (let ((stream (make-instance ',class))
-                     (*print-right-margin* nil)
-                     (*print-pretty* nil))
-                 (format stream "~<aaaa~:;bbbb~>")
-                 (true (invoked-p stream :stream-line-length stream))))
-
              (define-test ,(test-name '#:stream-start-line-p.01)
                :parent ,parent
                (let ((stream (make-instance ',class)))
@@ -503,11 +494,23 @@ b")))
                :parent ,parent
                (let ((stream (make-instance ',class)))
                  (false (terpri stream))
-                 (true (invoked-p stream :stream-terpri stream))
+                 (print (invocations stream))
+                 (skip-on (:ccl)
+                          "CCL skips the call to stream-terpri"
+                          (true (invoked-p stream :stream-terpri stream)))
                  (true (invoked-p stream :stream-write-char stream #\Newline))))))
 
        ,@(when (and output character extended)
-           `((define-test ,(test-name '#:stream-start-line-p.02)
+           `(#+gray-streams-line-length
+             (define-test ,(test-name '#:stream-line-length.01)
+               :parent ,parent
+               (let ((stream (make-instance ',class))
+                     (*print-right-margin* nil)
+                     (*print-pretty* nil))
+                 (format stream "~<aaaa~:;bbbb~>")
+                 (true (invoked-p stream :stream-line-length stream))))
+
+             (define-test ,(test-name '#:stream-start-line-p.02)
                :parent ,parent
                (let ((stream (make-instance ',class)))
                  (true (ngray:stream-start-line-p stream))

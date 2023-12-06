@@ -70,6 +70,7 @@
 
 (defclass binary-io-stream-b
     (binary-io-mixin-b
+     #+ccl file-stream
      ngray:fundamental-binary-input-stream
      ngray:fundamental-binary-output-stream)
   ())
@@ -151,6 +152,7 @@
 
 (defclass character-io-stream-b
     (character-io-mixin-b
+     #+ccl file-stream
      ngray:fundamental-character-input-stream
      ngray:fundamental-character-output-stream)
   ())

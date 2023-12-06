@@ -76,3 +76,36 @@
          (incf input-index)
          (go next)))
      (return input-index)))
+
+#+cmucl
+(defmethod stream-write-sequence
+    ((stream fundamental-character-output-stream) sequence &optional start end)
+  (unless end
+    (setf end (length sequence)))
+  (prog ((input-index (or start 0)) value)
+   next
+     (when (< input-index end)
+       (stream-write-char stream (char sequence input-index))
+       (incf input-index)
+       (go next))
+     (return sequence)))
+
+#+cmucl
+(defmethod stream-write-sequence
+    ((stream fundamental-binary-output-stream) sequence &optional start end)
+  (unless end
+    (setf end (length sequence)))
+  (prog ((input-index (or start 0)) value)
+   next
+     (when (< input-index end)
+       (stream-write-byte stream (elt sequence input-index))
+       (incf input-index)
+       (go next))
+     (return sequence)))
+
+#+ccl
+(defmethod stream-listen ((stream fundamental-character-input-stream))
+  (let ((char (stream-read-char-no-hang stream)))
+    (and (not (null char))
+	 (not (eq char :eof))
+	 (progn (stream-unread-char stream char) t))))
