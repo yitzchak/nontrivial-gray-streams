@@ -242,7 +242,7 @@
                    (input-index input-index))
       stream
     (if (< input-index (length input-value))
-        (prog1 (elt input-value input-index)
+        (prog1 (char-code (char input-value input-index))
           (incf input-index))
         :eof)))
 
@@ -250,7 +250,7 @@
   (< (input-index stream) (length (input-value stream))))
 
 (defmethod ngray:stream-element-type ((stream binary-input-mixin-a))
-  '(unsigned-byte 8))
+  'integer)
 
 (defclass binary-input-mixin-b (binary-input-mixin-a
                                 interactive-mixin
@@ -268,9 +268,6 @@
 #+gray-streams-output-stream-p
 (defmethod ngray:output-stream-p ((stream binary-input-mixin-b))
   nil)
-
-(defmethod ngray:stream-element-type ((stream binary-input-mixin-b))
-  '(unsigned-byte 8))
 
 (defmethod ngray:stream-clear-input ((stream binary-input-mixin-b))
   (setf (input-index stream) 0
@@ -338,6 +335,9 @@
   (vector-push-extend byte (output-value stream))
   byte)
 
+(defmethod ngray:stream-element-type ((stream binary-output-mixin-a))
+  'integer)
+
 (defclass binary-output-mixin-b (binary-output-mixin-a
                                  stream-mixin-b)
   ())
@@ -374,6 +374,27 @@
       (replace output-value sequence
                :start1 start1 :end1 end1
                :start2 start :end2 end))))
+
+(defclass binary-io-mixin-a (binary-input-mixin-a
+                             binary-output-mixin-a)
+  ())
+
+(defclass binary-io-mixin-b (binary-io-mixin-a
+                             binary-input-mixin-b
+                             binary-output-mixin-b)
+  ())
+
+#+gray-streams-streamp
+(defmethod ngray:streamp ((stream binary-io-mixin-b))
+  t)
+
+#+gray-streams-input-stream-p
+(defmethod ngray:input-stream-p ((stream binary-io-mixin-b))
+  t)
+
+#+gray-streams-output-stream-p
+(defmethod ngray:output-stream-p ((stream binary-io-mixin-b))
+  t)
 
 (defclass character-input-mixin-a (invocation-mixin)
   ((input-value :accessor input-value
@@ -526,7 +547,7 @@
   (line-column stream))
 
 (defmethod ngray:stream-start-line-p ((stream character-output-mixin-b))
-  (zerop (line-column stream)))
+  (zerop (ngray:stream-line-column stream)))
 
 (defmethod ngray:stream-write-char ((stream character-output-mixin-b) char)
   (vector-push-extend char (output-value stream))
@@ -554,15 +575,13 @@
                :start2 start :end2 end))))
 
 (defmethod ngray:stream-terpri ((stream character-output-mixin-b))
-  (vector-push-extend #\Newline (output-value stream))
-  (setf (line-column stream) 0)
+  (ngray:stream-write-char stream #\Newline)
   nil)
 
 (defmethod ngray:stream-fresh-line ((stream character-output-mixin-b))
   (unless (zerop (line-column stream))
-    (vector-push-extend #\Newline (output-value stream))
-    (setf (line-column stream) 0))
-  nil)
+    (ngray:stream-write-char stream #\Newline)
+    t))
 
 (defmethod ngray:stream-clear-output ((stream character-output-mixin-b))
   nil)
@@ -642,13 +661,7 @@
 
 (defmethod ngray:stream-read-byte ((stream bivalent-input-mixin-a))
   (check-binary-stream stream)
-  (with-accessors ((input-value input-value)
-                   (input-index input-index))
-      stream
-    (if (< input-index (length input-value))
-        (prog1 (char-code (char input-value input-index))
-          (incf input-index))
-        :eof)))
+  (call-next-method))
 
 (defmethod ngray:stream-read-char ((stream bivalent-input-mixin-a))
   (check-character-stream stream)
@@ -698,3 +711,24 @@
             (return input-index)))
         (t
          (error "Unknown stream element type"))))
+
+(defclass character-io-mixin-a (character-input-mixin-a
+                             character-output-mixin-a)
+  ())
+
+(defclass character-io-mixin-b (character-io-mixin-a
+                             character-input-mixin-b
+                             character-output-mixin-b)
+  ())
+
+#+gray-streams-streamp
+(defmethod ngray:streamp ((stream character-io-mixin-b))
+  t)
+
+#+gray-streams-input-stream-p
+(defmethod ngray:input-stream-p ((stream character-io-mixin-b))
+  t)
+
+#+gray-streams-output-stream-p
+(defmethod ngray:output-stream-p ((stream character-io-mixin-b))
+  t)

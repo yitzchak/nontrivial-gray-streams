@@ -16,7 +16,8 @@
 (defsystem "nontrivial-gray-streams/test"
   :license "MIT"
   :author "Tarn W. Burton"
-  :depends-on ("nontrivial-gray-streams"
+  :depends-on ("alexandria"
+               "nontrivial-gray-streams"
                "parachute")
   :perform (asdf:test-op (op c)
              (uiop:symbol-call :parachute :test :nontrivial-gray-streams/test))
@@ -24,14 +25,5 @@
                 :pathname "code/test/"
                 :components ((:file "packages")
                              (:file "mixins")
-                             (:file "binary-input-a")
-                             (:file "binary-input-b")
-                             (:file "binary-output-a")
-                             (:file "binary-output-b")
-                             (:file "binary-io-a")
-                             (:file "binary-io-b")
-                             (:file "character-input-a")
-                             (:file "character-input-b")
-                             (:file "character-output-a")
-                             (:file "character-output-b")
-                             (:file "bivalent-input-a")))))
+                             (:file "macros")
+                             (:file "test")))))
