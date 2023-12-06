@@ -60,7 +60,9 @@
        ,@(when binary
            `((define-test ,(test-name '#:stream-element-type.02)
                :parent ,parent
-               (let ((stream (make-instance ',class)))
+               (let ((stream (make-instance ',class
+                                            ,@(when character
+                                                `(:element-type 'integer)))))
                  (is eq 'integer (stream-element-type stream))
                  (true (invoked-p stream :stream-element-type stream))))))
 
@@ -126,7 +128,9 @@
        ,@(when (and input binary)
            `((define-test ,(test-name '#:read-byte.01)
                :parent ,parent
-               (let ((stream (make-instance ',class :input-value "ab")))
+               (let ((stream (make-instance ',class :input-value "ab"
+                                            ,@(when character
+                                                `(:element-type 'integer)))))
                  (is eql 97 (read-byte stream nil))
                  (is eql 98 (read-byte stream nil))
                  (false (read-byte stream nil))
@@ -134,26 +138,34 @@
 
              (define-test ,(test-name '#:read-byte.02)
                :parent ,parent
-               (let ((stream (make-instance ',class)))
+               (let ((stream (make-instance ',class
+                                            ,@(when character
+                                                `(:element-type 'integer)))))
                  (false (read-byte stream nil))
                  (true (invoked-p stream :stream-read-byte stream))))
 
              (define-test ,(test-name '#:read-byte.03)
                :parent ,parent
-               (let ((stream (make-instance ',class)))
+               (let ((stream (make-instance ',class
+                                            ,@(when character
+                                                `(:element-type 'integer)))))
                  (eql :wibble (read-byte stream nil :wibble))
                  (true (invoked-p stream :stream-read-byte stream))))
 
              (define-test ,(test-name '#:read-byte.04)
                :parent ,parent
-               (let ((stream (make-instance ',class)))
+               (let ((stream (make-instance ',class
+                                            ,@(when character
+                                                `(:element-type 'integer)))))
                  (fail (read-byte stream))
                  (true (invoked-p stream :stream-read-byte stream))))
 
              #+gray-streams-sequence
              (define-test ,(test-name '#:read-sequence.01)
                :parent ,parent
-               (let ((stream (make-instance ',class :input-value "ab"))
+               (let ((stream (make-instance ',class :input-value "ab"
+                                            ,@(when character
+                                                `(:element-type 'integer))))
                      (sequence (make-array 3 :element-type '(or (unsigned-byte 8) null) :initial-element nil)))
                  (is eql 2 (read-sequence sequence stream))
                  (is equalp #(97 98 nil) sequence)
@@ -165,7 +177,9 @@
              #+gray-streams-sequence
              (define-test ,(test-name '#:read-sequence.02)
                :parent ,parent
-               (let ((stream (make-instance ',class :input-value "ab"))
+               (let ((stream (make-instance ',class :input-value "ab"
+                                            ,@(when character
+                                                `(:element-type 'integer))))
                      (sequence (make-array 3 :element-type '(or (unsigned-byte 8) null) :initial-element nil)))
                  (is eql 1 (read-sequence sequence stream :end 1))
                  (is equalp #(97 nil nil) sequence)
@@ -175,7 +189,9 @@
              #+gray-streams-sequence
              (define-test ,(test-name '#:read-sequence.03)
                :parent ,parent
-               (let ((stream (make-instance ',class :input-value "ab"))
+               (let ((stream (make-instance ',class :input-value "ab"
+                                            ,@(when character
+                                                `(:element-type 'integer))))
                      (sequence (make-array 3 :element-type '(or (unsigned-byte 8) null) :initial-element nil)))
                  (is eql 3 (read-sequence sequence stream :start 1))
                  (is equalp #(nil 97 98) sequence)
@@ -396,6 +412,31 @@ b")))
                  (is equal 1 (file-position stream))
                  (is eql #\b (read-char stream nil))
                  (true (invoked-p stream :stream-file-position stream nil))))))
+
+       ,@(when (and input binary character)
+           `((define-test ,(test-name '#:read-byte.05)
+               :parent ,parent
+               (let ((stream (make-instance ',class :input-value "ab")))
+                 (fail (read-byte stream))
+                 (true (invoked-p stream :stream-read-byte stream))))
+
+             (define-test ,(test-name '#:read-char.05)
+               :parent ,parent
+               (let ((stream (make-instance ',class :input-value "ab"
+                                            :element-type 'integer)))
+                 (fail (read-char stream))
+                 (true (invoked-p stream :stream-read-char stream))))
+
+             #+gray-streams-element-type
+             (define-test ,(test-name '#:read-byte/char.01)
+               :parent ,parent
+               (let ((stream (make-instance ',class :input-value "ab")))
+                 (is eql #\a (read-char stream))
+                 (setf (ngray:stream-element-type stream) 'integer)
+                 (is eql 98 (read-byte stream))
+                 (true (invoked-p stream :stream-read-char stream))
+                 (true (invoked-p stream :stream-stream-element-type stream 'integer))
+                 (true (invoked-p stream :stream-read-byte stream))))))
 
        ,@(when output
            `((define-test ,(test-name '#:finish-output.01)

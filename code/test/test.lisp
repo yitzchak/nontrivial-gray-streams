@@ -163,3 +163,16 @@
   :output t
   :character t
   :extended t)
+
+;;; Basic Bivalent Input Stream
+
+(defclass bivalent-input-stream-a
+    (bivalent-input-mixin-a
+     ngray:fundamental-character-input-stream)
+  ())
+
+(define-stream-tests bivalent-input-a
+  :class bivalent-input-stream-a
+  :input t
+  :binary t
+  :character t)

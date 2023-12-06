@@ -629,10 +629,31 @@
                :start1 start1 :end1 end1
                :start2 start :end2 end))))
 
+(defclass character-io-mixin-a (character-input-mixin-a
+                             character-output-mixin-a)
+  ())
+
+(defclass character-io-mixin-b (character-io-mixin-a
+                             character-input-mixin-b
+                             character-output-mixin-b)
+  ())
+
+#+gray-streams-streamp
+(defmethod ngray:streamp ((stream character-io-mixin-b))
+  t)
+
+#+gray-streams-input-stream-p
+(defmethod ngray:input-stream-p ((stream character-io-mixin-b))
+  t)
+
+#+gray-streams-output-stream-p
+(defmethod ngray:output-stream-p ((stream character-io-mixin-b))
+  t)
+
 (defclass bivalent-mixin-a ()
   ((element-type :accessor element-type
                  :initarg :element-type
-                 :initform '(unsigned-byte 8))))
+                 :initform 'character)))
 
 (defun character-stream-p (stream)
   (subtypep (element-type stream) 'character))
@@ -656,6 +677,7 @@
   (setf (element-type stream) new-value))
 
 (defclass bivalent-input-mixin-a (bivalent-mixin-a
+                                  binary-input-mixin-a
                                   character-input-mixin-a)
   ())
 
@@ -671,30 +693,14 @@
   (check-character-stream stream)
   (call-next-method))
 
-(defclass bivalent-input-mixin-b (bivalent-input-mixin-a
-                                  character-input-mixin-b)
-  ())
-
-(defmethod ngray:stream-read-char-no-hang ((stream bivalent-input-mixin-b))
-  (check-character-stream stream)
-  (call-next-method))
-
-(defmethod ngray:stream-peek-char ((stream bivalent-input-mixin-b))
-  (check-character-stream stream)
-  (call-next-method))
-
-(defmethod ngray:stream-read-line ((stream bivalent-input-mixin-b))
-  (check-character-stream stream)
-  (call-next-method))
-
 #+gray-streams-sequence
 (defmethod ngray:stream-read-sequence
   #+gray-streams-sequence/variant-1
-  ((stream bivalent-input-mixin-b) sequence &optional start end)
+  ((stream bivalent-input-mixin-a) sequence &optional start end)
   #+gray-streams-sequence/variant-2
-  ((stream bivalent-input-mixin-b) sequence start end)
+  ((stream bivalent-input-mixin-a) sequence start end)
   #+gray-streams-sequence/variant-3
-  (sequence (stream bivalent-input-mixin-b) &key start end)
+  (sequence (stream bivalent-input-mixin-a) &key start end)
   (cond ((character-stream-p stream)
          (call-next-method))
         ((binary-stream-p stream)
@@ -712,23 +718,19 @@
         (t
          (error "Unknown stream element type"))))
 
-(defclass character-io-mixin-a (character-input-mixin-a
-                             character-output-mixin-a)
+(defclass bivalent-input-mixin-b (bivalent-input-mixin-a
+                                  binary-input-mixin-b
+                                  character-input-mixin-b)
   ())
 
-(defclass character-io-mixin-b (character-io-mixin-a
-                             character-input-mixin-b
-                             character-output-mixin-b)
-  ())
+(defmethod ngray:stream-read-char-no-hang ((stream bivalent-input-mixin-b))
+  (check-character-stream stream)
+  (call-next-method))
 
-#+gray-streams-streamp
-(defmethod ngray:streamp ((stream character-io-mixin-b))
-  t)
+(defmethod ngray:stream-peek-char ((stream bivalent-input-mixin-b))
+  (check-character-stream stream)
+  (call-next-method))
 
-#+gray-streams-input-stream-p
-(defmethod ngray:input-stream-p ((stream character-io-mixin-b))
-  t)
-
-#+gray-streams-output-stream-p
-(defmethod ngray:output-stream-p ((stream character-io-mixin-b))
-  t)
+(defmethod ngray:stream-read-line ((stream bivalent-input-mixin-b))
+  (check-character-stream stream)
+  (call-next-method))
