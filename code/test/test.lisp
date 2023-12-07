@@ -176,3 +176,17 @@
   :input t
   :binary t
   :character t)
+
+;;; Extended Bivalent Input Stream
+
+(defclass bivalent-input-stream-b
+    (bivalent-input-mixin-b
+     ngray:fundamental-character-input-stream)
+  ())
+
+(define-stream-tests bivalent-input-b
+  :class bivalent-input-stream-b
+  :input t
+  :binary t
+  :character t
+  :extended t)

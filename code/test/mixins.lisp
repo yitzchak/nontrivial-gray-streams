@@ -233,8 +233,9 @@
 (defclass binary-input-mixin-a (invocation-mixin)
   ((input-value :accessor input-value
                 :initarg :input-value
-                :initform #())
+                :initform "")
    (input-index :accessor input-index
+                :initarg :input-index
                 :initform 0)))
 
 (defmethod ngray:stream-read-byte ((stream binary-input-mixin-a))
@@ -401,6 +402,7 @@
                 :initarg :input-value
                 :initform "")
    (input-index :accessor input-index
+                :initarg :input-index
                 :initform 0)))
 
 (defmethod ngray:stream-read-char ((stream character-input-mixin-a))
@@ -677,8 +679,8 @@
   (setf (element-type stream) new-value))
 
 (defclass bivalent-input-mixin-a (bivalent-mixin-a
-                                  binary-input-mixin-a
-                                  character-input-mixin-a)
+                                  character-input-mixin-a
+                                  binary-input-mixin-a)
   ())
 
 (defmethod ngray:stream-read-byte ((stream bivalent-input-mixin-a))
@@ -695,12 +697,12 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-read-sequence
-  #+gray-streams-sequence/variant-1
-  ((stream bivalent-input-mixin-a) sequence &optional start end)
-  #+gray-streams-sequence/variant-2
-  ((stream bivalent-input-mixin-a) sequence start end)
-  #+gray-streams-sequence/variant-3
-  (sequence (stream bivalent-input-mixin-a) &key start end)
+    #+gray-streams-sequence/variant-1
+    ((stream bivalent-input-mixin-a) sequence &optional start end)
+    #+gray-streams-sequence/variant-2
+    ((stream bivalent-input-mixin-a) sequence start end)
+    #+gray-streams-sequence/variant-3
+    (sequence (stream bivalent-input-mixin-a) &key start end)
   (cond ((character-stream-p stream)
          (call-next-method))
         ((binary-stream-p stream)
@@ -719,8 +721,8 @@
          (error "Unknown stream element type"))))
 
 (defclass bivalent-input-mixin-b (bivalent-input-mixin-a
-                                  binary-input-mixin-b
-                                  character-input-mixin-b)
+                                  character-input-mixin-b
+                                  binary-input-mixin-b)
   ())
 
 (defmethod ngray:stream-read-char-no-hang ((stream bivalent-input-mixin-b))
