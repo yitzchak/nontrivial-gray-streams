@@ -636,8 +636,8 @@
   ())
 
 (defclass character-io-mixin-b (character-io-mixin-a
-                             character-input-mixin-b
-                             character-output-mixin-b)
+                                character-input-mixin-b
+                                character-output-mixin-b)
   ())
 
 #+gray-streams-streamp
@@ -750,7 +750,37 @@
   (check-character-stream stream)
   (call-next-method))
 
+#+gray-streams-sequence
+(defmethod ngray:stream-write-sequence
+    #+gray-streams-sequence/variant-1
+    ((stream bivalent-output-mixin-a) sequence &optional start end)
+    #+gray-streams-sequence/variant-2
+    ((stream bivalent-output-mixin-a) sequence start end)
+    #+gray-streams-sequence/variant-3
+    (sequence (stream bivalent-output-mixin-a) &key start end)
+  (cond ((character-stream-p stream)
+         (call-next-method))
+        ((binary-stream-p stream)
+         (with-accessors ((output-value output-value))
+             stream
+           (unless end
+             (setf end (length sequence)))
+           (unless start
+             (setf start 0))
+           (let* ((len (- end start))
+                  (start1 (fill-pointer output-value))
+                  (end1 (+ start1 len)))
+             (if (< (array-total-size output-value) end1)
+                 (setf output-value (adjust-array output-value end1 :fill-pointer end1))
+                 (setf (fill-pointer output-value) end1))
+             (replace output-value (map 'string #'code-char sequence)
+                      :start1 start1 :end1 end1
+                      :start2 start :end2 end))))
+        (t
+         (error "Unknown stream element type"))))
+
 (defclass bivalent-output-mixin-b (bivalent-output-mixin-a
                                    character-output-mixin-b
                                    binary-output-mixin-b)
   ())
+

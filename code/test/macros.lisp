@@ -534,7 +534,7 @@ b")))
                  (true (invoked-p stream :stream-write-byte stream 97))))
 
              #+gray-streams-sequence
-             (define-test ,(test-name '#:write-sequence.01)
+             (define-test ,(test-name '#:write-sequence.05)
                :parent ,parent
                (let ((stream (make-instance ',class
                                             ,@(when character
@@ -544,7 +544,7 @@ b")))
                  (is equalp "abde" (output-value stream))
                  (true (or (invoked-p stream :stream-write-sequence stream #(97 98) nil nil)
                            (invoked-p stream :stream-write-sequence stream #(97 98) 0 nil)
-                           (invoked-p stream :stream-write-sequence stream #(97 98) 0 4)))
+                           (invoked-p stream :stream-write-sequence stream #(97 98) 0 2)))
                  (true (invoked-p stream :stream-write-sequence stream #(99 100 101 102) 1 3))))))
 
        ,@(when (and output character)
@@ -565,7 +565,7 @@ b")))
                  (true (invoked-p stream :stream-write-char stream #\b))))
 
              #+gray-streams-sequence
-             (define-test ,(test-name '#:write-sequence.01)
+             (define-test ,(test-name '#:write-sequence.06)
                :parent ,parent
                (let ((stream (make-instance ',class)))
                  (write-sequence "abcd" stream)
