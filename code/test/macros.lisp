@@ -449,7 +449,7 @@ b")))
                  (setf (ngray:stream-element-type stream) 'integer)
                  (is eql 97 (read-byte stream))
                  (true (invoked-p stream :stream-peek-char stream))
-                 ,(unless extended
+                 ,@(unless extended
                     `((true (invoked-p stream :stream-read-char stream))
                       (true (invoked-p stream :stream-unread-char stream))))
                  (true (invoked-p stream :stream-element-type stream 'integer))
