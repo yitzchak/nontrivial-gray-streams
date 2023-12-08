@@ -445,13 +445,12 @@ b")))
              (define-test ,(test-name '#:peek-char/read-char.01)
                :parent ,parent
                (let ((stream (make-instance ',class :input-value "ab")))
-                 (is eql #\a (peek-char stream))
+                 (is eql #\a (peek-char nil stream))
                  (setf (ngray:stream-element-type stream) 'integer)
                  (is eql 97 (read-byte stream))
                  (true (invoked-p stream :stream-peek-char stream))
                  ,@(unless extended
-                    `((true (invoked-p stream :stream-read-char stream))
-                      (true (invoked-p stream :stream-unread-char stream))))
+                    `((true (invoked-p stream :stream-read-char stream))))
                  (true (invoked-p stream :stream-element-type stream 'integer))
                  (true (invoked-p stream :stream-read-byte stream))))
 
