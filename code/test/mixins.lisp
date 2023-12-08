@@ -634,7 +634,7 @@
                :start2 start :end2 end))))
 
 (defclass character-io-mixin-a (character-input-mixin-a
-                             character-output-mixin-a)
+                                character-output-mixin-a)
   ())
 
 (defclass character-io-mixin-b (character-io-mixin-a
@@ -810,3 +810,24 @@
   (declare (ignore string start end))
   (check-character-stream stream)
   (call-next-method))
+
+(defclass bivalent-io-mixin-a (bivalent-input-mixin-a
+                               bivalent-output-mixin-a)
+  ())
+
+(defclass bivalent-io-mixin-b (bivalent-io-mixin-a
+                               bivalent-input-mixin-b
+                               bivalent-output-mixin-b)
+  ())
+
+#+gray-streams-streamp
+(defmethod ngray:streamp ((stream bivalent-io-mixin-b))
+  t)
+
+#+gray-streams-input-stream-p
+(defmethod ngray:input-stream-p ((stream bivalent-io-mixin-b))
+  t)
+
+#+gray-streams-output-stream-p
+(defmethod ngray:output-stream-p ((stream bivalent-io-mixin-b))
+  t)
