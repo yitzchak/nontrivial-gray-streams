@@ -582,12 +582,7 @@ b")))
                (let ((stream (make-instance ',class
                                             ,@(when character
                                                 `(:element-type 'integer)))))
-                 (fail (write-string "ab" stream))
-                 (skip-on (:clisp)
-                          "CLISP doesn't call stream-write-string"
-                          (true (or (invoked-p stream :stream-write-string stream "ab" nil nil)
-                                    (invoked-p stream :stream-write-string stream "ab" 0 nil)
-                                    (invoked-p stream :stream-write-string stream "ab" 0 2))))))))
+                 (fail (write-string "ab" stream))))))
 
        ,@(when (and output character)
            `((define-test ,(test-name '#:fresh-line.02)
