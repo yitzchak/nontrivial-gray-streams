@@ -5,6 +5,7 @@
                 :initform (make-array 10
                                       :fill-pointer 0
                                       :adjustable t
+                                      :initial-element nil
                                       :element-type 'list))))
 
 (defun invoked-p (stream &rest args)
@@ -207,6 +208,7 @@
              :initform nil)))
 
 (defmethod ngray:close ((stream stream-mixin-b) &key abort)
+  (declare (ignore abort))
   (cond ((openp stream)
          (setf (openp stream) nil)
          t)
@@ -779,8 +781,32 @@
         (t
          (error "Unknown stream element type"))))
 
+(defmethod ngray:stream-advance-to-column ((stream bivalent-output-mixin-a) column)
+  (check-character-stream stream)
+  (call-next-method))
+
+(defmethod ngray:stream-start-line-p ((stream bivalent-output-mixin-a))
+  (check-character-stream stream)
+  (call-next-method))
+
 (defclass bivalent-output-mixin-b (bivalent-output-mixin-a
                                    character-output-mixin-b
                                    binary-output-mixin-b)
   ())
 
+(defmethod ngray:stream-line-column ((stream bivalent-output-mixin-b))
+  (check-character-stream stream)
+  (call-next-method))
+
+(defmethod ngray:stream-fresh-line ((stream bivalent-output-mixin-b))
+  (check-character-stream stream)
+  (call-next-method))
+
+(defmethod ngray:stream-terpri ((stream bivalent-output-mixin-b))
+  (check-character-stream stream)
+  (call-next-method))
+
+(defmethod ngray:stream-write-string ((stream bivalent-output-mixin-b) string &optional start end)
+  (declare (ignore string start end))
+  (check-character-stream stream)
+  (call-next-method))

@@ -253,6 +253,11 @@ NIL.  The string argument is returned.  The default method provided by
 Writes an end of line, as for [CL:TERPRI][].  Returns NIL.  The
 default method does `(STREAM-WRITE-CHAR stream #\NEWLINE)`.
 
+> The default method described in the proposal should probably be only
+> for fundamental-character-output-stream since non-bivalent binary
+> streams do not have a concept of columns. In this case any signaled
+> error would be appropriate including NO-APPLICABLE-METHOD.
+
 ## STREAM-FRESH-LINE
 [Generic Function]
 
@@ -262,6 +267,11 @@ default method does `(STREAM-WRITE-CHAR stream #\NEWLINE)`.
 
 Used by [CL:FRESH-LINE][].  The default method uses
 [STREAM-START-LINE-P][] and [STREAM-TERPRI][].
+
+> The default method described in the proposal should probably be only
+> for fundamental-character-output-stream since non-bivalent binary
+> streams do not have a concept of columns. In this case any signaled
+> error would be appropriate including NO-APPLICABLE-METHOD.
 
 ## STREAM-FINISH-OUTPUT
 [Generic Function]
@@ -304,6 +314,11 @@ This is intended for use by by PPRINT and FORMAT ~T.  The default
 method uses [STREAM-LINE-COLUMN][] and repeated calls to
 [STREAM-WRITE-CHAR][] with a #\SPACE character; it returns NIL if
 [STREAM-LINE-COLUMN][] returns NIL.
+
+> The default method described in the proposal should probably be only
+> for fundamental-character-output-stream since non-bivalent binary
+> streams do not have a concept of columns. In this case any signaled
+> error would be appropriate including NO-APPLICABLE-METHOD.
 
 # Other Functions
 
