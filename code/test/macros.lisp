@@ -442,6 +442,20 @@ b")))
                  (true (invoked-p stream :stream-read-char stream))))
 
              #+gray-streams-element-type
+             (define-test ,(test-name '#:peek-char/read-char.01)
+               :parent ,parent
+               (let ((stream (make-instance ',class :input-value "ab")))
+                 (is eql #\a (peek-char stream))
+                 (setf (ngray:stream-element-type stream) 'integer)
+                 (is eql 97 (read-byte stream))
+                 (true (invoked-p stream :stream-peek-char stream))
+                 ,(unless extended
+                    `((true (invoked-p stream :stream-read-char stream))
+                      (true (invoked-p stream :stream-unread-char stream))))
+                 (true (invoked-p stream :stream-element-type stream 'integer))
+                 (true (invoked-p stream :stream-read-byte stream))))
+
+             #+gray-streams-element-type
              (define-test ,(test-name '#:read-byte/char.01)
                :parent ,parent
                (let ((stream (make-instance ',class :input-value "ab")))
@@ -512,22 +526,26 @@ b")))
        ,@(when (and output binary)
            `((define-test ,(test-name '#:write-byte.01)
                :parent ,parent
-               (let ((stream (make-instance ',class)))
+               (let ((stream (make-instance ',class
+                                            ,@(when character
+                                                `(:element-type 'integer)))))
                  (is equal 97 (write-byte 97 stream))
-                 (is equalp #(97) (output-value stream))
+                 (is equalp "a" (output-value stream))
                  (true (invoked-p stream :stream-write-byte stream 97))))
 
              #+gray-streams-sequence
              (define-test ,(test-name '#:write-sequence.01)
                :parent ,parent
-               (let ((stream (make-instance ',class)))
-                 (write-sequence #(10 11 12 13) stream)
-                 (write-sequence #(14 15 16 17) stream :start 1 :end 3)
-                 (is equalp #(10 11 12 13 15 16) (output-value stream))
-                 (true (or (invoked-p stream :stream-write-sequence stream #(10 11 12 13) nil nil)
-                           (invoked-p stream :stream-write-sequence stream #(10 11 12 13) 0 nil)
-                           (invoked-p stream :stream-write-sequence stream #(10 11 12 13) 0 4)))
-                 (true (invoked-p stream :stream-write-sequence stream #(14 15 16 17) 1 3))))))
+               (let ((stream (make-instance ',class
+                                            ,@(when character
+                                                `(:element-type 'integer)))))
+                 (write-sequence #(97 98) stream)
+                 (write-sequence #(99 100 101 102) stream :start 1 :end 3)
+                 (is equalp "abde" (output-value stream))
+                 (true (or (invoked-p stream :stream-write-sequence stream #(97 98) nil nil)
+                           (invoked-p stream :stream-write-sequence stream #(97 98) 0 nil)
+                           (invoked-p stream :stream-write-sequence stream #(97 98) 0 4)))
+                 (true (invoked-p stream :stream-write-sequence stream #(99 100 101 102) 1 3))))))
 
        ,@(when (and output character)
            `((define-test ,(test-name '#:fresh-line.01)

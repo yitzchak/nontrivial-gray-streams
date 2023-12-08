@@ -135,23 +135,23 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-read-sequence :before
-  #+gray-streams-sequence/variant-1
-  ((stream invocation-mixin) sequence &optional start end)
-  #+gray-streams-sequence/variant-2
-  ((stream invocation-mixin) sequence start end)
-  #+gray-streams-sequence/variant-3
-  (sequence (stream invocation-mixin) &key start end)
+    #+gray-streams-sequence/variant-1
+    ((stream invocation-mixin) sequence &optional start end)
+    #+gray-streams-sequence/variant-2
+    ((stream invocation-mixin) sequence start end)
+    #+gray-streams-sequence/variant-3
+    (sequence (stream invocation-mixin) &key start end)
   (vector-push-extend (list :stream-read-sequence stream sequence start end)
                       (invocations stream)))
 
 #+gray-streams-sequence
 (defmethod ngray:stream-write-sequence :before
-  #+gray-streams-sequence/variant-1
-  ((stream invocation-mixin) sequence &optional start end)
-  #+gray-streams-sequence/variant-2
-  ((stream invocation-mixin) sequence start end)
-  #+gray-streams-sequence/variant-3
-  (sequence (stream invocation-mixin) &key start end)
+    #+gray-streams-sequence/variant-1
+    ((stream invocation-mixin) sequence &optional start end)
+    #+gray-streams-sequence/variant-2
+    ((stream invocation-mixin) sequence start end)
+    #+gray-streams-sequence/variant-3
+    (sequence (stream invocation-mixin) &key start end)
   (vector-push-extend (list :stream-write-sequence stream sequence start end)
                       (invocations stream)))
 
@@ -272,17 +272,17 @@
 
 (defmethod ngray:stream-clear-input ((stream binary-input-mixin-b))
   (setf (input-index stream) 0
-        (input-value stream) #())
+        (input-value stream) "")
   nil)
 
 #+gray-streams-sequence
 (defmethod ngray:stream-read-sequence
-  #+gray-streams-sequence/variant-1
-  ((stream binary-input-mixin-b) sequence &optional start end)
-  #+gray-streams-sequence/variant-2
-  ((stream binary-input-mixin-b) sequence start end)
-  #+gray-streams-sequence/variant-3
-  (sequence (stream binary-input-mixin-b) &key start end)
+    #+gray-streams-sequence/variant-1
+    ((stream binary-input-mixin-b) sequence &optional start end)
+    #+gray-streams-sequence/variant-2
+    ((stream binary-input-mixin-b) sequence start end)
+    #+gray-streams-sequence/variant-3
+    (sequence (stream binary-input-mixin-b) &key start end)
   (unless end
     (setf end (length sequence)))
   (prog ((input-index (or start 0)) ch)
@@ -329,11 +329,11 @@
 
 (defclass binary-output-mixin-a (invocation-mixin)
   ((output-value :accessor output-value
-                 :initform (make-array 16 :element-type '(unsigned-byte 8)
+                 :initform (make-array 16 :element-type 'character
                                           :adjustable t :fill-pointer 0))))
 
 (defmethod ngray:stream-write-byte ((stream binary-output-mixin-a) byte)
-  (vector-push-extend byte (output-value stream))
+  (vector-push-extend (code-char byte) (output-value stream))
   byte)
 
 (defmethod ngray:stream-element-type ((stream binary-output-mixin-a))
@@ -354,12 +354,12 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-write-sequence
-  #+gray-streams-sequence/variant-1
-  ((stream binary-output-mixin-b) sequence &optional start end)
-  #+gray-streams-sequence/variant-2
-  ((stream binary-output-mixin-b) sequence start end)
-  #+gray-streams-sequence/variant-3
-  (sequence (stream binary-output-mixin-b) &key start end)
+    #+gray-streams-sequence/variant-1
+    ((stream binary-output-mixin-b) sequence &optional start end)
+    #+gray-streams-sequence/variant-2
+    ((stream binary-output-mixin-b) sequence start end)
+    #+gray-streams-sequence/variant-3
+    (sequence (stream binary-output-mixin-b) &key start end)
   (with-accessors ((output-value output-value))
       stream
     (unless end
@@ -372,7 +372,7 @@
       (if (< (array-total-size output-value) end1)
           (setf output-value (adjust-array output-value end1 :fill-pointer end1))
           (setf (fill-pointer output-value) end1))
-      (replace output-value sequence
+      (replace output-value (map 'string #'code-char sequence)
                :start1 start1 :end1 end1
                :start2 start :end2 end))))
 
@@ -475,12 +475,12 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-read-sequence
-  #+gray-streams-sequence/variant-1
-  ((stream character-input-mixin-b) sequence &optional start end)
-  #+gray-streams-sequence/variant-2
-  ((stream character-input-mixin-b) sequence start end)
-  #+gray-streams-sequence/variant-3
-  (sequence (stream character-input-mixin-b) &key start end)
+    #+gray-streams-sequence/variant-1
+    ((stream character-input-mixin-b) sequence &optional start end)
+    #+gray-streams-sequence/variant-2
+    ((stream character-input-mixin-b) sequence start end)
+    #+gray-streams-sequence/variant-3
+    (sequence (stream character-input-mixin-b) &key start end)
   (unless end
     (setf end (length sequence)))
   (prog ((input-index (or start 0)) ch)
@@ -609,12 +609,12 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-write-sequence
-  #+gray-streams-sequence/variant-1
-  ((stream character-output-mixin-b) sequence &optional start end)
-  #+gray-streams-sequence/variant-2
-  ((stream character-output-mixin-b) sequence start end)
-  #+gray-streams-sequence/variant-3
-  (sequence (stream character-output-mixin-b) &key start end)
+    #+gray-streams-sequence/variant-1
+    ((stream character-output-mixin-b) sequence &optional start end)
+    #+gray-streams-sequence/variant-2
+    ((stream character-output-mixin-b) sequence start end)
+    #+gray-streams-sequence/variant-3
+    (sequence (stream character-output-mixin-b) &key start end)
   (with-accessors ((output-value output-value))
       stream
     (unless end
@@ -736,3 +736,21 @@
 (defmethod ngray:stream-read-line ((stream bivalent-input-mixin-b))
   (check-character-stream stream)
   (call-next-method))
+
+(defclass bivalent-output-mixin-a (bivalent-mixin-a
+                                  character-output-mixin-a
+                                  binary-output-mixin-a)
+  ())
+
+(defmethod ngray:stream-write-byte ((stream bivalent-output-mixin-a) byte)
+  (check-binary-stream stream)
+  (call-next-method))
+
+(defmethod ngray:stream-write-char ((stream bivalent-output-mixin-a) char)
+  (check-character-stream stream)
+  (call-next-method))
+
+(defclass bivalent-output-mixin-b (bivalent-output-mixin-a
+                                   character-output-mixin-b
+                                   binary-output-mixin-b)
+  ())

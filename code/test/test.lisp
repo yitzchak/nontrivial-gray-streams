@@ -181,12 +181,40 @@
 
 (defclass bivalent-input-stream-b
     (bivalent-input-mixin-b
+     #+ccl file-stream
      ngray:fundamental-character-input-stream)
   ())
 
 (define-stream-tests bivalent-input-b
   :class bivalent-input-stream-b
   :input t
+  :binary t
+  :character t
+  :extended t)
+
+;;; Basic Bivalent Output Stream
+
+(defclass bivalent-output-stream-a
+    (bivalent-output-mixin-a
+     ngray:fundamental-character-output-stream)
+  ())
+
+(define-stream-tests bivalent-output-a
+  :class bivalent-output-stream-a
+  :output t
+  :binary t
+  :character t)
+
+;;; Extended Bivalent Output Stream
+
+(defclass bivalent-output-stream-b
+    (bivalent-output-mixin-b
+     ngray:fundamental-character-output-stream)
+  ())
+
+(define-stream-tests bivalent-output-b
+  :class bivalent-output-stream-b
+  :output t
   :binary t
   :character t
   :extended t)
