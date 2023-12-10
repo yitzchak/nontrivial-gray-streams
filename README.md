@@ -359,17 +359,17 @@ method which returns CHARACTER.
 
 ## PATHNAME
 
-PATHNAME is also permitted to be implemented as generic functions.
-There is no default method since it is not valid for all streams. If
-PATHNAME is made generic then the feature `:gray-streams-pathname`
-will be present.
+[CL:PATHNAME][] is also permitted to be implemented as generic
+functions.  There is no default method since it is not valid for all
+streams. If [CL:PATHNAME][] is made generic then the feature
+`:gray-streams-pathname` will be present.
 
 ## TRUENAME
 
-TRUENAME is also permitted to be implemented as generic functions.
-There is no default method since it is not valid for all streams. If
-TRUENAME is made generic then the feature `:gray-streams-truename`
-will be present.
+[CL:TRUENAME][] is also permitted to be implemented as generic
+functions.  There is no default method since it is not valid for all
+streams. If [CL:TRUENAME][] is made generic then the feature
+`:gray-streams-truename` will be present.
 
 
 # Optional Predicates
@@ -689,6 +689,7 @@ stream-filename-->
 [CL:FRESH-LINE]: https://novaspec.org/cl/f_terpri
 [CL:INTERACTIVE-STREAM-P]: https://novaspec.org/cl/f_interactive-stream-p
 [CL:LISTEN]: https://novaspec.org/cl/f_listen
+[CL:PATHNAME]: https://novaspec.org/cl/f_pathname
 [CL:PEEK-CHAR]: https://novaspec.org/cl/f_peek-char
 [CL:PPRINT]: https://novaspec.org/cl/f_write
 [CL:READ-BYTE]: https://novaspec.org/cl/f_read-byte
@@ -696,6 +697,7 @@ stream-filename-->
 [CL:READ-LINE]: https://novaspec.org/cl/f_read-line
 [CL:READ-SEQUENCE]: https://novaspec.org/cl/f_read-sequence
 [CL:TERPRI]: https://novaspec.org/cl/f_terpri
+[CL:TRUENAME]: https://novaspec.org/cl/f_truename
 [CL:UNREAD-CHAR]: https://novaspec.org/cl/f_unread-char
 [CL:WRITE-BYTE]: https://novaspec.org/cl/f_write-byte
 [CL:WRITE-SEQUENCE]: https://novaspec.org/cl/f_write-sequence
