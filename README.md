@@ -357,11 +357,20 @@ This existing function is made generic, but otherwise behaves the
 same.  Class [FUNDAMENTAL-CHARACTER-STREAM][] provides a default
 method which returns CHARACTER.
 
-PATHNAME and TRUENAME are also permitted to be implemented as generic
-functions.  There is no default method since these are not valid for
-all streams. If PATHNAME is made generic then the feature
-`:gray-streams-pathname` will be present.  If TRUENAME is made generic
-then the feature `:gray-streams-truename` will be present.
+## PATHNAME
+
+PATHNAME is also permitted to be implemented as generic functions.
+There is no default method since it is not valid for all streams. If
+PATHNAME is made generic then the feature `:gray-streams-pathname`
+will be present.
+
+## TRUENAME
+
+TRUENAME is also permitted to be implemented as generic functions.
+There is no default method since it is not valid for all streams. If
+TRUENAME is made generic then the feature `:gray-streams-truename`
+will be present.
+
 
 # Optional Predicates
 
@@ -432,22 +441,24 @@ returns the integer as the result.
 
 # Implementation Support of Extensions and Optional Interfaces
 
-| Interface/Extension      | [ABCL][] | [Allegro][] | [CCL][] | [Clasp][] | [CLISP][] | [CMUCL][] | [ECL][] | [LispWorks][] | [Mezzano][] | [MKCL][] | [SBCL][] |
-|--------------------------|:--------:|:-----------:|:-------:|:---------:|:---------:|:---------:|:-------:|:-------------:|:-----------:|:--------:|:--------:|
-| [STREAMP][]              | ✓        |             | ✓       | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
-| [INPUT-STREAM-P][]       | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
-| [OUTPUT-STREAM-P][]      | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
-| PATHNAME                 |          |             | ✓       |           |           |           |         |               |             |          |          |
-| TRUENAME                 |          |             |         |           |           |           |         |               |             |          |          |
-| SETF STREAM-ELEMENT-TYPE |          |             |         |           | ✓         |           |         |               |             |          |          |
-| [Sequence][]             | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
-| [File Position][]        | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
-| [File Length][]          | ✓        |             | ✓       | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
-| [External Format][]      |          |             | ✓       |           |           |           |         |               |             |          |          |
-| [INTERACTIVE-STREAM-P][] | ✓        |             | ✓       | ✓         |           |           | ✓       |               | ✓           | ✓        | ✓        |
-| [Line Length][]          | ✓        |             | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
+| Interface/Extension          | [ABCL][] | [Allegro][] | [CCL][] | [Clasp][] | [CLISP][] | [CMUCL][] | [ECL][] | [LispWorks][] | [Mezzano][] | [MKCL][] | [SBCL][] |
+|------------------------------|:--------:|:-----------:|:-------:|:---------:|:---------:|:---------:|:-------:|:-------------:|:-----------:|:--------:|:--------:|
+| [STREAMP][]                  | ✓        |             | ✓       | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
+| [INPUT-STREAM-P][]           | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
+| [OUTPUT-STREAM-P][]          | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
+| [PATHNAME][]                 |          |             | ✓       |           |           |           |         |               |             |          |          |
+| [TRUENAME][]                 |          |             |         |           |           |           |         |               |             |          |          |
+| [SETF STREAM-ELEMENT-TYPE][] |          |             |         |           | ✓         |           |         |               |             |          |          |
+| [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
+| [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
+| [File Length][]              | ✓        |             | ✓       | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
+| [External Format][]          |          |             | ✓       |           |           |           |         |               |             |          |          |
+| [INTERACTIVE-STREAM-P][]     | ✓        |             | ✓       | ✓         |           |           | ✓       |               | ✓           | ✓        | ✓        |
+| [Line Length][]              | ✓        |             | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
 
 # Bivalent Extensions
+
+## SETF STREAM-ELEMENT-TYPE
 
 The Gray stream protocol makes [CL:STREAM-ELEMENT-TYPE][] a generic
 function but does not provide for bivalent streams which can change
@@ -713,7 +724,9 @@ stream-filename-->
 [Mezzano]: https://github.com/froggey/Mezzano
 [OPEN-STREAM-P]: #OPEN-STREAM-P
 [OUTPUT-STREAM-P]: #OUTPUT-STREAM-P
+[PATHNAME]: #PATHNAME
 [SBCL]: http://sbcl.org/
+[SETF STREAM-ELEMENT-TYPE][]: #SETF-STREAM-ELEMENT-TYPE
 [STREAM-ADVANCE-TO-COLUMN]: #STREAM-ADVANCE-TO-COLUMN
 [STREAM-CLEAR-INPUT]: #STREAM-CLEAR-INPUT
 [STREAM-CLEAR-OUTPUT]: #STREAM-CLEAR-OUTPUT
@@ -740,4 +753,5 @@ stream-filename-->
 [STREAM-WRITE-STRING]: #STREAM-WRITE-STRING
 [STREAMP]: #STREAMP
 [Sequence]: #SEQUENCE-EXTENSIONS
+[TRUENAME]: #TRUENAME
 [pretty printer]: https://novaspec.org/cl/22_2_The_Lisp_Pretty_Printer#_j5
