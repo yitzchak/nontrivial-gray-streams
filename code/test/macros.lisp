@@ -33,6 +33,13 @@
            #+(and gray-streams-streamp (not ccl))
            (true (invoked-p stream :streamp stream))))
 
+       #+gray-streams-external-format
+       (define-test ,(test-name '#:stream-external-format.01)
+         :parent ,parent
+         (let ((stream (make-instance ',class)))
+           (stream-external-format stream)
+           (true (invoked-p stream :stream-external-format stream))))
+
        ,@(when extended
            `(#+gray-streams-pathname
              (define-test ,(test-name '#:pathname.01)
@@ -46,7 +53,7 @@
              (define-test ,(test-name '#:truehname.01)
                :parent ,parent
                (let ((stream (make-instance ',class
-                                            :pathname #P"fu.bar")))
+                                            :truename #P"fu.bar")))
                  (is equalp #P"fu.bar" (truename stream))
                  (true (invoked-p stream :truename stream))))))
 
@@ -69,7 +76,9 @@
        ,@(when input
            `((define-test ,(test-name '#:clear-input.01)
                :parent ,parent
-               (let ((stream (make-instance ',class)))
+               (let ((stream (make-instance ',class
+                                            ,@(when (and binary character)
+                                                `(:element-type 'integer)))))
                  (false (clear-input stream))
                  (true (invoked-p stream :stream-clear-input stream))))
 

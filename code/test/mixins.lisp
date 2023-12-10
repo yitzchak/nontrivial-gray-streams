@@ -129,6 +129,16 @@
   (vector-push-extend (list :stream-element-type stream new-value)
                       (invocations stream)))
 
+#+gray-streams-external-format
+(defmethod ngray:stream-external-format :before ((stream invocation-mixin))
+  (vector-push-extend (list :stream-external-format stream)
+                      (invocations stream)))
+
+#+gray-streams-external-format
+(defmethod (setf ngray:stream-external-format) :before (new-value (stream invocation-mixin))
+  (vector-push-extend (list :stream-external-format stream new-value)
+                      (invocations stream)))
+
 #+gray-streams-interactive
 (defmethod ngray:interactive-stream-p :before ((stream invocation-mixin))
   (vector-push-extend (list :interactive-stream-p stream)
@@ -303,6 +313,7 @@
 
 #+gray-streams-file-length/variant-1
 (defmethod ngray:stream-file-length ((stream binary-input-mixin-b) &optional length)
+  (declare (ignore length))
   (length (input-value stream)))
 
 #+(or gray-streams-file-position/variant-1

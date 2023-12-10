@@ -20,6 +20,14 @@
   #+ccl
   (pushnew :gray-streams-pathname *features*)
 
+  #+clasp
+  (when (typep (fdefinition 'cl:pathname) 'generic-function)
+    (pushnew :gray-streams-pathname *features*))
+
+  #+clasp
+  (when (typep (fdefinition 'cl:truename) 'generic-function)
+    (pushnew :gray-streams-truename *features*))
+
   #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-sequence *features*)
 
@@ -216,4 +224,6 @@
            #+gray-streams-sequence
            #:stream-write-sequence
            #:stream-write-string
-           #:streamp))
+           #:streamp
+           #+gray-streams-truename
+           #:truename))
