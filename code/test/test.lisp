@@ -42,6 +42,20 @@
   :binary t
   :extended t)
 
+;;; Extended Binary Input Stream which relies on support for generic
+;;; STREAMP
+
+(defclass binary-input-stream-d
+    (binary-input-mixin-b)
+  ())
+
+#+(and gray-streams-streamp (not ccl))
+(define-stream-tests binary-input-d
+  :class binary-input-stream-d
+  :input t
+  :binary t
+  :extended t)
+
 ;;; Basic Binary Output Stream
 
 (defclass binary-output-stream-a

@@ -443,7 +443,7 @@ returns the integer as the result.
 
 | Interface/Extension          | [ABCL][] | [Allegro][] | [CCL][] | [Clasp][] | [CLISP][] | [CMUCL][] | [ECL][] | [LispWorks][] | [Mezzano][] | [MKCL][] | [SBCL][] |
 |------------------------------|:--------:|:-----------:|:-------:|:---------:|:---------:|:---------:|:-------:|:-------------:|:-----------:|:--------:|:--------:|
-| [STREAMP][]                  | ✓        |             | ✓       | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
+| [STREAMP][]                  | ✓        |             | ✓¹      | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
 | [INPUT-STREAM-P][]           | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [OUTPUT-STREAM-P][]          | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [PATHNAME][]                 |          |             | ✓       | ✓         |           |           |         |               |             |          |          |
@@ -451,10 +451,19 @@ returns the integer as the result.
 | [SETF STREAM-ELEMENT-TYPE][] |          |             |         |           | ✓         |           |         |               |             |          |          |
 | [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
-| [File Length][]              | ✓        |             | ✓       | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
+| [File Length][]              | ✓        |             | ✓¹      | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
 | [External Format][]          |          |             | ✓       |           |           |           |         |               |             |          |          |
 | [INTERACTIVE-STREAM-P][]     | ✓        |             | ✓       | ✓         |           |           | ✓       |               | ✓           | ✓        | ✓        |
 | [Line Length][]              | ✓        |             | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
+
+1. The generic versions of STREAMP and FILE-LENGTH are in conflict
+   with each other in CCL. The ANSI specification requires FILE-LENGTH
+   to signal an TYPE-ERROR when the stream is not a FILE-STREAM. This
+   requires subclassing FILE-STREAM in any class which wishes to
+   implmenent FILE-LENGTH, but subclassing FILE-STREAM would make
+   specializing STREAMP extraneous. This is probably only resolvable
+   by the addition of a generic FILE-STREAM-P, which has no
+   corresponding function in the ANSI specification.
 
 # Bivalent Extensions
 
