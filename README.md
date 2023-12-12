@@ -460,7 +460,7 @@ returns the integer as the result.
    with each other in CCL. The ANSI specification requires FILE-LENGTH
    to signal an TYPE-ERROR when the stream is not a FILE-STREAM. This
    requires subclassing FILE-STREAM in any class which wishes to
-   implmenent FILE-LENGTH, but subclassing FILE-STREAM would make
+   implement FILE-LENGTH, but subclassing FILE-STREAM would make
    specializing STREAMP extraneous. This is probably only resolvable
    by the addition of a generic FILE-STREAM-P, which has no
    corresponding function in the ANSI specification.
@@ -708,7 +708,7 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 [OUTPUT-STREAM-P]: #OUTPUT-STREAM-P
 [PATHNAME]: #PATHNAME
 [SBCL]: http://sbcl.org/
-[SETF STREAM-ELEMENT-TYPE][]: #SETF-STREAM-ELEMENT-TYPE
+[SETF STREAM-ELEMENT-TYPE]: #SETF-STREAM-ELEMENT-TYPE
 [STREAM-ADVANCE-TO-COLUMN]: #STREAM-ADVANCE-TO-COLUMN
 [STREAM-CLEAR-INPUT]: #STREAM-CLEAR-INPUT
 [STREAM-CLEAR-OUTPUT]: #STREAM-CLEAR-OUTPUT
