@@ -98,6 +98,20 @@
   :binary t
   :extended t)
 
+;;; Extended Binary Output Stream which relies on support for generic
+;;; STREAMP.
+
+(defclass binary-output-stream-d
+    (binary-output-mixin-b)
+  ())
+
+#+(and gray-streams-streamp (not ccl))
+(define-stream-tests binary-output-d
+  :class binary-output-stream-d
+  :output t
+  :binary t
+  :extended t)
+
 ;;; Basic Binary Input/Output Stream
 
 (defclass binary-io-stream-a
@@ -145,6 +159,21 @@
   :binary t
   :extended t)
 
+;;; Extended Binary Input/Output Stream which relies on support for generic
+;;; STREAMP.
+
+(defclass binary-io-stream-d
+    (binary-io-mixin-b)
+  ())
+
+#+(and gray-streams-streamp (not ccl))
+(define-stream-tests binary-io-d
+  :class binary-io-stream-d
+  :input t
+  :output t
+  :binary t
+  :extended t)
+
 ;;; Basic Character Input Stream
 
 (defclass character-input-stream-a
@@ -183,6 +212,20 @@
 #+gray-streams-input-stream-p
 (define-stream-tests character-input-c
   :class character-input-stream-c
+  :input t
+  :character t
+  :extended t)
+
+;;; Extended Character Input Stream which relies on support for
+;;; generic STREAMP.
+
+(defclass character-input-stream-d
+    (character-input-mixin-b)
+  ())
+
+#+(and gray-streams-streamp (not ccl))
+(define-stream-tests character-input-d
+  :class character-input-stream-d
   :input t
   :character t
   :extended t)
@@ -229,6 +272,20 @@
   :character t
   :extended t)
 
+;;; Extended Character Output Stream which relies on support for
+;;; generic STREAMP.
+
+(defclass character-output-stream-d
+    (character-output-mixin-b)
+  ())
+
+#+(and gray-streams-streamp (not ccl))
+(define-stream-tests character-output-d
+  :class character-output-stream-d
+  :output t
+  :character t
+  :extended t)
+
 ;;; Basic Character Input/Output Stream
 
 (defclass character-io-stream-a
@@ -271,6 +328,21 @@
 #+(and gray-streams-input-stream-p gray-streams-output-stream-p)
 (define-stream-tests character-io-c
   :class character-io-stream-c
+  :input t
+  :output t
+  :character t
+  :extended t)
+
+;;; Extended Character Input/Output Stream which relies on support for
+;;; generic STREAMP.
+
+(defclass character-io-stream-d
+    (character-io-mixin-b)
+  ())
+
+#+(and gray-streams-streamp (not ccl))
+(define-stream-tests character-io-d
+  :class character-io-stream-d
   :input t
   :output t
   :character t
@@ -323,6 +395,23 @@
   :character t
   :extended t)
 
+;;; Extended Bivalent Input Stream which relies on support for
+;;; generic STREAMP.
+
+(defclass bivalent-input-stream-d
+    (bivalent-input-mixin-b)
+  ()
+  #+allegro
+  (:default-initargs :element-type 'character))
+
+#+(and gray-streams-streamp (not ccl))
+(define-stream-tests bivalent-input-d
+  :class bivalent-input-stream-d
+  :input t
+  :binary t
+  :character t
+  :extended t)
+
 ;;; Basic Bivalent Output Stream
 
 (defclass bivalent-output-stream-a
@@ -363,6 +452,23 @@
 #+gray-streams-output-stream-p
 (define-stream-tests bivalent-output-c
   :class bivalent-output-stream-c
+  :output t
+  :binary t
+  :character t
+  :extended t)
+
+;;; Extended Bivalent Output Stream which relies on support for
+;;; generic STREAMP.
+
+(defclass bivalent-output-stream-d
+    (bivalent-output-mixin-b)
+  ()
+  #+allegro
+  (:default-initargs :element-type 'character))
+
+#+(and gray-streams-streamp (not ccl))
+(define-stream-tests bivalent-output-d
+  :class bivalent-output-stream-d
   :output t
   :binary t
   :character t
@@ -414,6 +520,24 @@
 #+(and gray-streams-input-stream-p gray-streams-output-stream-p)
 (define-stream-tests bivalent-io-c
   :class bivalent-io-stream-c
+  :input t
+  :output t
+  :binary t
+  :character t
+  :extended t)
+
+;;; Extended Bivalent Input/Output Stream which relies on support for
+;;; generic STREAMP.
+
+(defclass bivalent-io-stream-d
+    (bivalent-io-mixin-b)
+  ()
+  #+allegro
+  (:default-initargs :element-type 'character))
+
+#+(and gray-streams-streamp (not ccl))
+(define-stream-tests bivalent-io-d
+  :class bivalent-io-stream-d
   :input t
   :output t
   :binary t

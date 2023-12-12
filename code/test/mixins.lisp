@@ -454,6 +454,9 @@
                                    stream-mixin-b)
   ())
 
+(defmethod ngray:stream-element-type ((stream character-input-mixin-b))
+  'character)
+
 #+gray-streams-streamp
 (defmethod ngray:streamp ((stream character-input-mixin-b))
   t)
@@ -581,6 +584,9 @@
    (line-length :reader line-length
                 :initform nil
                 :initarg :line-length)))
+
+(defmethod ngray:stream-element-type ((stream character-output-mixin-b))
+  'character)
 
 #+gray-streams-streamp
 (defmethod ngray:streamp ((stream character-output-mixin-b))
@@ -878,3 +884,6 @@
 #+gray-streams-output-stream-p
 (defmethod ngray:output-stream-p ((stream bivalent-io-mixin-b))
   t)
+
+(defmethod ngray:stream-element-type ((stream bivalent-io-mixin-b))
+  (element-type stream))
