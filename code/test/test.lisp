@@ -297,7 +297,9 @@
     (bivalent-input-mixin-b
      #+ccl file-stream
      ngray:fundamental-stream)
-  ())
+  ()
+  #+allegro
+  (:default-initargs :element-type 'character))
 
 #+gray-streams-input-stream-p
 (define-stream-tests bivalent-input-c
@@ -340,7 +342,9 @@
 (defclass bivalent-output-stream-c
     (bivalent-output-mixin-b
      ngray:fundamental-stream)
-  ())
+  ()
+  #+allegro
+  (:default-initargs :element-type 'character))
 
 #+gray-streams-output-stream-p
 (define-stream-tests bivalent-output-c
@@ -389,7 +393,9 @@
     (bivalent-io-mixin-b
      #+ccl file-stream
      ngray:fundamental-stream)
-  ())
+  ()
+  #+allegro
+  (:default-initargs :element-type 'character))
 
 #+(and gray-streams-input-stream-p gray-streams-output-stream-p)
 (define-stream-tests bivalent-io-c

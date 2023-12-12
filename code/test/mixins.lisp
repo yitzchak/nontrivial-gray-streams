@@ -654,9 +654,7 @@
 #+gray-streams-line-length
 (defmethod ngray:stream-line-length ((stream character-output-mixin-b))
   (or (line-length stream)
-      (if (next-method-p)
-          (call-next-method)
-          80)))
+      80))
 
 #+gray-streams-sequence
 (defmethod ngray:stream-write-sequence
