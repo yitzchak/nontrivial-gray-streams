@@ -26,6 +26,22 @@
   :binary t
   :extended t)
 
+;;; Extended Binary Input Stream which relies on support for generic
+;;; INPUT-STREAM-P
+
+(defclass binary-input-stream-c
+    (binary-input-mixin-b
+     #+ccl file-stream
+     ngray:fundamental-binary-stream)
+  ())
+
+#+gray-streams-input-stream-p
+(define-stream-tests binary-input-c
+  :class binary-input-stream-c
+  :input t
+  :binary t
+  :extended t)
+
 ;;; Basic Binary Output Stream
 
 (defclass binary-output-stream-a
@@ -48,6 +64,22 @@
 
 (define-stream-tests binary-output-b
   :class binary-output-stream-b
+  :output t
+  :binary t
+  :extended t)
+
+;;; Extended Binary Output Stream which relies on support for generic
+;;; OUTPUT-STREAM-P.
+
+(defclass binary-output-stream-c
+    (binary-output-mixin-b
+     #+ccl file-stream
+     ngray:fundamental-binary-stream)
+  ())
+
+#+gray-streams-output-stream-p
+(define-stream-tests binary-output-c
+  :class binary-output-stream-c
   :output t
   :binary t
   :extended t)
@@ -82,6 +114,23 @@
   :binary t
   :extended t)
 
+;;; Extended Binary Input/Output Stream which relies on support for generic
+;;; INPUT-STREAM-P and OUTPUT-STREAM-P.
+
+(defclass binary-io-stream-c
+    (binary-io-mixin-b
+     #+ccl file-stream
+     ngray:fundamental-binary-stream)
+  ())
+
+#+(and gray-streams-input-stream-p gray-streams-output-stream-p)
+(define-stream-tests binary-io-c
+  :class binary-io-stream-b
+  :input t
+  :output t
+  :binary t
+  :extended t)
+
 ;;; Basic Character Input Stream
 
 (defclass character-input-stream-a
@@ -108,6 +157,22 @@
   :character t
   :extended t)
 
+;;; Extended Character Input Stream which relies on support for
+;;; generic INPUT-STREAM-P.
+
+(defclass character-input-stream-c
+    (character-input-mixin-b
+     #+ccl file-stream
+     ngray:fundamental-character-stream)
+  ())
+
+#+gray-streams-input-stream-p
+(define-stream-tests character-input-c
+  :class character-input-stream-c
+  :input t
+  :character t
+  :extended t)
+
 ;;; Basic Character Output Stream
 
 (defclass character-output-stream-a
@@ -130,6 +195,22 @@
 
 (define-stream-tests character-output-b
   :class character-output-stream-b
+  :output t
+  :character t
+  :extended t)
+
+;;; Extended Character Output Stream which relies on support for
+;;; generic OUTPUT-STREAM-P.
+
+(defclass character-output-stream-c
+    (character-output-mixin-b
+     #+ccl file-stream
+     ngray:fundamental-character-stream)
+  ())
+
+#+gray-streams-output-stream-p
+(define-stream-tests character-output-c
+  :class character-output-stream-c
   :output t
   :character t
   :extended t)
@@ -164,6 +245,23 @@
   :character t
   :extended t)
 
+;;; Extended Character Input/Output Stream which relies on support for
+;;; generic INPUT-STREAM-P and OUTPUT-STREAM-P.
+
+(defclass character-io-stream-c
+    (character-io-mixin-b
+     #+ccl file-stream
+     ngray:fundamental-character-stream)
+  ())
+
+#+(and gray-streams-input-stream-p gray-streams-output-stream-p)
+(define-stream-tests character-io-c
+  :class character-io-stream-c
+  :input t
+  :output t
+  :character t
+  :extended t)
+
 ;;; Basic Bivalent Input Stream
 
 (defclass bivalent-input-stream-a
@@ -187,6 +285,23 @@
 
 (define-stream-tests bivalent-input-b
   :class bivalent-input-stream-b
+  :input t
+  :binary t
+  :character t
+  :extended t)
+
+;;; Extended Bivalent Input Stream which relies on support for
+;;; generic INPUT-STREAM-P.
+
+(defclass bivalent-input-stream-c
+    (bivalent-input-mixin-b
+     #+ccl file-stream
+     ngray:fundamental-stream)
+  ())
+
+#+gray-streams-input-stream-p
+(define-stream-tests bivalent-input-c
+  :class bivalent-input-stream-c
   :input t
   :binary t
   :character t
@@ -219,6 +334,22 @@
   :character t
   :extended t)
 
+;;; Extended Bivalent Output Stream which relies on support for
+;;; generic OUTPUT-STREAM-P.
+
+(defclass bivalent-output-stream-c
+    (bivalent-output-mixin-b
+     ngray:fundamental-stream)
+  ())
+
+#+gray-streams-output-stream-p
+(define-stream-tests bivalent-output-c
+  :class bivalent-output-stream-c
+  :output t
+  :binary t
+  :character t
+  :extended t)
+
 ;;; Basic Bivalent Input/Output Stream
 
 (defclass bivalent-io-stream-a
@@ -245,6 +376,24 @@
 
 (define-stream-tests bivalent-io-b
   :class bivalent-io-stream-b
+  :input t
+  :output t
+  :binary t
+  :character t
+  :extended t)
+
+;;; Extended Bivalent Input/Output Stream which relies on support for
+;;; generic INPUT-STREAM-P and OUTPUT-STREAM-P.
+
+(defclass bivalent-io-stream-c
+    (bivalent-io-mixin-b
+     #+ccl file-stream
+     ngray:fundamental-stream)
+  ())
+
+#+(and gray-streams-input-stream-p gray-streams-output-stream-p)
+(define-stream-tests bivalent-io-c
+  :class bivalent-io-stream-c
   :input t
   :output t
   :binary t

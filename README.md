@@ -446,8 +446,8 @@ returns the integer as the result.
 | [STREAMP][]                  | ✓        |             | ✓       | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
 | [INPUT-STREAM-P][]           | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [OUTPUT-STREAM-P][]          | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
-| [PATHNAME][]                 |          |             | ✓       |           |           |           |         |               |             |          |          |
-| [TRUENAME][]                 |          |             |         |           |           |           |         |               |             |          |          |
+| [PATHNAME][]                 |          |             | ✓       | ✓         |           |           |         |               |             |          |          |
+| [TRUENAME][]                 |          |             |         | ✓         |           |           |         |               |             |          |          |
 | [SETF STREAM-ELEMENT-TYPE][] |          |             |         |           | ✓         |           |         |               |             |          |          |
 | [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
@@ -644,35 +644,6 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 > implementations tend to assume that the return is the default line
 > length which itself is implementation specific. One solution to this
 > is to `(call-next-method)` when a `nil` return is desired.
-
-<!--
-; clasp
-(defgeneric stream-file-descriptor (stream &optional direction)
-
-; sicl
-(defgeneric stream-read-byte-no-hang (stream))
-
-; sicl
-(defgeneric stream-listen-byte (stream))
-
-; sicl
-(defgeneric stream-peek-char-skip-whitespace (stream))
-
-; ccl
-stream-direction
-
-; ccl
-stream-domain
-
-; ccl
-stream-maybe-force-output
-
-; ccl
-stream-external-format
-(setf stream-external-format)
-
-; ccl
-stream-filename-->
 
 [ABCL]: https://armedbear.common-lisp.dev/
 [Allegro]: https://franz.com/products/allegro-common-lisp/

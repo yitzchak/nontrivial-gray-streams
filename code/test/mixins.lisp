@@ -356,6 +356,18 @@
                                  stream-mixin-b)
   ())
 
+#+gray-streams-streamp
+(defmethod ngray:streamp ((stream binary-output-mixin-b))
+  t)
+
+#+gray-streams-input-stream-p
+(defmethod ngray:input-stream-p ((stream binary-output-mixin-b))
+  nil)
+
+#+gray-streams-output-stream-p
+(defmethod ngray:output-stream-p ((stream binary-output-mixin-b))
+  t)
+
 (defmethod ngray:stream-clear-output ((stream binary-output-mixin-b))
   nil)
 
@@ -441,6 +453,18 @@
                                    interactive-mixin
                                    stream-mixin-b)
   ())
+
+#+gray-streams-streamp
+(defmethod ngray:streamp ((stream character-input-mixin-b))
+  t)
+
+#+gray-streams-input-stream-p
+(defmethod ngray:input-stream-p ((stream character-input-mixin-b))
+  t)
+
+#+gray-streams-output-stream-p
+(defmethod ngray:output-stream-p ((stream character-input-mixin-b))
+  nil)
 
 #+gray-streams-interactive
 (defmethod ngray:interactive-stream-p ((stream character-input-mixin-b))
@@ -558,6 +582,18 @@
                 :initform nil
                 :initarg :line-length)))
 
+#+gray-streams-streamp
+(defmethod ngray:streamp ((stream character-output-mixin-b))
+  t)
+
+#+gray-streams-input-stream-p
+(defmethod ngray:input-stream-p ((stream character-output-mixin-b))
+  nil)
+
+#+gray-streams-output-stream-p
+(defmethod ngray:output-stream-p ((stream character-output-mixin-b))
+  t)
+
 (defmethod ngray:stream-line-column ((stream character-output-mixin-b))
   (line-column stream))
 
@@ -618,7 +654,9 @@
 #+gray-streams-line-length
 (defmethod ngray:stream-line-length ((stream character-output-mixin-b))
   (or (line-length stream)
-      (call-next-method)))
+      (if (next-method-p)
+          (call-next-method)
+          80)))
 
 #+gray-streams-sequence
 (defmethod ngray:stream-write-sequence
