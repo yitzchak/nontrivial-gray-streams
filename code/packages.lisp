@@ -8,6 +8,10 @@
   #+clisp
   (pushnew :gray-streams-element-type *features*)
 
+  #+clasp
+  (when (fboundp '(setf gray:stream-element-type))
+    (pushnew :gray-streams-element-type *features*))
+
   #+(or abcl ccl clasp ecl lispworks mezzano mkcl sicl)
   (pushnew :gray-streams-streamp *features*)
 
