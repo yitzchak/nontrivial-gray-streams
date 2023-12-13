@@ -469,7 +469,7 @@ returns the integer as the result.
 
 ## SETF STREAM-ELEMENT-TYPE
 
-The Gray stream protocol makes [CL:STREAM-ELEMENT-TYPE][] a generic
+The Gray stream protocol makes [STREAM-ELEMENT-TYPE][] a generic
 function but does not provide for bivalent streams which can change
 the element type at any time. In order support bivalent streams one
 needs a SETF for [CL:STREAM-ELEMENT-TYPE][]. The existance of this

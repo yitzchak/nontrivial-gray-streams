@@ -8,6 +8,10 @@
   #+clisp
   (pushnew :gray-streams-element-type *features*)
 
+  #+abcl
+  (when (fboundp '(setf gray-streams::gray-stream-element-type))
+    (pushnew :gray-streams-element-type *features*))
+
   #+clasp
   (when (fboundp '(setf gray:stream-element-type))
     (pushnew :gray-streams-element-type *features*))
@@ -24,11 +28,11 @@
   #+ccl
   (pushnew :gray-streams-pathname *features*)
 
-  #+clasp
+  #+(or abcl clasp)
   (when (typep (fdefinition 'cl:pathname) 'generic-function)
     (pushnew :gray-streams-pathname *features*))
 
-  #+clasp
+  #+(or abcl clasp)
   (when (typep (fdefinition 'cl:truename) 'generic-function)
     (pushnew :gray-streams-truename *features*))
 
