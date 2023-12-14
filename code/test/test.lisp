@@ -46,7 +46,8 @@
 ;;; STREAMP
 
 (defclass binary-input-stream-d
-    (binary-input-mixin-b)
+    (stream-mixin-a
+     binary-input-mixin-b)
   ())
 
 #+(and gray-streams-streamp (not ccl))
@@ -102,7 +103,8 @@
 ;;; STREAMP.
 
 (defclass binary-output-stream-d
-    (binary-output-mixin-b)
+    (stream-mixin-a
+     binary-output-mixin-b)
   ())
 
 #+(and gray-streams-streamp (not ccl))
@@ -163,7 +165,8 @@
 ;;; STREAMP.
 
 (defclass binary-io-stream-d
-    (binary-io-mixin-b)
+    (stream-mixin-a
+     binary-io-mixin-b)
   ())
 
 #+(and gray-streams-streamp (not ccl))
@@ -220,7 +223,8 @@
 ;;; generic STREAMP.
 
 (defclass character-input-stream-d
-    (character-input-mixin-b)
+    (stream-mixin-a
+     character-input-mixin-b)
   ())
 
 #+(and gray-streams-streamp (not ccl))
@@ -276,7 +280,8 @@
 ;;; generic STREAMP.
 
 (defclass character-output-stream-d
-    (character-output-mixin-b)
+    (stream-mixin-a
+     character-output-mixin-b)
   ())
 
 #+(and gray-streams-streamp (not ccl))
@@ -337,7 +342,8 @@
 ;;; generic STREAMP.
 
 (defclass character-io-stream-d
-    (character-io-mixin-b)
+    (stream-mixin-a
+     character-io-mixin-b)
   ())
 
 #+(and gray-streams-streamp (not ccl))
@@ -399,7 +405,8 @@
 ;;; generic STREAMP.
 
 (defclass bivalent-input-stream-d
-    (bivalent-input-mixin-b)
+    (stream-mixin-a
+     bivalent-input-mixin-b)
   ()
   #+allegro
   (:default-initargs :element-type 'character))
@@ -461,7 +468,8 @@
 ;;; generic STREAMP.
 
 (defclass bivalent-output-stream-d
-    (bivalent-output-mixin-b)
+    (stream-mixin-a
+     bivalent-output-mixin-b)
   ()
   #+allegro
   (:default-initargs :element-type 'character))
@@ -530,7 +538,8 @@
 ;;; generic STREAMP.
 
 (defclass bivalent-io-stream-d
-    (bivalent-io-mixin-b)
+    (stream-mixin-a
+     bivalent-io-mixin-b)
   ()
   #+allegro
   (:default-initargs :element-type 'character))
