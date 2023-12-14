@@ -316,11 +316,15 @@
 
 #+gray-streams-file-length/variant-3
 (defmethod ngray:stream-file-length ((stream binary-input-mixin-b))
+  (unless (openp stream)
+    (error 'stream-error :stream stream))
   (length (input-value stream)))
 
 #+gray-streams-file-length/variant-1
 (defmethod ngray:stream-file-length ((stream binary-input-mixin-b) &optional length)
   (declare (ignore length))
+  (unless (openp stream)
+    (error 'stream-error :stream stream))
   (length (input-value stream)))
 
 #+(or gray-streams-file-position/variant-1
@@ -461,6 +465,10 @@
                                    stream-mixin-b)
   ())
 
+(defmethod ngray:stream-read-char :before ((stream character-input-mixin-b))
+  (unless (openp stream)
+    (error 'stream-error :stream stream)))
+
 (defmethod ngray:stream-element-type ((stream character-input-mixin-b))
   'character)
 
@@ -550,10 +558,14 @@
 
 #+gray-streams-file-length/variant-3
 (defmethod ngray:stream-file-length ((stream character-input-mixin-b))
+  (unless (openp stream)
+    (error 'stream-error :stream stream))
   (length (input-value stream)))
 
 #+gray-streams-file-length/variant-1
 (defmethod ngray:stream-file-length ((stream character-input-mixin-b) &optional length)
+  (unless (openp stream)
+    (error 'stream-error :stream stream))
   (length (input-value stream)))
 
 #+(or gray-streams-file-position/variant-1
