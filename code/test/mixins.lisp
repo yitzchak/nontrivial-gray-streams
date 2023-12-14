@@ -233,6 +233,9 @@
 (defmethod ngray:truename ((stream stream-mixin-b))
   (%truename stream))
 
+(defmethod ngray:open-stream-p ((stream stream-mixin-b))
+  (openp stream))
+
 (defclass interactive-mixin ()
   ((interactive :reader interactive-p
                 :initform nil
@@ -269,6 +272,10 @@
                                 interactive-mixin
                                 stream-mixin-b)
   ())
+
+(defmethod ngray:stream-read-byte :before ((stream binary-input-mixin-b))
+  (unless (openp stream)
+    (error 'stream-error :stream stream)))
 
 #+gray-streams-streamp
 (defmethod ngray:streamp ((stream binary-input-mixin-b))
@@ -474,6 +481,8 @@
   (interactive-p stream))
 
 (defmethod ngray:stream-read-char-no-hang ((stream character-input-mixin-b))
+  (unless (openp stream)
+    (error 'stream-error :stream stream))
   (with-accessors ((input-value input-value)
                    (input-index input-index))
       stream
@@ -483,6 +492,8 @@
         (if (interactive-p stream) nil :eof))))
 
 (defmethod ngray:stream-peek-char ((stream character-input-mixin-b))
+  (unless (openp stream)
+    (error 'stream-error :stream stream))
   (with-accessors ((input-value input-value)
                    (input-index input-index))
       stream
@@ -491,6 +502,8 @@
         :eof)))
 
 (defmethod ngray:stream-listen ((stream character-input-mixin-b))
+  (unless (openp stream)
+    (error 'stream-error :stream stream))
   (< (input-index stream) (length (input-value stream))))
 
 (defmethod ngray:stream-read-line ((stream character-input-mixin-b))
@@ -509,6 +522,8 @@
         (values "" t))))
 
 (defmethod ngray:stream-clear-input ((stream character-input-mixin-b))
+  (unless (openp stream)
+    (error 'stream-error :stream stream))
   (setf (input-index stream) 0
         (input-value stream) "")
   nil)
@@ -607,6 +622,8 @@
   (zerop (ngray:stream-line-column stream)))
 
 (defmethod ngray:stream-write-char ((stream character-output-mixin-b) char)
+  (unless (openp stream)
+    (error 'stream-error :stream stream))
   (vector-push-extend char (output-value stream))
   (if (char= char #\Newline)
       (setf (line-column stream) 0)

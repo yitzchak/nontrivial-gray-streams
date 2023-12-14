@@ -16,6 +16,10 @@
   (when (fboundp '(setf gray:stream-element-type))
     (pushnew :gray-streams-element-type *features*))
 
+  #+cmucl
+  (when (fboundp '(setf stream-element-type))
+    (pushnew :gray-streams-element-type *features*))
+
   #+(or abcl ccl clasp ecl lispworks mezzano mkcl sicl)
   (pushnew :gray-streams-streamp *features*)
 
@@ -28,11 +32,11 @@
   #+ccl
   (pushnew :gray-streams-pathname *features*)
 
-  #+(or abcl clasp)
+  #+(or abcl clasp cmucl)
   (when (typep (fdefinition 'cl:pathname) 'generic-function)
     (pushnew :gray-streams-pathname *features*))
 
-  #+(or abcl clasp)
+  #+(or abcl clasp cmucl)
   (when (typep (fdefinition 'cl:truename) 'generic-function)
     (pushnew :gray-streams-truename *features*))
 

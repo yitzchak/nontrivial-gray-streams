@@ -33,6 +33,12 @@
            #+(and gray-streams-streamp (not ccl))
            (true (invoked-p stream :streamp stream))))
 
+       (define-test ,(test-name '#:open-stream-p.01)
+         :parent ,parent
+         (let ((stream (make-instance ',class)))
+           (true (open-stream-p stream))
+           (true (invoked-p stream :open-stream-p stream))))
+
        #+gray-streams-external-format
        (define-test ,(test-name '#:stream-external-format.01)
          :parent ,parent
@@ -41,7 +47,15 @@
            (true (invoked-p stream :stream-external-format stream))))
 
        ,@(when extended
-           `(#+gray-streams-pathname
+           `((define-test ,(test-name '#:close.01)
+               :parent ,parent
+               (let ((stream (make-instance ',class)))
+                 (true (close stream))
+                 (false (open-stream-p stream))
+                 (true (invoked-p stream :close stream nil))
+                 (true (invoked-p stream :open-stream-p stream))))
+
+             #+gray-streams-pathname
              (define-test ,(test-name '#:pathname.01)
                :parent ,parent
                (let ((stream (make-instance ',class
@@ -116,12 +130,24 @@
                  (fail (file-length stream) 'type-error)))))
 
        ,@(when (and input extended)
-           `(#+gray-streams-file-length
+           `((define-test ,(test-name '#:close.02)
+               :parent ,parent
+               (let ((stream (make-instance ',class)))
+                 (true (close stream))
+                 (fail (clear-stream stream))))
+
+             #+gray-streams-file-length
              (define-test ,(test-name '#:file-length.02)
                :parent ,parent
                (let ((stream (make-instance ',class)))
                  (is eql 0 (file-length stream))
                  (true (invoked-p stream :stream-file-length stream nil))))
+
+             (define-test ,(test-name '#:close.03)
+               :parent ,parent
+               (let ((stream (make-instance ',class)))
+                 (true (close stream))
+                 (fail (file-length stream))))
 
              (define-test ,(test-name '#:interactive-stream-p.02)
                :parent ,parent
@@ -461,7 +487,25 @@ b")))
                  (true (file-position stream 1))
                  (is equal 1 (file-position stream))
                  (is eql 98 (read-byte stream nil))
-                 (true (invoked-p stream :stream-file-position stream nil))))))
+                 (true (invoked-p stream :stream-file-position stream nil))))
+
+             (define-test ,(test-name '#:close.04)
+               :parent ,parent
+               (let ((stream (make-instance ',class :input-value "a"
+                                            ,@(when character
+                                                `(:element-type 'integer)))))
+                 (true (close stream))
+                 (fail (read-byte stream))))
+
+             #+gray-streams-sequence
+             (define-test ,(test-name '#:close.05)
+               :parent ,parent
+               (let ((stream (make-instance ',class :input-value "ab"
+                                            ,@(when character
+                                                `(:element-type 'integer))))
+                     (sequence (make-array 3 :element-type '(or (unsigned-byte 8) null) :initial-element nil)))
+                 (true (close stream))
+                 (fail (read-sequence sequence stream))))))
 
        ,@(when (and extended input character)
            `(#+gray-streams-file-position
@@ -482,7 +526,25 @@ b")))
                  (true (file-position stream 1))
                  (is equal 1 (file-position stream))
                  (is eql #\b (read-char stream nil))
-                 (true (invoked-p stream :stream-file-position stream nil))))))
+                 (true (invoked-p stream :stream-file-position stream nil))))
+
+             (define-test ,(test-name '#:close.06)
+               :parent ,parent
+               (let ((stream (make-instance ',class :input-value "a")))
+                 (true (close stream))
+                 (fail (peek-char nil stream))))
+
+             (define-test ,(test-name '#:close.07)
+               :parent ,parent
+               (let ((stream (make-instance ',class :input-value "a")))
+                 (true (close stream))
+                 (fail (read-char stream))))
+
+             (define-test ,(test-name '#:close.08)
+               :parent ,parent
+               (let ((stream (make-instance ',class :input-value "a")))
+                 (true (close stream))
+                 (fail (read-char-no-hang stream))))))
 
        #+gray-streams-element-type
        ,@(when (and input binary character)

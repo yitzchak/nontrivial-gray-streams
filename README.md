@@ -446,9 +446,9 @@ returns the integer as the result.
 | [STREAMP][]                  | ✓        |             | ✓¹      | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
 | [INPUT-STREAM-P][]           | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [OUTPUT-STREAM-P][]          | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
-| [PATHNAME][]                 |          |             | ✓       | ✓         |           |           |         |               |             |          |          |
-| [TRUENAME][]                 |          |             |         | ✓         |           |           |         |               |             |          |          |
-| [SETF STREAM-ELEMENT-TYPE][] |          |             |         | ✓         | ✓         |           |         |               |             |          |          |
+| [PATHNAME][]                 | ✓        |             | ✓       | ✓         |           |           |         |               |             |          |          |
+| [TRUENAME][]                 | ✓        |             |         | ✓         |           |           |         |               |             |          |          |
+| [SETF STREAM-ELEMENT-TYPE][] | ✓        |             |         | ✓         | ✓         |           |         |               |             |          |          |
 | [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Length][]              | ✓        |             | ✓¹      | ✓         |           | ✓         | ✓       |               | ✓           |          |          |

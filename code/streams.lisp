@@ -29,17 +29,7 @@
       ((stream fundamental-character-output-stream))
     (equal (stream-line-column stream) 0)))
 
-#+cmucl
-(defmethod input-stream-p (stream)
-  (declare (ignore stream))
-  nil)
-
-#+cmucl
-(defmethod output-stream-p (stream)
-  (declare (ignore stream))
-  nil)
-
-#+(or allegro clasp cmucl ecl mkcl sbcl)
+#+(or allegro clasp ecl mkcl sbcl)
 (defmethod stream-clear-input (stream)
   nil)
 
@@ -48,60 +38,71 @@
   nil)
 
 #+cmucl
-(defmethod stream-read-sequence
-    ((stream fundamental-character-input-stream) sequence &optional start end)
-  (unless end
-    (setf end (length sequence)))
-  (prog ((input-index (or start 0)) value)
-   next
-     (when (< input-index end)
-       (setf value (stream-read-char stream))
-       (unless (eq value :eof)
-         (setf (elt sequence input-index) value)
-         (incf input-index)
+(when (< c::byte-fasl-file-version #x21f)
+  (defmethod input-stream-p (stream)
+    (declare (ignore stream))
+    nil)
+
+  (defmethod output-stream-p (stream)
+    (declare (ignore stream))
+    nil)
+
+  (defmethod stream-clear-input ((stream fundamental-input-stream))
+    nil)
+
+  (defmethod stream-read-sequence
+      ((stream fundamental-character-input-stream) sequence &optional start end)
+    (prog ((pos (or start 0))
+           (end (or end (length sequence)))
+           value)
+       (declare (fixnum pos end))
+     next
+       (when (< pos end)
+         (setf value (stream-read-char stream))
+         (unless (eq value :eof)
+           (setf (elt sequence pos) value)
+           (incf pos)
+           (go next)))
+       (return pos)))
+
+  (defmethod stream-read-sequence
+      ((stream fundamental-binary-input-stream) sequence &optional start end)
+    (prog ((pos (or start 0))
+           (end (or end (length sequence)))
+           value)
+       (declare (fixnum pos end))
+     next
+       (when (< pos end)
+         (setf value (stream-read-byte stream))
+         (unless (eq value :eof)
+           (setf (elt sequence pos) value)
+           (incf pos)
+           (go next)))
+       (return pos)))
+
+  (defmethod stream-write-sequence
+      ((stream fundamental-character-output-stream) sequence &optional start end)
+    (prog ((pos (or start 0))
+           (end (or end (length sequence))))
+       (declare (fixnum pos end))
+     next
+       (when (< pos end)
+         (stream-write-char stream (elt sequence pos))
+         (incf pos)
          (go next)))
-     (return input-index)))
+    sequence)
 
-#+cmucl
-(defmethod stream-read-sequence
-    ((stream fundamental-binary-input-stream) sequence &optional start end)
-  (unless end
-    (setf end (length sequence)))
-  (prog ((input-index (or start 0)) value)
-   next
-     (when (< input-index end)
-       (setf value (stream-read-byte stream))
-       (unless (eq value :eof)
-         (setf (elt sequence input-index) value)
-         (incf input-index)
+  (defmethod stream-write-sequence
+      ((stream fundamental-binary-output-stream) sequence &optional start end)
+    (prog ((pos (or start 0))
+           (end (or end (length sequence))))
+       (declare (fixnum pos end))
+     next
+       (when (< pos end)
+         (stream-write-byte stream (elt sequence pos))
+         (incf pos)
          (go next)))
-     (return input-index)))
-
-#+cmucl
-(defmethod stream-write-sequence
-    ((stream fundamental-character-output-stream) sequence &optional start end)
-  (unless end
-    (setf end (length sequence)))
-  (prog ((input-index (or start 0)) value)
-   next
-     (when (< input-index end)
-       (stream-write-char stream (char sequence input-index))
-       (incf input-index)
-       (go next))
-     (return sequence)))
-
-#+cmucl
-(defmethod stream-write-sequence
-    ((stream fundamental-binary-output-stream) sequence &optional start end)
-  (unless end
-    (setf end (length sequence)))
-  (prog ((input-index (or start 0)) value)
-   next
-     (when (< input-index end)
-       (stream-write-byte stream (elt sequence input-index))
-       (incf input-index)
-       (go next))
-     (return sequence)))
+    sequence))
 
 #+ccl
 (defmethod stream-listen ((stream fundamental-character-input-stream))
