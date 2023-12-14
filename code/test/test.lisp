@@ -3,7 +3,8 @@
 ;;; Basic Binary Input Stream
 
 (defclass binary-input-stream-a
-    (binary-input-mixin-a
+    (#+(or ccl cmucl) stream-mixin-a
+     binary-input-mixin-a
      ngray:fundamental-binary-input-stream)
   ())
 
@@ -15,7 +16,8 @@
 ;;; Extended Binary Input Stream
 
 (defclass binary-input-stream-b
-    (binary-input-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     binary-input-mixin-b
      #+ccl file-stream
      ngray:fundamental-binary-input-stream)
   ())
@@ -30,7 +32,8 @@
 ;;; INPUT-STREAM-P
 
 (defclass binary-input-stream-c
-    (binary-input-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     binary-input-mixin-b
      #+ccl file-stream
      ngray:fundamental-binary-stream)
   ())
@@ -60,7 +63,8 @@
 ;;; Basic Binary Output Stream
 
 (defclass binary-output-stream-a
-    (binary-output-mixin-a
+    (#+(or ccl cmucl) stream-mixin-a
+     binary-output-mixin-a
      ngray:fundamental-binary-output-stream)
   ())
 
@@ -72,7 +76,8 @@
 ;;; Extended Binary Output Stream
 
 (defclass binary-output-stream-b
-    (binary-output-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     binary-output-mixin-b
      #+ccl file-stream
      ngray:fundamental-binary-output-stream)
   ())
@@ -87,7 +92,8 @@
 ;;; OUTPUT-STREAM-P.
 
 (defclass binary-output-stream-c
-    (binary-output-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     binary-output-mixin-b
      #+ccl file-stream
      ngray:fundamental-binary-stream)
   ())
@@ -117,7 +123,8 @@
 ;;; Basic Binary Input/Output Stream
 
 (defclass binary-io-stream-a
-    (binary-io-mixin-a
+    (#+(or ccl cmucl) stream-mixin-a
+     binary-io-mixin-a
      ngray:fundamental-binary-input-stream
      ngray:fundamental-binary-output-stream)
   ())
@@ -131,7 +138,8 @@
 ;;; Extended Binary Input/Output Stream
 
 (defclass binary-io-stream-b
-    (binary-io-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     binary-io-mixin-b
      #+ccl file-stream
      ngray:fundamental-binary-input-stream
      ngray:fundamental-binary-output-stream)
@@ -148,7 +156,8 @@
 ;;; INPUT-STREAM-P and OUTPUT-STREAM-P.
 
 (defclass binary-io-stream-c
-    (binary-io-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     binary-io-mixin-b
      #+ccl file-stream
      ngray:fundamental-binary-stream)
   ())
@@ -180,7 +189,8 @@
 ;;; Basic Character Input Stream
 
 (defclass character-input-stream-a
-    (character-input-mixin-a
+    (#+(or ccl cmucl) stream-mixin-a
+     character-input-mixin-a
      ngray:fundamental-character-input-stream)
   ())
 
@@ -192,7 +202,8 @@
 ;;; Extended Character Input Stream
 
 (defclass character-input-stream-b
-    (character-input-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     character-input-mixin-b
      #+ccl file-stream
      ngray:fundamental-character-input-stream)
   ())
@@ -207,7 +218,8 @@
 ;;; generic INPUT-STREAM-P.
 
 (defclass character-input-stream-c
-    (character-input-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     character-input-mixin-b
      #+ccl file-stream
      ngray:fundamental-character-stream)
   ())
@@ -237,7 +249,8 @@
 ;;; Basic Character Output Stream
 
 (defclass character-output-stream-a
-    (character-output-mixin-a
+    (#+(or ccl cmucl) stream-mixin-a
+     character-output-mixin-a
      ngray:fundamental-character-output-stream)
   ())
 
@@ -249,7 +262,8 @@
 ;;; Extended Character Output Stream
 
 (defclass character-output-stream-b
-    (character-output-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     character-output-mixin-b
      #+ccl file-stream
      ngray:fundamental-character-output-stream)
   ())
@@ -264,7 +278,8 @@
 ;;; generic OUTPUT-STREAM-P.
 
 (defclass character-output-stream-c
-    (character-output-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     character-output-mixin-b
      #+ccl file-stream
      ngray:fundamental-character-stream)
   ())
@@ -294,7 +309,8 @@
 ;;; Basic Character Input/Output Stream
 
 (defclass character-io-stream-a
-    (character-io-mixin-a
+    (#+(or ccl cmucl) stream-mixin-a
+     character-io-mixin-a
      ngray:fundamental-character-input-stream
      ngray:fundamental-character-output-stream)
   ())
@@ -308,7 +324,8 @@
 ;;; Extended Character Input/Output Stream
 
 (defclass character-io-stream-b
-    (character-io-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     character-io-mixin-b
      #+ccl file-stream
      ngray:fundamental-character-input-stream
      ngray:fundamental-character-output-stream)
@@ -325,7 +342,8 @@
 ;;; generic INPUT-STREAM-P and OUTPUT-STREAM-P.
 
 (defclass character-io-stream-c
-    (character-io-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     character-io-mixin-b
      #+ccl file-stream
      ngray:fundamental-character-stream)
   ())
@@ -357,7 +375,8 @@
 ;;; Basic Bivalent Input Stream
 
 (defclass bivalent-input-stream-a
-    (bivalent-input-mixin-a
+    (#+(or ccl cmucl) stream-mixin-a
+     bivalent-input-mixin-a
      ngray:fundamental-character-input-stream)
   ())
 
@@ -370,7 +389,8 @@
 ;;; Extended Bivalent Input Stream
 
 (defclass bivalent-input-stream-b
-    (bivalent-input-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     bivalent-input-mixin-b
      #+ccl file-stream
      ngray:fundamental-character-input-stream)
   ())
@@ -386,7 +406,8 @@
 ;;; generic INPUT-STREAM-P.
 
 (defclass bivalent-input-stream-c
-    (bivalent-input-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     bivalent-input-mixin-b
      #+ccl file-stream
      ngray:fundamental-stream)
   ()
@@ -422,7 +443,8 @@
 ;;; Basic Bivalent Output Stream
 
 (defclass bivalent-output-stream-a
-    (bivalent-output-mixin-a
+    (#+(or ccl cmucl) stream-mixin-a
+     bivalent-output-mixin-a
      ngray:fundamental-character-output-stream)
   ())
 
@@ -435,7 +457,8 @@
 ;;; Extended Bivalent Output Stream
 
 (defclass bivalent-output-stream-b
-    (bivalent-output-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     bivalent-output-mixin-b
      ngray:fundamental-character-output-stream)
   ())
 
@@ -450,7 +473,8 @@
 ;;; generic OUTPUT-STREAM-P.
 
 (defclass bivalent-output-stream-c
-    (bivalent-output-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     bivalent-output-mixin-b
      ngray:fundamental-stream)
   ()
   #+allegro
@@ -485,7 +509,8 @@
 ;;; Basic Bivalent Input/Output Stream
 
 (defclass bivalent-io-stream-a
-    (bivalent-io-mixin-a
+    (#+(or ccl cmucl) stream-mixin-a
+     bivalent-io-mixin-a
      ngray:fundamental-character-input-stream
      ngray:fundamental-character-output-stream)
   ())
@@ -500,7 +525,8 @@
 ;;; Extended Bivalent Input/Output Stream
 
 (defclass bivalent-io-stream-b
-    (bivalent-io-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     bivalent-io-mixin-b
      #+ccl file-stream
      ngray:fundamental-character-input-stream
      ngray:fundamental-character-output-stream)
@@ -518,7 +544,8 @@
 ;;; generic INPUT-STREAM-P and OUTPUT-STREAM-P.
 
 (defclass bivalent-io-stream-c
-    (bivalent-io-mixin-b
+    (#+(or ccl cmucl) stream-mixin-a
+     bivalent-io-mixin-b
      #+ccl file-stream
      ngray:fundamental-stream)
   ()
