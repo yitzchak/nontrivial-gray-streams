@@ -46,16 +46,16 @@
            (stream-external-format stream)
            (true (invoked-p stream :stream-external-format stream))))
 
-       ,@(when extended
-           `((define-test ,(test-name '#:close.01)
-               :parent ,parent
-               (let ((stream (make-instance ',class)))
-                 (true (close stream))
-                 (false (open-stream-p stream))
-                 (true (invoked-p stream :close stream nil))
-                 (true (invoked-p stream :open-stream-p stream))))
+       (define-test ,(test-name '#:close.01)
+         :parent ,parent
+         (let ((stream (make-instance ',class)))
+           (true (close stream))
+           (false (open-stream-p stream))
+           (true (invoked-p stream :close stream nil))
+           (true (invoked-p stream :open-stream-p stream))))
 
-             #+gray-streams-pathname
+       ,@(when extended
+           `(#+gray-streams-pathname
              (define-test ,(test-name '#:pathname.01)
                :parent ,parent
                (let ((stream (make-instance ',class
@@ -130,11 +130,14 @@
                  (fail (file-length stream) 'type-error)))))
 
        ,@(when (and input extended)
-           `((define-test ,(test-name '#:close.02)
+           `(;; This test isn't done for all input streams because the
+             ;; default method doesn't check to see if the stream is
+             ;; open.
+             (define-test ,(test-name '#:close.02)
                :parent ,parent
                (let ((stream (make-instance ',class)))
                  (true (close stream))
-                 (fail (clear-stream stream))))
+                 (fail (clear-input stream))))
 
              #+gray-streams-file-length
              (define-test ,(test-name '#:file-length.02)

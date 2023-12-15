@@ -1,5 +1,9 @@
 (in-package #:nontrivial-gray-streams/test)
 
+(defun check-open-stream (stream)
+  (unless (ngray:open-stream-p stream)
+    (error 'stream-error :stream stream)))
+
 (defclass invocation-mixin ()
   ((invocations :accessor invocations
                 :initform (make-array 10
@@ -274,8 +278,7 @@
   ())
 
 (defmethod ngray:stream-read-byte :before ((stream binary-input-mixin-b))
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream)))
+  (check-open-stream stream))
 
 #+gray-streams-streamp
 (defmethod ngray:streamp ((stream binary-input-mixin-b))
@@ -290,6 +293,7 @@
   nil)
 
 (defmethod ngray:stream-clear-input ((stream binary-input-mixin-b))
+  (check-open-stream stream)
   (setf (input-index stream) 0
         (input-value stream) "")
   nil)
@@ -316,15 +320,13 @@
 
 #+gray-streams-file-length/variant-3
 (defmethod ngray:stream-file-length ((stream binary-input-mixin-b))
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream))
+  (check-open-stream stream)
   (length (input-value stream)))
 
 #+gray-streams-file-length/variant-1
 (defmethod ngray:stream-file-length ((stream binary-input-mixin-b) &optional length)
   (declare (ignore length))
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream))
+  (check-open-stream stream)
   (length (input-value stream)))
 
 #+(or gray-streams-file-position/variant-1
@@ -466,8 +468,7 @@
   ())
 
 (defmethod ngray:stream-read-char :before ((stream character-input-mixin-b))
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream)))
+  (check-open-stream stream))
 
 (defmethod ngray:stream-element-type ((stream character-input-mixin-b))
   'character)
@@ -489,8 +490,7 @@
   (interactive-p stream))
 
 (defmethod ngray:stream-read-char-no-hang ((stream character-input-mixin-b))
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream))
+  (check-open-stream stream)
   (with-accessors ((input-value input-value)
                    (input-index input-index))
       stream
@@ -500,8 +500,7 @@
         (if (interactive-p stream) nil :eof))))
 
 (defmethod ngray:stream-peek-char ((stream character-input-mixin-b))
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream))
+  (check-open-stream stream)
   (with-accessors ((input-value input-value)
                    (input-index input-index))
       stream
@@ -510,8 +509,7 @@
         :eof)))
 
 (defmethod ngray:stream-listen ((stream character-input-mixin-b))
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream))
+  (check-open-stream stream)
   (< (input-index stream) (length (input-value stream))))
 
 (defmethod ngray:stream-read-line ((stream character-input-mixin-b))
@@ -530,8 +528,7 @@
         (values "" t))))
 
 (defmethod ngray:stream-clear-input ((stream character-input-mixin-b))
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream))
+  (check-open-stream stream)
   (setf (input-index stream) 0
         (input-value stream) "")
   nil)
@@ -558,14 +555,12 @@
 
 #+gray-streams-file-length/variant-3
 (defmethod ngray:stream-file-length ((stream character-input-mixin-b))
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream))
+  (check-open-stream stream)
   (length (input-value stream)))
 
 #+gray-streams-file-length/variant-1
 (defmethod ngray:stream-file-length ((stream character-input-mixin-b) &optional length)
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream))
+  (check-open-stream stream)
   (length (input-value stream)))
 
 #+(or gray-streams-file-position/variant-1
@@ -634,8 +629,7 @@
   (zerop (ngray:stream-line-column stream)))
 
 (defmethod ngray:stream-write-char ((stream character-output-mixin-b) char)
-  (unless (ngray:open-stream-p stream)
-    (error 'stream-error :stream stream))
+  (check-open-stream stream)
   (vector-push-extend char (output-value stream))
   (if (char= char #\Newline)
       (setf (line-column stream) 0)
