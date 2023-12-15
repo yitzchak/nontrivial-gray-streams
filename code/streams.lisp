@@ -37,8 +37,10 @@
 (defmethod interactive-stream-p ((stream fundamental-input-stream))
   nil)
 
-#+cmucl
-(when (< c::byte-fasl-file-version #x21f)
+;;; These were all fixed in the same commits that added
+;;; gray-streams-pathname
+#+(and cmucl (not gray-streams-pathname))
+(progn
   (defmethod input-stream-p (stream)
     (declare (ignore stream))
     nil)
