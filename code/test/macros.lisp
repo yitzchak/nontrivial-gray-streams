@@ -143,6 +143,7 @@
                  (is eql 0 (file-length stream))
                  (true (invoked-p stream :stream-file-length stream nil))))
 
+             #+gray-streams-file-length
              (define-test ,(test-name '#:close.03)
                :parent ,parent
                (let ((stream (make-instance ',class)))
