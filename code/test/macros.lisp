@@ -58,10 +58,20 @@
            `(#+gray-streams-pathname
              (define-test ,(test-name '#:pathname.01)
                :parent ,parent
-               (let ((stream (make-instance ',class
-                                            :pathname #P"fu.bar")))
-                 (is equalp #P"fu.bar" (pathname stream))
-                 (true (invoked-p stream :pathname stream))))
+               (let* ((pathname (make-pathname :host "host"
+                                               :device "device"
+                                               :directory '(:relative "directory")
+                                               :name "name"
+                                               :type "type"
+                                               :version :newest))
+                      (stream (make-instance ',class :pathname pathname)))
+                 (is equalp pathname (pathname stream))
+                 (is equalp (pathname-host pathname) (pathname-host stream))
+                 (is equalp (pathname-device pathname) (pathname-device stream))
+                 (is equalp (pathname-directory pathname) (pathname-directory stream))
+                 (is equalp (pathname-name pathname) (pathname-name stream))
+                 (is equalp (pathname-type pathname) (pathname-type stream))
+                 (is equalp (pathname-version pathname) (pathname-version stream))                              (true (invoked-p stream :pathname stream))))
 
              #+gray-streams-truename
              (define-test ,(test-name '#:truehname.01)
