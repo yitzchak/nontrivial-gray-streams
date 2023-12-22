@@ -78,6 +78,30 @@
                  (is equalp (host-namestring pathname) (host-namestring stream))
                  (true (invoked-p stream :pathname stream))))
 
+             #+gray-streams-pathname
+             (define-test ,(test-name '#:close.02)
+               :parent ,parent
+               (let* ((pathname (make-pathname :host "host"
+                                               :device "device"
+                                               :directory '(:relative "directory")
+                                               :name "name"
+                                               :type "type"
+                                               :version :newest))
+                      (stream (make-instance ',class :pathname pathname)))
+                 (true (close stream))
+                 (is equalp pathname (pathname stream))
+                 (is equalp (pathname-host pathname) (pathname-host stream))
+                 (is equalp (pathname-device pathname) (pathname-device stream))
+                 (is equalp (pathname-directory pathname) (pathname-directory stream))
+                 (is equalp (pathname-name pathname) (pathname-name stream))
+                 (is equalp (pathname-type pathname) (pathname-type stream))
+                 (is equalp (pathname-version pathname) (pathname-version stream))
+                 (is equalp (namestring pathname) (namestring stream))
+                 (is equalp (file-namestring pathname) (file-namestring stream))
+                 (is equalp (directory-namestring pathname) (directory-namestring stream))
+                 (is equalp (host-namestring pathname) (host-namestring stream))
+                 (true (invoked-p stream :pathname stream))))
+
              #+gray-streams-truename
              (define-test ,(test-name '#:truehname.01)
                :parent ,parent
@@ -148,7 +172,7 @@
            `(;; This test isn't done for all input streams because the
              ;; default method doesn't check to see if the stream is
              ;; open.
-             (define-test ,(test-name '#:close.02)
+             (define-test ,(test-name '#:close.03)
                :parent ,parent
                (let ((stream (make-instance ',class)))
                  (true (close stream))
@@ -162,7 +186,7 @@
                  (true (invoked-p stream :stream-file-length stream nil))))
 
              #+gray-streams-file-length
-             (define-test ,(test-name '#:close.03)
+             (define-test ,(test-name '#:close.04)
                :parent ,parent
                (let ((stream (make-instance ',class)))
                  (true (close stream))
@@ -508,7 +532,7 @@ b")))
                  (is eql 98 (read-byte stream nil))
                  (true (invoked-p stream :stream-file-position stream nil))))
 
-             (define-test ,(test-name '#:close.04)
+             (define-test ,(test-name '#:close.05)
                :parent ,parent
                (let ((stream (make-instance ',class :input-value "a"
                                             ,@(when character
@@ -517,7 +541,7 @@ b")))
                  (fail (read-byte stream))))
 
              #+gray-streams-sequence
-             (define-test ,(test-name '#:close.05)
+             (define-test ,(test-name '#:close.06)
                :parent ,parent
                (let ((stream (make-instance ',class :input-value "ab"
                                             ,@(when character
@@ -547,19 +571,19 @@ b")))
                  (is eql #\b (read-char stream nil))
                  (true (invoked-p stream :stream-file-position stream nil))))
 
-             (define-test ,(test-name '#:close.06)
+             (define-test ,(test-name '#:close.07)
                :parent ,parent
                (let ((stream (make-instance ',class :input-value "a")))
                  (true (close stream))
                  (fail (peek-char nil stream))))
 
-             (define-test ,(test-name '#:close.07)
+             (define-test ,(test-name '#:close.08)
                :parent ,parent
                (let ((stream (make-instance ',class :input-value "a")))
                  (true (close stream))
                  (fail (read-char stream))))
 
-             (define-test ,(test-name '#:close.08)
+             (define-test ,(test-name '#:close.09)
                :parent ,parent
                (let ((stream (make-instance ',class :input-value "a")))
                  (true (close stream))
