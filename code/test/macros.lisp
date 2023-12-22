@@ -71,7 +71,12 @@
                  (is equalp (pathname-directory pathname) (pathname-directory stream))
                  (is equalp (pathname-name pathname) (pathname-name stream))
                  (is equalp (pathname-type pathname) (pathname-type stream))
-                 (is equalp (pathname-version pathname) (pathname-version stream))                              (true (invoked-p stream :pathname stream))))
+                 (is equalp (pathname-version pathname) (pathname-version stream))
+                 (is equalp (namestring pathname) (namestring stream))
+                 (is equalp (file-namestring pathname) (file-namestring stream))
+                 (is equalp (directory-namestring pathname) (directory-namestring stream))
+                 (is equalp (host-namestring pathname) (host-namestring stream))
+                 (true (invoked-p stream :pathname stream))))
 
              #+gray-streams-truename
              (define-test ,(test-name '#:truehname.01)
