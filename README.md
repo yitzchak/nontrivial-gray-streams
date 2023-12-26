@@ -209,6 +209,19 @@ every character output stream class that is defined, a method must be
 defined for this function, although it is permissible for it to always
 return NIL.
 
+> This generic function does not have a very good name. There is no
+> allowance in the Gray stream proposal for the tracking of column or
+> line number for input streams even though this is implemented by all
+> CL implementations for the purpose of compile source information. If
+> there was an additional generic function STREAM-LINE-NUMBER one
+> would do this by using the existing STREAM-LINE-COLUMN for input
+> streams. This will not work for TWO-WAY-STREAM though, since it is
+> not clear for which stream STREAM-LINE-COLUMN would apply to. It
+> would be better if this generic function had been named
+> STREAM-OUTPUT-COLUMN. Then the corresponding STREAM-OUTPUT-LINE,
+> STREAM-INPUT-COLUMN, and STREAM-INPUT-LINE could be added and fit
+> the naming pattern naturally.
+
 ## STREAM-START-LINE-P
 [Generic Function]
 
@@ -229,6 +242,20 @@ class [FUNDAMENTAL-CHARACTER-OUTPUT-STREAM][] uses
 [STREAM-LINE-COLUMN][], so if that is defined to return NIL, then a
 method should be provided for either [STREAM-START-LINE-P][] or
 [STREAM-FRESH-LINE][].
+
+> This generic function is superfluous. The statement that "for a
+> window using variable-width characters, the column number isn't very
+> meaningful" is just not true. The real valued column numbers are
+> explicitly permitted in the specification of the pretty
+> printer. Most implementations of the pretty printer assemble the
+> output text into string buffer and interpret the index of character
+> in the number to be related to the column number. In other words
+> they do not allow for the possibility of real value columns, but it
+> is possible to create an implementation of the pretty printer that
+> can typeset using variable-width characters. For example, see
+> [Inravina][]. Furthermore, [STREAM-LINE-COLUMN][] has already
+> specified that the first column at the start of a line is to be
+> numbered 0.
 
 ## STREAM-WRITE-STRING
 [Generic Function]
@@ -272,6 +299,13 @@ Used by [CL:FRESH-LINE][].  The default method uses
 > for fundamental-character-output-stream since non-bivalent binary
 > streams do not have a concept of columns. In this case any signaled
 > error would be appropriate including NO-APPLICABLE-METHOD.
+
+> The description of the default method and the example method given
+> in the proposal do not follow the specification as per
+> [CL:FRESH-LINE][]. There it states that "If for some reason this
+> cannot be determined, then a newline is output anyway." Does this
+> mean that a newline is output if `(or (stream-start-line-p stream) (null (stream-line-column stream)))` 
+> is non-NIL?
 
 ## STREAM-FINISH-OUTPUT
 [Generic Function]
@@ -700,6 +734,7 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 [File Position]: #FILE-POSITION-EXTENSIONS
 [INPUT-STREAM-P]: #INPUT-STREAM-P
 [INTERACTIVE-STREAM-P]: #INTERACTIVE-STREAM-P
+[Inravina]: https://github.com/yitzchak/Inravina
 [Line Length]: #LINE-LENGTH-EXTENSIONS
 [LispWorks]: https://www.lispworks.com/products/lispworks.html
 [MKCL]: https://mkcl.common-lisp.dev/
