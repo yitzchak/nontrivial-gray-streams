@@ -212,12 +212,15 @@ return NIL.
 > This generic function does not have a very good name. There is no
 > allowance in the Gray stream proposal for the tracking of column or
 > line number for input streams even though this is implemented by all
-> CL implementations for the purpose of compile source information. If
-> there was an additional generic function STREAM-LINE-NUMBER one
-> would do this by using the existing STREAM-LINE-COLUMN for input
-> streams. This will not work for TWO-WAY-STREAM though, since it is
-> not clear for which stream STREAM-LINE-COLUMN would apply to. It
-> would be better if this generic function had been named
+> Common Lisp implementations for the purpose of compile source
+> information. If there was an additional generic function
+> STREAM-LINE-NUMBER one would do this by using the existing
+> STREAM-LINE-COLUMN for input streams. Although that would work for
+> unidirectional streams it is not clear how it would apply to
+> bidirectional streams. Specifically, in the case of TWO-WAY-STREAM,
+> for which stream should STREAM-LINE-COLUMN be forwarded to? In order
+> work seamlessly for bidirectional streams, perhapsi t would be
+> better if this generic function had been named
 > STREAM-OUTPUT-COLUMN. Then the corresponding STREAM-OUTPUT-LINE,
 > STREAM-INPUT-COLUMN, and STREAM-INPUT-LINE could be added and fit
 > the naming pattern naturally.
@@ -245,17 +248,21 @@ method should be provided for either [STREAM-START-LINE-P][] or
 
 > This generic function is superfluous. The statement that "for a
 > window using variable-width characters, the column number isn't very
-> meaningful" is just not true. The real valued column numbers are
-> explicitly permitted in the specification of the pretty
-> printer. Most implementations of the pretty printer assemble the
-> output text into string buffer and interpret the index of character
-> in the number to be related to the column number. In other words
-> they do not allow for the possibility of real value columns, but it
-> is possible to create an implementation of the pretty printer that
-> can typeset using variable-width characters. For example, see
-> [Inravina][]. Furthermore, [STREAM-LINE-COLUMN][] has already
+> meaningful" is just not true. Real valued column numbers are
+> explicitly permitted in the specification of the pretty printer and
+> are very useful in the typesetting of variable-width characters,
+> especially when STREAM-ADVANCE-TO-COLUMN can move to real valued
+> columns using a mechanism other then the insertion of spaces. Most
+> implementations of the pretty printer assemble the output text into
+> a string buffer and interpret the index of the characters to be
+> related to the column number. In other words they do not allow for
+> the possibility of real valued columns that are not non-negative
+> integers. But it is possible to create an implementation of the
+> pretty printer that can typeset using variable-width characters,
+> i.e. [Inravina][]. Furthermore, [STREAM-LINE-COLUMN][] has already
 > specified that the first column at the start of a line is to be
-> numbered 0.
+> numbered 0 which implies that STREAM-START-LINE-P will always just
+> be equivalent to `(eql column 0)`.
 
 ## STREAM-WRITE-STRING
 [Generic Function]
