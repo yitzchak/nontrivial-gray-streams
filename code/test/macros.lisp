@@ -118,7 +118,7 @@
                  (is equalp :utf-7 (stream-external-format stream))
                  (true (invoked-p stream :stream-external-format stream nil))))
 
-             #+gray-streams-setf-external-format
+             #+gray-streams-external-format/setf
              (define-test ,(test-name '#:stream-external-format.03)
                :parent ,parent
                (let ((stream (make-instance ',class)))
@@ -606,7 +606,7 @@ b")))
                  (true (close stream))
                  (fail (read-char-no-hang stream))))))
 
-       #+gray-streams-setf-element-type
+       #+gray-streams-element-type/setf
        ,@(when (and input binary character)
            `((define-test ,(test-name '#:peek-char/read-char.01)
                :parent ,parent
@@ -802,7 +802,7 @@ b")))
                  (true (invoked-p stream :stream-start-line-p stream))
                  (true (invoked-p stream :stream-line-column stream))))))
 
-       #+gray-streams-setf-element-type
+       #+gray-streams-element-type/setf
        ,@(when (and output binary character)
            `((define-test ,(test-name '#:write-char/write-byte.01)
                :parent ,parent

@@ -128,7 +128,7 @@
   (vector-push-extend (list :stream-write-byte stream integer)
                       (invocations stream)))
 
-#+gray-streams-setf-element-type
+#+gray-streams-element-type/setf
 (defmethod (setf ngray:stream-element-type) :before (new-value (stream invocation-mixin))
   (vector-push-extend (list :stream-element-type stream new-value)
                       (invocations stream)))
@@ -138,7 +138,7 @@
   (vector-push-extend (list :stream-external-format stream nil)
                       (invocations stream)))
 
-#+gray-streams-setf-external-format
+#+gray-streams-external-format/setf
 (defmethod (setf ngray:stream-external-format) :before (new-value (stream invocation-mixin))
   (vector-push-extend (list :stream-external-format stream new-value)
                       (invocations stream)))
@@ -150,60 +150,53 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-read-sequence :before
-    #+gray-streams-sequence/variant-1
+    #+gray-streams-sequence/optional
     ((stream invocation-mixin) sequence &optional start end)
-    #+gray-streams-sequence/variant-2
+    #+gray-streams-sequence/required
     ((stream invocation-mixin) sequence start end)
-    #+gray-streams-sequence/variant-3
+    #+gray-streams-sequence/key
     (sequence (stream invocation-mixin) &key start end)
   (vector-push-extend (list :stream-read-sequence stream sequence start end)
                       (invocations stream)))
 
 #+gray-streams-sequence
 (defmethod ngray:stream-write-sequence :before
-    #+gray-streams-sequence/variant-1
+    #+gray-streams-sequence/optional
     ((stream invocation-mixin) sequence &optional start end)
-    #+gray-streams-sequence/variant-2
+    #+gray-streams-sequence/required
     ((stream invocation-mixin) sequence start end)
-    #+gray-streams-sequence/variant-3
+    #+gray-streams-sequence/key
     (sequence (stream invocation-mixin) &key start end)
   (vector-push-extend (list :stream-write-sequence stream sequence start end)
                       (invocations stream)))
 
-#+(or gray-streams-file-position/variant-1
-      gray-streams-file-position/variant-2)
+#+(or gray-streams-file-position/optional
+      gray-streams-file-position/required)
 (defmethod ngray:stream-file-position :before
     ((stream invocation-mixin)
-     #+gray-streams-file-position/variant-1 &optional position)
+     #+gray-streams-file-position/optional &optional position)
   (vector-push-extend (list :stream-file-position stream position)
                       (invocations stream)))
 
-#+gray-streams-file-position/variant-3
+#+gray-streams-file-position/get
 (defmethod ngray:stream-file-position :before ((stream invocation-mixin))
   (vector-push-extend (list :stream-file-position stream nil)
                       (invocations stream)))
 
-#+gray-streams-file-position/variant-4
+#+gray-streams-file-position/setf
 (defmethod (setf ngray:stream-file-position) :before (position (stream invocation-mixin))
   (vector-push-extend (list :stream-file-position stream position)
                       (invocations stream)))
 
-#+(or gray-streams-file-length/variant-1
-      gray-streams-file-length/variant-2)
+#+gray-streams-file-length/optional
 (defmethod ngray:stream-file-length :before
-    ((stream invocation-mixin)
-     #+gray-streams-file-length/variant-1 &optional length)
+    ((stream invocation-mixin) &optional length)
   (vector-push-extend (list :stream-file-length stream length)
                       (invocations stream)))
 
-#+gray-streams-file-length/variant-3
+#+gray-streams-file-length/get
 (defmethod ngray:stream-file-length :before ((stream invocation-mixin))
   (vector-push-extend (list :stream-file-length stream nil)
-                      (invocations stream)))
-
-#+gray-streams-file-length/variant-4
-(defmethod (setf ngray:stream-file-length) :before (length (stream invocation-mixin))
-  (vector-push-extend (list :stream-file-length stream length)
                       (invocations stream)))
 
 #+gray-streams-line-length
@@ -247,7 +240,7 @@
 (defmethod ngray:stream-external-format ((stream stream-mixin-b))
   (external-format stream))
 
-#+gray-streams-setf-external-format
+#+gray-streams-external-format/setf
 (defmethod (setf ngray:stream-external-format) (new-value (stream stream-mixin-b))
   (setf (external-format stream) new-value))
 
@@ -311,11 +304,11 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-read-sequence
-    #+gray-streams-sequence/variant-1
+    #+gray-streams-sequence/optional
     ((stream binary-input-mixin-b) sequence &optional start end)
-    #+gray-streams-sequence/variant-2
+    #+gray-streams-sequence/required
     ((stream binary-input-mixin-b) sequence start end)
-    #+gray-streams-sequence/variant-3
+    #+gray-streams-sequence/key
     (sequence (stream binary-input-mixin-b) &key start end)
   (unless end
     (setf end (length sequence)))
@@ -329,22 +322,22 @@
          (go next)))
      (return input-index)))
 
-#+gray-streams-file-length/variant-3
+#+gray-streams-file-length/get
 (defmethod ngray:stream-file-length ((stream binary-input-mixin-b))
   (check-open-stream stream)
   (length (input-value stream)))
 
-#+gray-streams-file-length/variant-1
+#+gray-streams-file-length/optional
 (defmethod ngray:stream-file-length ((stream binary-input-mixin-b) &optional length)
   (declare (ignore length))
   (check-open-stream stream)
   (length (input-value stream)))
 
-#+(or gray-streams-file-position/variant-1
-      gray-streams-file-position/variant-2)
+#+(or gray-streams-file-position/optional
+      gray-streams-file-position/required)
 (defmethod ngray:stream-file-position
     ((stream binary-input-mixin-b)
-     #+gray-streams-file-position/variant-1 &optional position)
+     #+gray-streams-file-position/optional &optional position)
   (if position
       (let ((typespec `(integer 0 ,(1- (length (input-value stream))))))
         (assert (typep position typespec) (position)
@@ -353,11 +346,11 @@
         t)
       (input-index stream)))
 
-#+gray-streams-file-position/variant-3
+#+gray-streams-file-position/get
 (defmethod ngray:stream-file-position ((stream binary-input-mixin-b))
   (input-index stream))
 
-#+gray-streams-file-position/variant-4
+#+gray-streams-file-position/setf
 (defmethod (setf ngray:stream-file-position) (position (stream binary-input-mixin-b))
   (let ((typespec `(integer 0 ,(1- (length (input-value stream))))))
     (assert (typep position typespec) (position)
@@ -403,11 +396,11 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-write-sequence
-    #+gray-streams-sequence/variant-1
+    #+gray-streams-sequence/optional
     ((stream binary-output-mixin-b) sequence &optional start end)
-    #+gray-streams-sequence/variant-2
+    #+gray-streams-sequence/required
     ((stream binary-output-mixin-b) sequence start end)
-    #+gray-streams-sequence/variant-3
+    #+gray-streams-sequence/key
     (sequence (stream binary-output-mixin-b) &key start end)
   (with-accessors ((output-value output-value))
       stream
@@ -546,11 +539,11 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-read-sequence
-    #+gray-streams-sequence/variant-1
+    #+gray-streams-sequence/optional
     ((stream character-input-mixin-b) sequence &optional start end)
-    #+gray-streams-sequence/variant-2
+    #+gray-streams-sequence/required
     ((stream character-input-mixin-b) sequence start end)
-    #+gray-streams-sequence/variant-3
+    #+gray-streams-sequence/key
     (sequence (stream character-input-mixin-b) &key start end)
   (unless end
     (setf end (length sequence)))
@@ -564,21 +557,21 @@
          (go next)))
      (return input-index)))
 
-#+gray-streams-file-length/variant-3
+#+gray-streams-file-length/get
 (defmethod ngray:stream-file-length ((stream character-input-mixin-b))
   (check-open-stream stream)
   (length (input-value stream)))
 
-#+gray-streams-file-length/variant-1
+#+gray-streams-file-length/optional
 (defmethod ngray:stream-file-length ((stream character-input-mixin-b) &optional length)
   (check-open-stream stream)
   (length (input-value stream)))
 
-#+(or gray-streams-file-position/variant-1
-      gray-streams-file-position/variant-2)
+#+(or gray-streams-file-position/optional
+      gray-streams-file-position/required)
 (defmethod ngray:stream-file-position
     ((stream character-input-mixin-b)
-     #+gray-streams-file-position/variant-1 &optional position)
+     #+gray-streams-file-position/optional &optional position)
   (if position
       (let ((typespec `(integer 0 ,(1- (length (input-value stream))))))
         (assert (typep position typespec) (position)
@@ -587,11 +580,11 @@
         t)
       (input-index stream)))
 
-#+gray-streams-file-position/variant-3
+#+gray-streams-file-position/get
 (defmethod ngray:stream-file-position ((stream character-input-mixin-b))
   (input-index stream))
 
-#+gray-streams-file-position/variant-4
+#+gray-streams-file-position/setf
 (defmethod (setf ngray:stream-file-position) (position (stream character-input-mixin-b))
   (let ((typespec `(integer 0 ,(1- (length (input-value stream))))))
     (assert (typep position typespec) (position)
@@ -698,11 +691,11 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-write-sequence
-    #+gray-streams-sequence/variant-1
+    #+gray-streams-sequence/optional
     ((stream character-output-mixin-b) sequence &optional start end)
-    #+gray-streams-sequence/variant-2
+    #+gray-streams-sequence/required
     ((stream character-output-mixin-b) sequence start end)
-    #+gray-streams-sequence/variant-3
+    #+gray-streams-sequence/key
     (sequence (stream character-output-mixin-b) &key start end)
   (with-accessors ((output-value output-value))
       stream
@@ -763,7 +756,7 @@
 (defmethod ngray:stream-element-type ((stream bivalent-mixin-a))
   (element-type stream))
 
-#+gray-streams-setf-element-type
+#+gray-streams-element-type/setf
 (defmethod (setf ngray:stream-element-type) (new-value (stream bivalent-mixin-a))
   (setf (element-type stream) new-value))
 
@@ -786,11 +779,11 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-read-sequence
-    #+gray-streams-sequence/variant-1
+    #+gray-streams-sequence/optional
     ((stream bivalent-input-mixin-a) sequence &optional start end)
-    #+gray-streams-sequence/variant-2
+    #+gray-streams-sequence/required
     ((stream bivalent-input-mixin-a) sequence start end)
-    #+gray-streams-sequence/variant-3
+    #+gray-streams-sequence/key
     (sequence (stream bivalent-input-mixin-a) &key start end)
   (cond ((character-stream-p stream)
          (call-next-method))
@@ -841,11 +834,11 @@
 
 #+gray-streams-sequence
 (defmethod ngray:stream-write-sequence
-    #+gray-streams-sequence/variant-1
+    #+gray-streams-sequence/optional
     ((stream bivalent-output-mixin-a) sequence &optional start end)
-    #+gray-streams-sequence/variant-2
+    #+gray-streams-sequence/required
     ((stream bivalent-output-mixin-a) sequence start end)
-    #+gray-streams-sequence/variant-3
+    #+gray-streams-sequence/key
     (sequence (stream bivalent-output-mixin-a) &key start end)
   (cond ((character-stream-p stream)
          (call-next-method))

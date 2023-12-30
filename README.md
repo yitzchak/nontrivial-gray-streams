@@ -514,7 +514,8 @@ The Gray stream protocol makes [STREAM-ELEMENT-TYPE][] a generic
 function but does not provide for bivalent streams which can change
 the element type at any time. In order support bivalent streams one
 needs a SETF for [CL:STREAM-ELEMENT-TYPE][]. The existance of this
-extension is indicated by the feature `:gray-streams-setf-element-type`.
+extension is indicated by the feature
+`:gray-streams-element-type/setf`.
 
 ```common-lisp
 ((setf stream-element-type) new-value stream) ; → new-value
@@ -538,14 +539,14 @@ Gray stream protocol.
 ### Variants
 
 1. Variant with optional start and end arguments. Indicated by
-   presence of feature `:gray-streams-sequence/variant-1`.
+   presence of feature `:gray-streams-sequence/optional`.
 
    ```common-lisp
    (stream-read-sequence stream sequence &optional start end) ; → integer
    ```
 
-2. Variant with all required arguments. Indicated by presence of feature
-   `:gray-streams-sequence/variant-2`.
+2. Variant with all required arguments. Indicated by presence of
+   feature `:gray-streams-sequence/required`.
    
    ```common-lisp
    (stream-read-sequence stream sequence start end) ; → integer
@@ -553,7 +554,7 @@ Gray stream protocol.
 
 3. Variant with keyword arguments and reversed sequence and stream
    arguments. Indicated by presence of feature
-   `:gray-streams-sequence/variant-3`.
+   `:gray-streams-sequence/key`.
 
    ```common-lisp
    (stream-read-sequence sequence stream &key start end) ; → integer
@@ -565,14 +566,14 @@ Gray stream protocol.
 ### Variants
 
 1. Variant with optional start and end arguments. Indicated by
-   presence of feature `:gray-streams-sequence/variant-1`.
+   presence of feature `:gray-streams-sequence/optional`.
 
    ```common-lisp
    (stream-write-sequence stream sequence &optional start end) ; → integer
    ```
 
 2. Variant with all required arguments. Indicated by presence of feature
-   `:gray-streams-sequence/variant-2`.
+   `:gray-streams-sequence/required`.
    
    ```common-lisp
    (stream-write-sequence stream sequence start end) ; → integer
@@ -580,7 +581,7 @@ Gray stream protocol.
 
 3. Variant with keyword arguments and reversed sequence and stream
    arguments. Indicated by presence of feature
-   `:gray-streams-sequence/variant-3`.
+   `:gray-streams-sequence/key`.
 
    ```common-lisp
    (stream-write-sequence sequence stream &key start end) ; → integer
@@ -594,28 +595,28 @@ Gray stream protocol.
 ### Variants
 
 1. Variant with optional position argument. Indicated by presence of
-   feature `:gray-streams-file-position/variant-1`.
+   feature `:gray-streams-file-position/optional`.
 
    ```common-lisp
    (stream-file-position stream &optional position) ; → (or integer boolean)
    ```
 
 2. Variant with required position argument. Indicated by presence of
-   feature `:gray-streams-file-position/variant-2`.
+   feature `:gray-streams-file-position/required`.
 
    ```common-lisp
    (stream-file-position stream position) ; → (or integer boolean)
    ```
 
 3. Variant without position argument. Indicated by presence of feature
-   `:gray-streams-file-position/variant-3`.
+   `:gray-streams-file-position/get`.
 
    ```common-lisp
    (stream-file-position stream) ; → (or integer null)
    ```
 
 3. Variant with SETF function. Indicated by presence of feature
-   `:gray-streams-file-position/variant-4`.
+   `:gray-streams-file-position/setf`.
 
    ```common-lisp
    ((setf stream-file-position) position stream) ; → boolean
@@ -632,31 +633,17 @@ Gray streams. Indicated by feature `:gray-streams-file-position`.
 ### Variants
 
 1. Variant with optional length argument. Indicated by presence of
-   feature `:gray-streams-file-length/variant-1`.
+   feature `:gray-streams-file-length/optional`.
 
    ```common-lisp
    (stream-file-length stream &optional length) ; → (or integer boolean)
    ```
 
-2. Variant with required length argument. Indicated by presence of
-   feature `:gray-streams-file-length/variant-2`.
-
-   ```common-lisp
-   (stream-file-length stream length) ; → (or integer boolean)
-   ```
-
-3. Variant without length argument. Indicated by presence of feature
-   `:gray-streams-file-length/variant-3`.
+2. Variant without length argument. Indicated by presence of feature
+   `:gray-streams-file-length/get`.
 
    ```common-lisp
    (stream-file-length stream) ; → (or integer null)
-   ```
-
-3. Variant with SETF function. Indicated by presence of feature
-   `:gray-streams-file-length/variant-4`.
-
-   ```common-lisp
-   ((setf stream-file-length) length stream) ; → boolean
    ```
 
 Allows implementing [CL:FILE-LENGTH][] for Gray streams.  Indicated by
@@ -684,7 +671,7 @@ Gray streams. Indicated by feature `:gray-streams-external-format`.
 
 Generic functions that allow SETF on [CL:STREAM-EXTERNAL-FORMAT][] for
 Gray streams. Indicated by feature
-`:gray-streams-setf-external-format`.
+`:gray-streams-external-format/setf`.
 
 # Interactive Stream Extensions
 
