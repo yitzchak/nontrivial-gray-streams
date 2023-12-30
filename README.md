@@ -1,3 +1,42 @@
+nontrivial-gray-streams is a compability system for [Gray streams][]
+which is an extension to Common Lisp that makes it possible to
+implement Common Lisp streams using generic functions. The original
+proposal was not accepted into the CL specification, but all modern CL
+implmentations include support for this protocol because of its
+usefulness.
+
+nontrivial-gray-streams performs a simalar function as
+[trivial-gray-streams][] albeit with some different
+philosphies. 
+
+Firstly, nontrivial-gray-streams exposes and documents the most
+common extensions to the Gray stream protocol. In exposing each
+extension it adds feature words for conditional compilation that
+indicate the level and type of support for that extension.
+
+Secondly, unlike [trivial-gray-streams][], it does not introduce its
+own subclasses of the fundamental stream classes. Instead it exports
+the CL implementation's fundamental stream classes
+directly. [trivial-gray-streams][] subclasses these classes so that it
+can define its own version of the [Sequence Extensions][] and the
+[File Position Extensions][]. There is some variation in the
+signatures of the generic functions of those extensions in the various
+CL implmentations, which [trivial-gray-streams][] tries to work around
+via this mechanism. nontrivial-gray-streams exports these extensions
+exactly as they appear and adds feature keywords as needed to
+distinguish the differences.
+
+Lastly, nontrivial-gray-streams includes a test suite that attempts to
+address not just the core functionality of the Gray stream protocol,
+but also the details of the various extensions.
+
+# Systems and Packages
+
+The core functionality of nontrivial-gray-streams is in the
+nontrivial-gray-streams ASDF system, which contains the
+nontrivial-gray-streams package. This package also has the nickname
+"ngray" for brevity.
+
 # Classes
 
 The following classes are to be used as super classes of user-defined
@@ -493,7 +532,7 @@ returns the integer as the result.
 | [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Length][]              | ✓        |             | ✓¹      | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
-| [External Format][]          |          |             | ✓       |           |           |           |         |               |             |          |          |
+| [External Format][]          |          |             | ✓       | ✓         |           |           |         |               |             |          |          |
 | [INTERACTIVE-STREAM-P][]     | ✓        |             | ✓       | ✓         |           |           | ✓       |               | ✓           | ✓        | ✓        |
 | [Line Length][]              | ✓        |             | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
 
@@ -748,6 +787,7 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 [FUNDAMENTAL-STREAM]: #FUNDAMENTAL-STREAM
 [File Length]: #FILE-LENGTH-EXTENSIONS
 [File Position]: #FILE-POSITION-EXTENSIONS
+[Gray streams]: PROPOSAL.txt
 [INPUT-STREAM-P]: #INPUT-STREAM-P
 [INTERACTIVE-STREAM-P]: #INTERACTIVE-STREAM-P
 [Inravina]: https://github.com/yitzchak/Inravina
@@ -788,3 +828,4 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 [Sequence]: #SEQUENCE-EXTENSIONS
 [TRUENAME]: #TRUENAME
 [pretty printer]: https://novaspec.org/cl/22_2_The_Lisp_Pretty_Printer#_j5
+[trivial-gray-streams]: https://github.com/trivial-gray-streams/trivial-gray-streams
