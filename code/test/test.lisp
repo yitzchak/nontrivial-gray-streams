@@ -2,10 +2,36 @@
 
 ;;; Required Missing Methods
 
-(define-test fundamental-binary-stream.element-type.01
-  (false (find-method #'stream-element-type
+(define-test fundamental-binary-stream.stream-element-type.01
+  (false (find-method #'ngray:stream-element-type
                       '()
                       (list (find-class 'ngray:fundamental-binary-stream))
+                      nil)))
+
+(define-test fundamental-character-input-stream.stream-read-char.01
+  (false (find-method #'ngray:stream-read-char
+                      '()
+                      (list (find-class 'ngray:fundamental-character-input-stream))
+                      nil)))
+
+(define-test fundamental-character-input-stream.stream-unread-char.01
+  (false (find-method #'ngray:stream-unread-char
+                      '()
+                      (list (find-class 'ngray:fundamental-character-input-stream)
+                            (find-class t))
+                      nil)))
+
+(define-test fundamental-binary-input-stream.stream-listen.01
+  (false (find-method #'ngray:stream-listen
+                      '()
+                      (list (find-class 'ngray:fundamental-binary-input-stream))
+                      nil)))
+
+(define-test fundamental-character-output-stream.stream-unread-char.01
+  (false (find-method #'ngray:stream-write-char
+                      '()
+                      (list (find-class 'ngray:fundamental-character-output-stream)
+                            (find-class t))
                       nil)))
 
 ;;; Basic Binary Input Stream

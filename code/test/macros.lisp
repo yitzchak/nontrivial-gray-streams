@@ -44,7 +44,7 @@
          :parent ,parent
          (let ((stream (make-instance ',class)))
            (stream-external-format stream)
-           (true (invoked-p stream :stream-external-format stream))))
+           (true (invoked-p stream :stream-external-format stream nil))))
 
        (define-test ,(test-name '#:close.01)
          :parent ,parent
@@ -103,12 +103,29 @@
                  (true (invoked-p stream :pathname stream))))
 
              #+gray-streams-truename
-             (define-test ,(test-name '#:truehname.01)
+             (define-test ,(test-name '#:truename.01)
                :parent ,parent
                (let ((stream (make-instance ',class
                                             :truename #P"fu.bar")))
                  (is equalp #P"fu.bar" (truename stream))
-                 (true (invoked-p stream :truename stream))))))
+                 (true (invoked-p stream :truename stream))))
+
+             #+gray-streams-external-format
+             (define-test ,(test-name '#:stream-external-format.02)
+               :parent ,parent
+               (let ((stream (make-instance ',class
+                                            :external-format :utf-7)))
+                 (is equalp :utf-7 (stream-external-format stream))
+                 (true (invoked-p stream :stream-external-format stream nil))))
+
+             #+gray-streams-setf-external-format
+             (define-test ,(test-name '#:stream-external-format.03)
+               :parent ,parent
+               (let ((stream (make-instance ',class)))
+                 (setf (stream-external-format stream) :utf-7)
+                 (is equalp :utf-7 (stream-external-format stream))
+                 (true (invoked-p stream :stream-external-format stream :utf-7))
+                 (true (invoked-p stream :stream-external-format stream nil))))))
 
        ,@(when character
            `((define-test ,(test-name '#:stream-element-type.01)
@@ -589,7 +606,7 @@ b")))
                  (true (close stream))
                  (fail (read-char-no-hang stream))))))
 
-       #+gray-streams-element-type
+       #+gray-streams-setf-element-type
        ,@(when (and input binary character)
            `((define-test ,(test-name '#:peek-char/read-char.01)
                :parent ,parent
@@ -785,7 +802,7 @@ b")))
                  (true (invoked-p stream :stream-start-line-p stream))
                  (true (invoked-p stream :stream-line-column stream))))))
 
-       #+gray-streams-element-type
+       #+gray-streams-setf-element-type
        ,@(when (and output binary character)
            `((define-test ,(test-name '#:write-char/write-byte.01)
                :parent ,parent

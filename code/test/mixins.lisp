@@ -128,17 +128,17 @@
   (vector-push-extend (list :stream-write-byte stream integer)
                       (invocations stream)))
 
-#+gray-streams-element-type
+#+gray-streams-setf-element-type
 (defmethod (setf ngray:stream-element-type) :before (new-value (stream invocation-mixin))
   (vector-push-extend (list :stream-element-type stream new-value)
                       (invocations stream)))
 
 #+gray-streams-external-format
 (defmethod ngray:stream-external-format :before ((stream invocation-mixin))
-  (vector-push-extend (list :stream-external-format stream)
+  (vector-push-extend (list :stream-external-format stream nil)
                       (invocations stream)))
 
-#+gray-streams-external-format
+#+gray-streams-setf-external-format
 (defmethod (setf ngray:stream-external-format) :before (new-value (stream invocation-mixin))
   (vector-push-extend (list :stream-external-format stream new-value)
                       (invocations stream)))
@@ -230,7 +230,10 @@
              :initform nil)
    (truename :accessor %truename
              :initarg :truename
-             :initform nil)))
+             :initform nil)
+   (external-format :accessor external-format
+                    :initform :default
+                    :initarg :external-format)))
 
 #+gray-streams-pathname
 (defmethod ngray:pathname ((stream stream-mixin-b))
@@ -239,6 +242,14 @@
 #+gray-streams-truename
 (defmethod ngray:truename ((stream stream-mixin-b))
   (%truename stream))
+
+#+gray-streams-external-format
+(defmethod ngray:stream-external-format ((stream stream-mixin-b))
+  (external-format stream))
+
+#+gray-streams-setf-external-format
+(defmethod (setf ngray:stream-external-format) (new-value (stream stream-mixin-b))
+  (setf (external-format stream) new-value))
 
 (defclass interactive-mixin ()
   ((interactive :reader interactive-p
@@ -752,7 +763,7 @@
 (defmethod ngray:stream-element-type ((stream bivalent-mixin-a))
   (element-type stream))
 
-#+gray-streams-element-type
+#+gray-streams-setf-element-type
 (defmethod (setf ngray:stream-element-type) (new-value (stream bivalent-mixin-a))
   (setf (element-type stream) new-value))
 

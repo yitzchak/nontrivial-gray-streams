@@ -487,8 +487,8 @@ returns the integer as the result.
 | [STREAMP][]                  | ✓        |             | ✓¹      | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
 | [INPUT-STREAM-P][]           | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [OUTPUT-STREAM-P][]          | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
-| [PATHNAME][]                 | ✓        |             | ✓       | ✓         |           |           |         |               |             |          |          |
-| [TRUENAME][]                 | ✓        |             |         | ✓         |           |           |         |               |             |          |          |
+| [PATHNAME][]                 | ✓        |             | ✓       | ✓         |           | ✓         |         |               |             |          |          |
+| [TRUENAME][]                 | ✓        |             |         | ✓         |           | ✓         |         |               |             |          |          |
 | [SETF STREAM-ELEMENT-TYPE][] | ✓        |             |         | ✓         | ✓         |           |         |               |             |          |          |
 | [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
@@ -514,7 +514,7 @@ The Gray stream protocol makes [STREAM-ELEMENT-TYPE][] a generic
 function but does not provide for bivalent streams which can change
 the element type at any time. In order support bivalent streams one
 needs a SETF for [CL:STREAM-ELEMENT-TYPE][]. The existance of this
-extension is indicated by the feature `:gray-streams-element-type`.
+extension is indicated by the feature `:gray-streams-setf-element-type`.
 
 ```common-lisp
 ((setf stream-element-type) new-value stream) ; → new-value
@@ -663,6 +663,28 @@ Allows implementing [CL:FILE-LENGTH][] for Gray streams.  Indicated by
 the presence of feature `:gray-streams-file-length`. The default
 method signals a `type-error` with an expected type of `file-stream`
 as required by the ANSI specification.
+
+# External Format Extensions
+
+## STREAM-EXTERNAL-FORMAT
+
+[Generic Function]
+
+```common-lisp
+(stream-external-format stream) ; → format
+ ```
+Generic functions that allow implementing [CL:STREAM-EXTERNAL-FORMAT][] for
+Gray streams. Indicated by feature `:gray-streams-external-format`.
+
+## SETF STREAM-EXTERNAL-FORMAT
+
+```common-lisp
+((setf stream-external-format) format stream) ; → format
+ ```
+
+Generic functions that allow SETF on [CL:STREAM-EXTERNAL-FORMAT][] for
+Gray streams. Indicated by feature
+`:gray-streams-setf-external-format`.
 
 # Interactive Stream Extensions
 

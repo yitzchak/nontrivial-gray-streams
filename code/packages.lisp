@@ -6,19 +6,19 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   #+clisp
-  (pushnew :gray-streams-element-type *features*)
+  (pushnew :gray-streams-setf-element-type *features*)
 
   #+abcl
   (when (fboundp '(setf gray-streams::gray-stream-element-type))
-    (pushnew :gray-streams-element-type *features*))
+    (pushnew :gray-streams-setf-element-type *features*))
 
   #+clasp
   (when (fboundp '(setf gray:stream-element-type))
-    (pushnew :gray-streams-element-type *features*))
+    (pushnew :gray-streams-setf-element-type *features*))
 
   #+cmucl
   (when (fboundp '(setf stream-element-type))
-    (pushnew :gray-streams-element-type *features*))
+    (pushnew :gray-streams-setf-element-type *features*))
 
   #+(or abcl ccl clasp ecl lispworks mezzano mkcl sicl)
   (pushnew :gray-streams-streamp *features*)
@@ -32,12 +32,17 @@
   #+ccl
   (pushnew :gray-streams-pathname *features*)
 
-  #+(or abcl clasp cmucl)
+  #+(or clasp cmucl)
   (when (typep (fdefinition 'cl:pathname) 'generic-function)
     (pushnew :gray-streams-pathname *features*))
 
-  #+(or abcl clasp cmucl)
+  #+(or clasp cmucl)
   (when (typep (fdefinition 'cl:truename) 'generic-function)
+    (pushnew :gray-streams-truename *features*))
+
+  #+abcl
+  (when (find-symbol (string '#:gray-pathname) '#:gray-streams)
+    (pushnew :gray-streams-pathname *features*)
     (pushnew :gray-streams-truename *features*))
 
   #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
@@ -84,14 +89,16 @@
   #+(or mezzano sicl)
   (pushnew :gray-streams-file-length/variant-3 *features*)
 
-  #+ccl
-  (pushnew :gray-streams-external-format *features*)
+  #+abcl
+  (when (find-symbol (string '#:gray-stream-external-format)
+                     '#:gray-streams)
+    (pushnew :gray-streams-external-format *features*)
+    (pushnew :gray-streams-setf-external-format *features*))
 
-  #+ccl
-  (pushnew :gray-streams-external-format/variant-3 *features*)
-
-  #+ccl
-  (pushnew :gray-streams-external-format/variant-4 *features*)
+  #+(or ccl clasp)
+  (progn
+    (pushnew :gray-streams-external-format *features*)
+    (pushnew :gray-streams-setf-external-format *features*))
 
   #+abcl
   (when (find-symbol (string '#:gray-interactive-stream-p)

@@ -112,3 +112,37 @@
     (and (not (null char))
 	 (not (eq char :eof))
 	 (progn (stream-unread-char stream char) t))))
+
+#+(or abcl ecl sbcl)
+(defmethod stream-advance-to-column (stream column)
+  (if (and (output-stream-p stream)
+           (subtypep (stream-element-type stream) 'character))
+      (prog (current-column)
+       repeat
+         (setf current-column (stream-line-column stream))
+         (unless current-column
+           (return nil))
+         (when (< current-column column)
+           (write-char #\Space stream)
+           (go repeat))
+         (return t))
+      (call-next-method)))
+
+#+abcl
+(defmethod stream-line-column ((stream sys::system-stream))
+  (ext:charpos stream))
+
+#+abcl
+(defmethod stream-line-column ((stream xp::xp-structure))
+  (ext:charpos stream))
+
+#+sbcl
+(defmethod stream-line-column (stream)
+  (when (and (output-stream-p stream)
+             (subtypep (stream-element-type stream) 'character))
+    #+ecl (sys:file-column stream)
+    #+sbcl (sb-kernel:charpos stream)))
+
+#+sbcl
+(defmethod stream-line-length (stream)
+  nil)
