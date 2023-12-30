@@ -108,6 +108,10 @@
   #+(or ccl clasp ecl mezzano mkcl sbcl sicl)
   (pushnew :gray-streams-interactive *features*)
 
+  #+cmucl
+  (when  (typep (fdefinition 'cl:interactive-stream-p) 'generic-function)
+    (pushnew :gray-streams-interactive *features*))
+
   #+(or abcl ecl)
   (when (find-symbol (string '#:stream-line-length)
                      #+abcl '#:gray-streams
