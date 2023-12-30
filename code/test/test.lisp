@@ -1,5 +1,13 @@
 (in-package #:nontrivial-gray-streams/test)
 
+;;; Required Missing Methods
+
+(define-test fundamental-binary-stream.element-type.01
+  (false (find-method #'stream-element-type
+                      '()
+                      (list (find-class 'ngray:fundamental-binary-stream))
+                      nil)))
+
 ;;; Basic Binary Input Stream
 
 (defclass binary-input-stream-a
