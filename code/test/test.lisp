@@ -3,36 +3,24 @@
 ;;; Required Missing Methods
 
 (define-test fundamental-binary-stream.stream-element-type.01
-  (false (find-method #'ngray:stream-element-type
-                      '()
-                      (list (find-class 'ngray:fundamental-binary-stream))
-                      nil)))
+  (let ((stream (make-instance 'ngray:fundamental-binary-stream)))
+    (fail (ngray:stream-element-type stream))))
 
 (define-test fundamental-character-input-stream.stream-read-char.01
-  (false (find-method #'ngray:stream-read-char
-                      '()
-                      (list (find-class 'ngray:fundamental-character-input-stream))
-                      nil)))
+  (let ((stream (make-instance 'ngray:fundamental-character-input-stream)))
+    (fail (ngray:stream-read-char stream))))
 
 (define-test fundamental-character-input-stream.stream-unread-char.01
-  (false (find-method #'ngray:stream-unread-char
-                      '()
-                      (list (find-class 'ngray:fundamental-character-input-stream)
-                            (find-class t))
-                      nil)))
+  (let ((stream (make-instance 'ngray:fundamental-character-input-stream)))
+    (fail (ngray:stream-unread-char stream #\a))))
 
 (define-test fundamental-binary-input-stream.stream-listen.01
-  (false (find-method #'ngray:stream-listen
-                      '()
-                      (list (find-class 'ngray:fundamental-binary-input-stream))
-                      nil)))
+  (let ((stream (make-instance 'ngray:fundamental-binary-input-stream)))
+    (fail (ngray:stream-listen stream))))
 
 (define-test fundamental-character-output-stream.stream-unread-char.01
-  (false (find-method #'ngray:stream-write-char
-                      '()
-                      (list (find-class 'ngray:fundamental-character-output-stream)
-                            (find-class t))
-                      nil)))
+  (let ((stream (make-instance 'ngray:fundamental-character-output-stream)))
+    (fail (ngray:stream-write-char stream #\a))))
 
 ;;; Basic Binary Input Stream
 
