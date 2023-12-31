@@ -199,6 +199,11 @@
   (vector-push-extend (list :stream-file-length stream nil)
                       (invocations stream)))
 
+#+gray-streams-file-string-length
+(defmethod ngray:stream-file-string-length :before ((stream invocation-mixin) object)
+  (vector-push-extend (list :stream-file-string-length stream object)
+                      (invocations stream)))
+
 #+gray-streams-line-length
 (defmethod ngray:stream-line-length :before ((stream invocation-mixin))
   (vector-push-extend (list :stream-line-length stream)
@@ -712,6 +717,11 @@
       (replace output-value sequence
                :start1 start1 :end1 end1
                :start2 start :end2 end))))
+
+#+gray-streams-file-string-length
+(defmethod ngray:stream-file-string-length ((stream character-output-mixin-b) object)
+  (check-open-stream stream)
+  (if (characterp object) 1 (length object)))
 
 (defclass character-io-mixin-a (character-input-mixin-a
                                 character-output-mixin-a)

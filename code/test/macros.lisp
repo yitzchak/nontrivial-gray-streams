@@ -783,7 +783,14 @@ b")))
                  (skip-on (:ccl :clisp)
                           "CCL and CLISP skip the call to stream-terpri"
                           (true (invoked-p stream :stream-terpri stream)))
-                 (true (invoked-p stream :stream-write-char stream #\Newline))))))
+                 (true (invoked-p stream :stream-write-char stream #\Newline))))
+
+             #+gray-streams-file-string-length
+             (define-test ,(test-name '#:file-string-length.01)
+               :parent ,parent
+               (let ((stream (make-instance ',class)))
+                 (file-string-length stream #\a)
+                 (true (invoked-p stream :stream-file-string-length stream #\a))))))
 
        ,@(when (and output character extended)
            `(#+gray-streams-line-length
@@ -800,7 +807,16 @@ b")))
                (let ((stream (make-instance ',class)))
                  (true (ngray:stream-start-line-p stream))
                  (true (invoked-p stream :stream-start-line-p stream))
-                 (true (invoked-p stream :stream-line-column stream))))))
+                 (true (invoked-p stream :stream-line-column stream))))
+
+             #+gray-streams-file-string-length
+             (define-test ,(test-name '#:file-string-length.02)
+               :parent ,parent
+               (let ((stream (make-instance ',class)))
+                 (is eql 1 (file-string-length stream #\a))
+                 (is eql 3 (file-string-length stream "abc"))
+                 (true (invoked-p stream :stream-file-string-length stream #\a))
+                 (true (invoked-p stream :stream-file-string-length stream "abc"))))))
 
        #+gray-streams-element-type/setf
        ,@(when (and output binary character)

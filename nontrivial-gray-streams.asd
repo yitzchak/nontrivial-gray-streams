@@ -10,6 +10,7 @@
                    :lispworks :mezzano :mkcl :sicl :sbcl)
   :in-order-to ((asdf:test-op (asdf:test-op #:nontrivial-gray-streams/test)))
   :components ((:module "code"
+                :serial t
                 :components ((:file "packages")
                              (:file "streams")))))
 
@@ -23,6 +24,7 @@
              (uiop:symbol-call :parachute :test :nontrivial-gray-streams/test))
   :components ((:module "code"
                 :pathname "code/test/"
+                :serial t
                 :components ((:file "packages")
                              (:file "mixins")
                              (:file "macros")

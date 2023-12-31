@@ -89,6 +89,13 @@
   #+(or mezzano sicl)
   (pushnew :gray-streams-file-length/get *features*)
 
+  #+clasp
+  (when (find-symbol (string '#:stream-file-string-length)
+                     #+abcl '#:gray-streams
+                     #+cmucl '#:ext
+                     #+(or clasp ecl) '#:gray)
+    (pushnew :gray-streams-file-string-length *features*))
+
   #+abcl
   (when (find-symbol (string '#:gray-stream-external-format)
                      '#:gray-streams)
@@ -162,6 +169,8 @@
                 #+(and gray-streams-file-position
                        (not (or ccl clisp)))
                 #:stream-file-position
+                #+gray-streams-file-string-length
+                #:stream-file-string-length
                 #+ccl
                 #:stream-filename
                 #:stream-finish-output
@@ -223,6 +232,8 @@
            #:stream-file-length
            #+gray-streams-file-position
            #:stream-file-position
+           #+gray-streams-file-string-length
+           #:stream-file-string-length
            #:stream-finish-output
            #:stream-force-output
            #:stream-fresh-line
