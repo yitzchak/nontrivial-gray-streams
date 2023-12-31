@@ -532,6 +532,7 @@ returns the integer as the result.
 | [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Length][]              | ✓        |             | ✓¹      | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
+| [File String Length][]       |          |             |         |           |           |           |         |               |             |          |          |
 | [External Format][]          |          |             | ✓       | ✓         |           |           |         |               |             |          |          |
 | [INTERACTIVE-STREAM-P][]     | ✓        |             | ✓       | ✓         |           |           | ✓       |               | ✓           | ✓        | ✓        |
 | [Line Length][]              | ✓        |             | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
@@ -690,6 +691,20 @@ the presence of feature `:gray-streams-file-length`. The default
 method signals a `type-error` with an expected type of `file-stream`
 as required by the ANSI specification.
 
+# File String Length Extensions
+
+## STREAM-FILE-STRING-LENGTH
+[Generic Function]
+
+```common-lisp
+(stream-file-string-length stream object) ; → (or integer null)
+```
+
+Allows implementing [CL:FILE-STRING-LENGTH][] for Gray streams.
+Indicated by the presence of feature
+`:gray-streams-file-string-length`. The default for
+[FUNDAMENTAL-CHARACTER-OUTPUT-STREAM][] returns NIL.
+
 # External Format Extensions
 
 ## STREAM-EXTERNAL-FORMAT
@@ -751,6 +766,7 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 [CL:CLOSE]: #CLOSE
 [CL:FILE-LENGTH]: https://novaspec.org/cl/f_file-length
 [CL:FILE-POSITION]: https://novaspec.org/cl/f_file-position
+[CL:FILE-STRING-LENGTH]: https://novaspec.org/cl/f_file-string-length
 [CL:FINISH-OUTPUT]: https://novaspec.org/cl/f_finish-output
 [CL:FORCE-OUTPUT]: https://novaspec.org/cl/f_finish-output
 [CL:FORMAT ~<]: https://novaspec.org/cl/22_3_Formatted_Output#sec_22_3_6_2
@@ -786,6 +802,7 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 [FUNDAMENTAL-OUTPUT-STREAM]: #FUNDAMENTAL-OUTPUT-STREAM
 [FUNDAMENTAL-STREAM]: #FUNDAMENTAL-STREAM
 [File Length]: #FILE-LENGTH-EXTENSIONS
+[File String Length]: #FILE-STRING-LENGTH-EXTENSIONS
 [File Position]: #FILE-POSITION-EXTENSIONS
 [Gray streams]: PROPOSAL.txt
 [INPUT-STREAM-P]: #INPUT-STREAM-P
