@@ -29,7 +29,7 @@
   #+(or abcl allegro ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
   (pushnew :gray-streams-output-stream-p *features*)
 
-  #+ccl
+  #+(or ccl mezzano)
   (pushnew :gray-streams-pathname *features*)
 
   #+(or clasp cmucl)
@@ -44,6 +44,9 @@
   (when (find-symbol (string '#:gray-pathname) '#:gray-streams)
     (pushnew :gray-streams-pathname *features*)
     (pushnew :gray-streams-truename *features*))
+
+  #+mezzano
+  (pushnew :gray-streams-truename *features*)
 
   #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-sequence *features*)
@@ -107,6 +110,9 @@
     (pushnew :gray-streams-external-format *features*)
     (pushnew :gray-streams-external-format/setf *features*))
 
+  #+mezzano
+  (pushnew :gray-streams-external-format *features*)
+
   #+abcl
   (when (find-symbol (string '#:gray-interactive-stream-p)
                      '#:gray-streams)
@@ -131,11 +137,13 @@
 (defpackage #:nontrivial-gray-streams
   (:use #:common-lisp)
   (:nicknames :ngray)
-  #+(or ccl clasp ecl mkcl)
+  #+(or ccl clasp ecl mezzano mkcl)
   (:shadow #+(or clasp ecl mkcl)
            #:interactive-stream-p
-           #+ccl
-           #:pathname)
+           #+(or ccl mezzano)
+           #:pathname
+           #+mezzano
+           #:truename)
   (:import-from #+abcl #:gray-streams
                 #+allegro #:excl
                 #+ccl #:ccl

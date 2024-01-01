@@ -37,6 +37,9 @@ nontrivial-gray-streams ASDF system, which contains the
 nontrivial-gray-streams package. This package also has the nickname
 "ngray" for brevity.
 
+The exported classes are functions are documented below along with
+some notes regarding implementation or interface issues.
+
 # Classes
 
 The following classes are to be used as super classes of user-defined
@@ -526,14 +529,14 @@ returns the integer as the result.
 | [STREAMP][]                  | ✓        |             | ✓¹      | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
 | [INPUT-STREAM-P][]           | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [OUTPUT-STREAM-P][]          | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
-| [PATHNAME][]                 | ✓        |             | ✓       | ✓         |           | ✓         |         |               |             |          |          |
-| [TRUENAME][]                 | ✓        |             |         | ✓         |           | ✓         |         |               |             |          |          |
+| [PATHNAME][]                 | ✓        |             | ✓       | ✓         |           | ✓         |         |               | ✓           |          |          |
+| [TRUENAME][]                 | ✓        |             |         | ✓         |           | ✓         |         |               | ✓           |          |          |
 | [SETF STREAM-ELEMENT-TYPE][] | ✓        |             |         | ✓         | ✓         |           |         |               |             |          |          |
 | [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Length][]              | ✓        |             | ✓¹      | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
-| [File String Length][]       |          |             |         |           |           |           |         |               |             |          |          |
-| [External Format][]          |          |             | ✓       | ✓         |           |           |         |               |             |          |          |
+| [File String Length][]       |          |             |         | ✓         |           |           |         |               | ✓           |          |          |
+| [External Format][]          |          |             | ✓       | ✓         |           |           |         |               | ✓           |          |          |
 | [INTERACTIVE-STREAM-P][]     | ✓        |             | ✓       | ✓         |           |           | ✓       |               | ✓           | ✓        | ✓        |
 | [Line Length][]              | ✓        |             | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
 

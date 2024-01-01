@@ -146,3 +146,7 @@
 #+sbcl
 (defmethod stream-line-length (stream)
   nil)
+
+#+mezzano
+(setf #'pathname #'mezzano.file-system:file-stream-pathname
+      #'truename #'mezzano.file-system:stream-truename)
