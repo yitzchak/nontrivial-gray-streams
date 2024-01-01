@@ -3,6 +3,10 @@
 (defsystem "nontrivial-gray-streams"
   :license "MIT"
   :author "Tarn W. Burton"
+  :version "1.0.0"
+  :homepage "https://github.com/yitzchak/nontrivial-gray-streams"
+  :bug-tracker "https://github.com/yitzchak/nontrivial-gray-streams/issues"
+  :source-control (:git "https://github.com/yitzchak/nontrivial-gray-streams.git")
   :depends-on ((:feature (:or :abcl :cmucl :genera
                               (:and (:or :clasp :ecl) :gray-streams-module))
                          (:require #:gray-streams)))
