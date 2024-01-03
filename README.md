@@ -18,8 +18,8 @@ Secondly, unlike [trivial-gray-streams][], it does not introduce its
 own subclasses of the fundamental stream classes. Instead it exports
 the CL implementation's fundamental stream classes
 directly. [trivial-gray-streams][] subclasses these classes so that it
-can define its own version of the [Sequence][Sequence Extensions] and
-the [File Position][File Position Extensions]. There is some variation
+can define its own version of the [Sequence Extensions][Sequence] and
+the [File Position Extensions][File Position]. There is some variation
 in the signatures of the generic functions of those extensions in the
 various CL implmentations, which [trivial-gray-streams][] tries to
 work around via this mechanism. nontrivial-gray-streams exports these
