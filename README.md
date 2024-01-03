@@ -47,20 +47,20 @@ stream classes.  They are not intended to be directly instantiated;
 they just provide places to hang default methods.
 
 ## FUNDAMENTAL-STREAM
-[Class]
+*Class*
 
 This class is a subclass of STREAM and of STANDARD-OBJECT.  [STREAMP][]
 will return true for an instance of any class that includes this.  (It
 may return true for some other things also.)
 
 ## FUNDAMENTAL-INPUT-STREAM
-[Class]
+*Class*
 
 A subclass of [FUNDAMENTAL-STREAM][].  Its inclusion causes
 INPUT-STREAM-P to return true.
 
 ## FUNDAMENTAL-OUTPUT-STREAM
-[Class]
+*Class*
 
 A subclass of [FUNDAMENTAL-STREAM][].  Its inclusion causes
 [OUTPUT-STREAM-P][] to return true.  Bi-direction streams may be
@@ -68,39 +68,39 @@ formed by including both [FUNDAMENTAL-OUTPUT-STREAM][] and
 [FUNDAMENTAL-INPUT-STREAM][].
 
 ## FUNDAMENTAL-CHARACTER-STREAM
-[Class]
+*Class*
 
 A subclass of [FUNDAMENTAL-STREAM][].  It provides a method for
 [STREAM-ELEMENT-TYPE][] which returns CHARACTER.
 
 ## FUNDAMENTAL-BINARY-STREAM
-[Class]
+*Class*
     
 A subclass of [FUNDAMENTAL-STREAM][].  Any instantiable class that
 includes this needs to define a method for [STREAM-ELEMENT-TYPE][].
 
 ## FUNDAMENTAL-CHARACTER-INPUT-STREAM
-[Class]
+*Class*
 
 Includes [FUNDAMENTAL-INPUT-STREAM][] and
 [FUNDAMENTAL-CHARACTER-STREAM][].  It provides default methods for
 several generic functions used for character input.
 
 ## FUNDAMENTAL-CHARACTER-OUTPUT-STREAM
-[Class]
+*Class*
 
 Includes [FUNDAMENTAL-OUTPUT-STREAM][] and
 [FUNDAMENTAL-CHARACTER-STREAM][].  It provides default methods for
 several generic functions used for character output.
 
 ## FUNDAMENTAL-BINARY-INPUT-STREAM
-[Class]
+*Class*
 
 Includes [FUNDAMENTAL-INPUT-STREAM][] and
 [FUNDAMENTAL-BINARY-STREAM][].
 
 ## FUNDAMENTAL-BINARY-OUTPUT-STREAM
-[Class]
+*Class*
 
 Includes [FUNDAMENTAL-OUTPUT-STREAM][] and
 [FUNDAMENTAL-BINARY-STREAM][].
@@ -113,7 +113,7 @@ includes [FUNDAMENTAL-CHARACTER-INPUT-STREAM][] and defining methods
 for the generic functions below.
 
 ## STREAM-READ-CHAR
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-read-char stream) ; → (or character (eql :eof))
@@ -128,7 +128,7 @@ Note that for all of these generic functions, the stream argument must
 be a stream object, not T or NIL.
 
 ## STREAM-UNREAD-CHAR
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-unread-char stream character) ; → null
@@ -140,7 +140,7 @@ Un-does the last call to [STREAM-READ-CHAR][], as in
 function.
 
 ## STREAM-READ-CHAR-NO-HANG
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-read-char-no-hang stream) ; → (or character nil (eql :eof))
@@ -154,7 +154,7 @@ end-of-file is reached.  The default method provided by
 interactive streams should define their own method.
   
 ## STREAM-PEEK-CHAR
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-peek-char stream) ; → (or character (eql :eof))
@@ -165,7 +165,7 @@ NIL.  It returns either a character or :EOF.  The default method calls
 [STREAM-READ-CHAR][] and [STREAM-UNREAD-CHAR][].
 
 ## STREAM-LISTEN
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-listen stream) ; → boolean
@@ -192,7 +192,7 @@ trivial and will always be more efficient than the default method.
 > i.e. networked binary streams.
 
 ## STREAM-READ-LINE
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-read-line stream) ; → string, boolean
@@ -210,7 +210,7 @@ to [STREAM-READ-CHAR][].
 > situation.
 
 ## STREAM-CLEAR-INPUT
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-clear-input stream) ; → null 
@@ -226,7 +226,7 @@ includes [FUNDAMENTAL-CHARACTER-OUTPUT-STREAM][] and defining methods
 for the generic functions below.
 
 ## STREAM-WRITE-CHAR
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-write-char stream character) ; → character
@@ -237,7 +237,7 @@ subclass of [FUNDAMENTAL-CHARACTER-OUTPUT-STREAM][] must have a method
 defined for this function.
 
 ## STREAM-LINE-COLUMN
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-line-column stream) ; → (or real null)
@@ -250,6 +250,14 @@ implementation of [CL:PPRINT][] and the [CL:FORMAT ~T][] directive.  For
 every character output stream class that is defined, a method must be
 defined for this function, although it is permissible for it to always
 return NIL.
+
+> The orignal proposal does not specify the numerical type of columns
+> in this function or in [STREAM-ADVANCE-TO-COLUMN][]. The ANSI Common
+> Lisp specification exclicitly allows real numbers for the purpose of
+> typesetting variable-width characters. Many implementations seem to
+> assume that the return from STREAM-LINE-COLUMN or the column number
+> passed to [STREAM-ADVANCE-TO-COLUMN][] is an integer, but this does
+> not comply with the specification.
 
 > This generic function does not have a very good name. There is no
 > allowance in the Gray stream proposal for the tracking of column or
@@ -268,7 +276,7 @@ return NIL.
 > the naming pattern naturally.
 
 ## STREAM-START-LINE-P
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-start-line-p stream) ; → boolean
@@ -307,7 +315,7 @@ method should be provided for either [STREAM-START-LINE-P][] or
 > be equivalent to `(eql column 0)`.
 
 ## STREAM-WRITE-STRING
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-write-string stream string &optional start end) ; → string
@@ -320,7 +328,7 @@ NIL.  The string argument is returned.  The default method provided by
 [STREAM-WRITE-CHAR][].
 
 ## STREAM-TERPRI
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-terpri stream) ; → null
@@ -335,7 +343,7 @@ default method does `(STREAM-WRITE-CHAR stream #\NEWLINE)`.
 > error would be appropriate including NO-APPLICABLE-METHOD.
 
 ## STREAM-FRESH-LINE
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-fresh-line stream) ; → null
@@ -348,16 +356,17 @@ Used by [CL:FRESH-LINE][].  The default method uses
 > for fundamental-character-output-stream since non-bivalent binary
 > streams do not have a concept of columns. In this case any signaled
 > error would be appropriate including NO-APPLICABLE-METHOD.
-
-> The description of the default method and the example method given
-> in the proposal do not follow the specification as per
+>
+> Additionally. the description of the default method and the example
+> method given in the proposal do not follow the specification as per
 > [CL:FRESH-LINE][]. There it states that "If for some reason this
 > cannot be determined, then a newline is output anyway." Does this
-> mean that a newline is output if `(or (stream-start-line-p stream) (null (stream-line-column stream)))` 
+> mean that a newline is output if 
+> `(or (stream-start-line-p stream) (null (stream-line-column stream)))` 
 > is non-NIL?
 
 ## STREAM-FINISH-OUTPUT
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-finish-output stream) ; → null
@@ -366,7 +375,7 @@ Used by [CL:FRESH-LINE][].  The default method uses
 Implements [CL:FINISH-OUTPUT][].  The default method does nothing.
 
 ## STREAM-FORCE-OUTPUT
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-force-output stream) ; → null
@@ -375,7 +384,7 @@ Implements [CL:FINISH-OUTPUT][].  The default method does nothing.
 Implements [CL:FORCE-OUTPUT][].  The default method does nothing.
 
 ## STREAM-CLEAR-OUTPUT
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-clear-output stream) ; → null
@@ -384,7 +393,7 @@ Implements [CL:FORCE-OUTPUT][].  The default method does nothing.
 Implements [CL:CLEAR-OUTPUT][].  The default method does nothing.
 
 ## STREAM-ADVANCE-TO-COLUMN
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-advance-to-column stream column) ; → boolean
@@ -406,7 +415,7 @@ method uses [STREAM-LINE-COLUMN][] and repeated calls to
 # Other Functions
 
 ## CLOSE
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (close stream &key abort) ; → t
@@ -419,7 +428,7 @@ returned by CLOSE will be as specified by the issue
 CLOSED-STREAM-OPERATIONS.
 
 ## OPEN-STREAM-P
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (open-stream-p stream) ; → boolean
@@ -430,7 +439,7 @@ default method is provided by class [FUNDAMENTAL-STREAM][] which
 returns true if CLOSE has not been called on the stream.
 
 ## STREAM-ELEMENT-TYPE
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-element-type stream) ; → typespec
@@ -468,7 +477,7 @@ additional ways of defining their own streams even if they don't make
 that visible by making these predicates generic.
 
 ## STREAMP
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (streamp stream) ; → boolean
@@ -477,7 +486,7 @@ that visible by making these predicates generic.
 Indicated by the presence of feature `:gray-streams-streamp`.
 
 ## INPUT-STREAM-P
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (input-stream-p stream) ; → boolean
@@ -486,7 +495,7 @@ Indicated by the presence of feature `:gray-streams-streamp`.
 Indicated by the presence of feature `:gray-streams-input-stream-p`.
 
 ## OUTPUT-STREAM-P
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (output-stream-p stream) ; → boolean
@@ -503,7 +512,7 @@ for [STREAM-ELEMENT-TYPE][] and for one or both of the following
 generic functions.
 
 ## STREAM-READ-BYTE
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-read-byte stream) ; → (or integer (eql :eof))
@@ -513,7 +522,7 @@ Used by [CL:READ-BYTE][]; returns either an integer, or the symbol
 :EOF if the stream is at end-of-file.
 
 ## STREAM-WRITE-BYTE
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-write-byte stream integer) ; → integer
@@ -577,7 +586,7 @@ arguments this is probably the choice that is more consistent with the
 Gray stream protocol.
 
 ## STREAM-READ-SEQUENCE
-[Generic Function]
+*Generic Function*
 
 ### Variants
 
@@ -604,7 +613,7 @@ Gray stream protocol.
    ```
 
 ## STREAM-WRITE-SEQUENCE
-[Generic Function]
+*Generic Function*
 
 ### Variants
 
@@ -633,7 +642,7 @@ Gray stream protocol.
 # File Position Extensions
 
 ## STREAM-FILE-POSITION
-[Generic Function]
+*Generic Function*
 
 ### Variants
 
@@ -671,7 +680,7 @@ Gray streams. Indicated by feature `:gray-streams-file-position`.
 # File Length Extensions
 
 ## STREAM-FILE-LENGTH
-[Generic Function]
+*Generic Function*
 
 ### Variants
 
@@ -697,7 +706,7 @@ as required by the ANSI specification.
 # File String Length Extensions
 
 ## STREAM-FILE-STRING-LENGTH
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-file-string-length stream object) ; → (or integer null)
@@ -712,7 +721,7 @@ Indicated by the presence of feature
 
 ## STREAM-EXTERNAL-FORMAT
 
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-external-format stream) ; → format
@@ -733,7 +742,7 @@ Gray streams. Indicated by feature
 # Interactive Stream Extensions
 
 ## INTERACTIVE-STREAM-P
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (interactive-stream-p stream) ; → boolean
@@ -746,7 +755,7 @@ streams. Indicated by the presence of feature
 # Line Length Extensions
 
 ## STREAM-LINE-LENGTH
-[Generic Function]
+*Generic Function*
 
 ```common-lisp
 (stream-line-length stream) ; → (or real null)
