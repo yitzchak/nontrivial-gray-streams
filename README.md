@@ -18,13 +18,13 @@ Secondly, unlike [trivial-gray-streams][], it does not introduce its
 own subclasses of the fundamental stream classes. Instead it exports
 the CL implementation's fundamental stream classes
 directly. [trivial-gray-streams][] subclasses these classes so that it
-can define its own version of the [Sequence Extensions][] and the
-[File Position Extensions][]. There is some variation in the
-signatures of the generic functions of those extensions in the various
-CL implmentations, which [trivial-gray-streams][] tries to work around
-via this mechanism. nontrivial-gray-streams exports these extensions
-exactly as they appear and adds feature keywords as needed to
-distinguish the differences.
+can define its own version of the [Sequence][Sequence Extensions] and
+the [File Position][File Position Extensions]. There is some variation
+in the signatures of the generic functions of those extensions in the
+various CL implmentations, which [trivial-gray-streams][] tries to
+work around via this mechanism. nontrivial-gray-streams exports these
+extensions exactly as they appear and adds feature keywords as needed
+to distinguish the differences.
 
 Lastly, nontrivial-gray-streams includes a test suite that attempts to
 address not just the core functionality of the Gray stream protocol,
@@ -537,7 +537,7 @@ returns the integer as the result.
 | [File Length][]              | ✓        |             | ✓¹      | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
 | [File String Length][]       |          |             |         | ✓         |           |           |         |               | ✓           |          |          |
 | [External Format][]          |          |             | ✓       | ✓         |           |           |         |               | ✓           |          |          |
-| [INTERACTIVE-STREAM-P][]     | ✓        |             | ✓       | ✓         |           |           | ✓       |               | ✓           | ✓        | ✓        |
+| [INTERACTIVE-STREAM-P][]     | ✓        |             | ✓       | ✓         |           | ✓         | ✓       |               | ✓           | ✓        | ✓        |
 | [Line Length][]              | ✓        |             | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
 
 1. The generic versions of STREAMP and FILE-LENGTH are in conflict
@@ -784,6 +784,8 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 [CL:READ-CHAR-NO-HANG]: https://novaspec.org/cl/f_read-char-no-hang
 [CL:READ-LINE]: https://novaspec.org/cl/f_read-line
 [CL:READ-SEQUENCE]: https://novaspec.org/cl/f_read-sequence
+[CL:STREAM-ELEMENT-TYPE]: https://novaspec.org/cl/f_stream-element-type
+[CL:STREAM-EXTERNAL-FORMAT]: https://novaspec.org/cl/f_stream-external-format
 [CL:TERPRI]: https://novaspec.org/cl/f_terpri
 [CL:TRUENAME]: https://novaspec.org/cl/f_truename
 [CL:UNREAD-CHAR]: https://novaspec.org/cl/f_unread-char
@@ -805,8 +807,8 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 [FUNDAMENTAL-OUTPUT-STREAM]: #FUNDAMENTAL-OUTPUT-STREAM
 [FUNDAMENTAL-STREAM]: #FUNDAMENTAL-STREAM
 [File Length]: #FILE-LENGTH-EXTENSIONS
-[File String Length]: #FILE-STRING-LENGTH-EXTENSIONS
 [File Position]: #FILE-POSITION-EXTENSIONS
+[File String Length]: #FILE-STRING-LENGTH-EXTENSIONS
 [Gray streams]: PROPOSAL.txt
 [INPUT-STREAM-P]: #INPUT-STREAM-P
 [INTERACTIVE-STREAM-P]: #INTERACTIVE-STREAM-P

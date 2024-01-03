@@ -29,14 +29,14 @@
   #+(or abcl allegro ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
   (pushnew :gray-streams-output-stream-p *features*)
 
-  #+(or ccl mezzano)
+  #+(or ccl mezzano sicl)
   (pushnew :gray-streams-pathname *features*)
 
   #+(or clasp cmucl)
   (when (typep (fdefinition 'cl:pathname) 'generic-function)
     (pushnew :gray-streams-pathname *features*))
 
-  #+(or clasp cmucl)
+  #+(or clasp cmucl sicl)
   (when (typep (fdefinition 'cl:truename) 'generic-function)
     (pushnew :gray-streams-truename *features*))
 
@@ -75,7 +75,7 @@
   #+(or cmucl genera lispworks)
   (pushnew :gray-streams-file-position/setf *features*)
 
-  #+(or abcl clasp cmucl ecl)
+  #+(or abcl clasp cmucl ecl sicl)
   (when (find-symbol (string '#:stream-file-length)
                      #+abcl '#:gray-streams
                      #+cmucl '#:ext
@@ -137,12 +137,12 @@
 (defpackage #:nontrivial-gray-streams
   (:use #:common-lisp)
   (:nicknames :ngray)
-  #+(or ccl clasp ecl mezzano mkcl)
+  #+(or ccl clasp ecl mezzano mkcl sicl)
   (:shadow #+(or clasp ecl mkcl)
            #:interactive-stream-p
-           #+(or ccl mezzano)
+           #+(or ccl mezzano sicl)
            #:pathname
-           #+mezzano
+           #+(or mezzano sicl)
            #:truename)
   (:import-from #+abcl #:gray-streams
                 #+allegro #:excl

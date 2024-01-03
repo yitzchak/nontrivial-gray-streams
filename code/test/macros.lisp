@@ -1,5 +1,7 @@
 (in-package #:nontrivial-gray-streams/test)
 
+#+cmucl (setf (logical-pathname-translations "host") '(("**;*.*.*" "/")))
+
 (defmacro define-stream-tests (parent
                                &key class input output extended
                                     character binary)
@@ -339,12 +341,15 @@
 
              (define-test ,(test-name '#:unread-char.01)
                :parent ,parent
+               (skip-on
+                (:allegro)
+                "Who knows what evil lurks in the hearts of men? The Shadow knows!"
                (let ((stream (make-instance ',class
                                             :input-value "ab"
                                             :input-index 1
                                             ,@(when character
                                                 `(:element-type 'integer)))))
-                 (fail (unread-char #\a stream))))))
+                 (fail (unread-char #\a stream)))))))
 
        ,@(when (and input character)
            `((define-test ,(test-name '#:peek-char.02)
