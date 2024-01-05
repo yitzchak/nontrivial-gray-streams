@@ -100,12 +100,12 @@
   (vector-push-extend (list :streamp stream)
                       (invocations stream)))
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (defmethod ngray:input-stream-p :before ((stream invocation-mixin))
   (vector-push-extend (list :input-stream-p stream)
                       (invocations stream)))
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (defmethod ngray:output-stream-p :before ((stream invocation-mixin))
   (vector-push-extend (list :output-stream-p stream)
                       (invocations stream)))
@@ -293,11 +293,11 @@
 (defmethod ngray:streamp ((stream binary-input-mixin-b))
   t)
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (defmethod ngray:input-stream-p ((stream binary-input-mixin-b))
   t)
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (defmethod ngray:output-stream-p ((stream binary-input-mixin-b))
   nil)
 
@@ -382,11 +382,11 @@
 (defmethod ngray:streamp ((stream binary-output-mixin-b))
   t)
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (defmethod ngray:input-stream-p ((stream binary-output-mixin-b))
   nil)
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (defmethod ngray:output-stream-p ((stream binary-output-mixin-b))
   t)
 
@@ -436,11 +436,11 @@
 (defmethod ngray:streamp ((stream binary-io-mixin-b))
   t)
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (defmethod ngray:input-stream-p ((stream binary-io-mixin-b))
   t)
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (defmethod ngray:output-stream-p ((stream binary-io-mixin-b))
   t)
 
@@ -486,11 +486,11 @@
 (defmethod ngray:streamp ((stream character-input-mixin-b))
   t)
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (defmethod ngray:input-stream-p ((stream character-input-mixin-b))
   t)
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (defmethod ngray:output-stream-p ((stream character-input-mixin-b))
   nil)
 
@@ -623,11 +623,11 @@
 (defmethod ngray:streamp ((stream character-output-mixin-b))
   t)
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (defmethod ngray:input-stream-p ((stream character-output-mixin-b))
   nil)
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (defmethod ngray:output-stream-p ((stream character-output-mixin-b))
   t)
 
@@ -736,11 +736,11 @@
 (defmethod ngray:streamp ((stream character-io-mixin-b))
   t)
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (defmethod ngray:input-stream-p ((stream character-io-mixin-b))
   t)
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (defmethod ngray:output-stream-p ((stream character-io-mixin-b))
   t)
 
@@ -914,11 +914,11 @@
 (defmethod ngray:streamp ((stream bivalent-io-mixin-b))
   t)
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (defmethod ngray:input-stream-p ((stream bivalent-io-mixin-b))
   t)
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (defmethod ngray:output-stream-p ((stream bivalent-io-mixin-b))
   t)
 

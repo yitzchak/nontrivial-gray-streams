@@ -24,10 +24,7 @@
   (pushnew :gray-streams-streamp *features*)
 
   #+(or abcl allegro ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
-  (pushnew :gray-streams-input-stream-p *features*)
-
-  #+(or abcl allegro ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
-  (pushnew :gray-streams-output-stream-p *features*)
+  (pushnew :gray-streams-directionp *features*)
 
   #+(or ccl mezzano sicl)
   (pushnew :gray-streams-pathname *features*)
@@ -107,6 +104,11 @@
 
   #+(or ccl clasp)
   (progn
+    (pushnew :gray-streams-external-format *features*)
+    (pushnew :gray-streams-external-format/setf *features*))
+
+  #+cmucl
+  (when (typep (fdefinition 'cl:stream-external-format) 'generic-function)
     (pushnew :gray-streams-external-format *features*)
     (pushnew :gray-streams-external-format/setf *features*))
 

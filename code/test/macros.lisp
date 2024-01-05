@@ -15,7 +15,7 @@
          (let ((stream (make-instance ',class)))
            (,(if input 'true 'false) (input-stream-p stream))
            (skip-on
-            ((not :gray-streams-input-stream-p))
+            ((not :gray-streams-directionp))
             "INPUT-STREAM-P extension not present"
             (true (invoked-p stream :input-stream-p stream)))))
 
@@ -24,7 +24,7 @@
          (let ((stream (make-instance ',class)))
            (,(if output 'true 'false) (output-stream-p stream))
            (skip-on
-            ((not :gray-streams-output-stream-p))
+            ((not :gray-streams-directionp))
             "OUTPUT-STREAM-P extension not present"
             (true (invoked-p stream :output-stream-p stream)))))
 

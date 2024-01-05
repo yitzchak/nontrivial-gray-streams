@@ -60,7 +60,7 @@
      ngray:fundamental-binary-stream)
   ())
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (define-stream-tests binary-input-c
   :class binary-input-stream-c
   :input t
@@ -120,7 +120,7 @@
      ngray:fundamental-binary-stream)
   ())
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (define-stream-tests binary-output-c
   :class binary-output-stream-c
   :output t
@@ -184,7 +184,7 @@
      ngray:fundamental-binary-stream)
   ())
 
-#+(and gray-streams-input-stream-p gray-streams-output-stream-p)
+#+gray-streams-directionp
 (define-stream-tests binary-io-c
   :class binary-io-stream-b
   :input t
@@ -246,7 +246,7 @@
      ngray:fundamental-character-stream)
   ())
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (define-stream-tests character-input-c
   :class character-input-stream-c
   :input t
@@ -306,7 +306,7 @@
      ngray:fundamental-character-stream)
   ())
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (define-stream-tests character-output-c
   :class character-output-stream-c
   :output t
@@ -370,7 +370,7 @@
      ngray:fundamental-character-stream)
   ())
 
-#+(and gray-streams-input-stream-p gray-streams-output-stream-p)
+#+gray-streams-directionp
 (define-stream-tests character-io-c
   :class character-io-stream-c
   :input t
@@ -436,7 +436,7 @@
   #+allegro
   (:default-initargs :element-type 'character))
 
-#+gray-streams-input-stream-p
+#+gray-streams-directionp
 (define-stream-tests bivalent-input-c
   :class bivalent-input-stream-c
   :input t
@@ -502,7 +502,7 @@
   #+allegro
   (:default-initargs :element-type 'character))
 
-#+gray-streams-output-stream-p
+#+gray-streams-directionp
 (define-stream-tests bivalent-output-c
   :class bivalent-output-stream-c
   :output t
@@ -574,7 +574,7 @@
   #+allegro
   (:default-initargs :element-type 'character))
 
-#+(and gray-streams-input-stream-p gray-streams-output-stream-p)
+#+gray-streams-directionp
 (define-stream-tests bivalent-io-c
   :class bivalent-io-stream-c
   :input t

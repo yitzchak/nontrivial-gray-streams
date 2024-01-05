@@ -476,6 +476,28 @@ methods provided by classes [FUNDAMENTAL-INPUT-STREAM][] and
 additional ways of defining their own streams even if they don't make
 that visible by making these predicates generic.
 
+> If the implementation does not support a generic STREAMP then
+> classes that implement the Gray stream must subclass [STREAM][]. In
+> practice this means they will probably actually need to subclass
+> [FUNDAMENTAL-STREAM][] since [STREAM][] may be a
+> [BUILT-IN-CLASS][]. Even in the cases that [STREAM][] is not a
+> [BUILT-IN-CLASS][] it may not be [STANDARD-CLASS][] since streams
+> are required very early in the bootstrapping of some Common Lisp
+> implementations.
+>
+> The absence of support for generic versions of INPUT-STREAM-P and
+> OUTPUT-STREAM-P implies some of the same issues for subclassing of
+> [FUNDAMENTAL-INPUT-STREAM][] and [FUNDAMENTAL-OUTPUT-STREAM][] with
+> the additional note that no implementation provides a generic
+> STREAMP but does not provide generic versions of INPUT-STREAM-P and
+> OUTPUT-STREAM-P. This means that either an implementation supports
+> all three generic predicats, it supports INPUT-STREAM-P and
+> OUTPUT-STREAM-P but not STREAMP, or it does not support any of these
+> three generic predicates. Therefore, on implementations that do not
+> support these three generic predicates subclassing
+> [FUNDAMENTAL-INPUT-STREAM][] or [FUNDAMENTAL-OUTPUT-STREAM][] is
+> required.
+
 ## STREAMP
 *Generic Function*
 
@@ -492,7 +514,7 @@ Indicated by the presence of feature `:gray-streams-streamp`.
 (input-stream-p stream) ; → boolean
 ```
 
-Indicated by the presence of feature `:gray-streams-input-stream-p`.
+Indicated by the presence of feature `:gray-streams-directionp`.
 
 ## OUTPUT-STREAM-P
 *Generic Function*
@@ -501,7 +523,7 @@ Indicated by the presence of feature `:gray-streams-input-stream-p`.
 (output-stream-p stream) ; → boolean
 ```
 
-Indicated by the presence of feature `:gray-streams-output-stream-p`.
+Indicated by the presence of feature `:gray-streams-directionp`.
 
 # Binary Streams
 
@@ -540,7 +562,7 @@ returns the integer as the result.
 | [OUTPUT-STREAM-P][]          | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [PATHNAME][]                 | ✓        |             | ✓       | ✓         |           | ✓         |         |               | ✓           |          |          |
 | [TRUENAME][]                 | ✓        |             |         | ✓         |           | ✓         |         |               | ✓           |          |          |
-| [SETF STREAM-ELEMENT-TYPE][] | ✓        |             |         | ✓         | ✓         |           |         |               |             |          |          |
+| [SETF STREAM-ELEMENT-TYPE][] | ✓        |             |         | ✓         | ✓         | ✓         |         |               |             |          |          |
 | [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Length][]              | ✓        |             | ✓¹      | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
@@ -772,6 +794,7 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 
 [ABCL]: https://armedbear.common-lisp.dev/
 [Allegro]: https://franz.com/products/allegro-common-lisp/
+[BUILT-IN-CLASS]: https://novaspec.org/cl/t_built-in-class
 [CCL]: https://github.com/Clozure/ccl
 [CL:CLEAR-INPUT]: https://novaspec.org/cl/f_clear-input
 [CL:CLEAR-OUTPUT]: https://novaspec.org/cl/f_finish-ouput
@@ -831,6 +854,7 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 [PATHNAME]: #PATHNAME
 [SBCL]: http://sbcl.org/
 [SETF STREAM-ELEMENT-TYPE]: #SETF-STREAM-ELEMENT-TYPE
+[STANDARD-CLASS]: https://novaspec.org/cl/t_standard-class
 [STREAM-ADVANCE-TO-COLUMN]: #STREAM-ADVANCE-TO-COLUMN
 [STREAM-CLEAR-INPUT]: #STREAM-CLEAR-INPUT
 [STREAM-CLEAR-OUTPUT]: #STREAM-CLEAR-OUTPUT
@@ -856,6 +880,7 @@ the [CL:FORMAT ~<][] directive and the [pretty printer][].
 [STREAM-WRITE-SEQUENCE]: #STREAM-WRITE-SEQUENCE
 [STREAM-WRITE-STRING]: #STREAM-WRITE-STRING
 [STREAMP]: #STREAMP
+[STREAM]: https://novaspec.org/cl/t_stream
 [Sequence]: #SEQUENCE-EXTENSIONS
 [TRUENAME]: #TRUENAME
 [pretty printer]: https://novaspec.org/cl/22_2_The_Lisp_Pretty_Printer#_j5
