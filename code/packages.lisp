@@ -171,8 +171,6 @@
                 #:stream-advance-to-column
                 #:stream-clear-input
                 #:stream-clear-output
-                #+gray-streams-external-format
-                #:stream-external-format
                 #+(and gray-streams-file-length
                        (not ccl))
                 #:stream-file-length
