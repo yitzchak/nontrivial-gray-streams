@@ -139,6 +139,7 @@
 (defpackage #:nontrivial-gray-streams
   (:use #:common-lisp)
   (:nicknames :ngray)
+  (:documentation "A compatibility layer for Gray streams including extensions")
   #+(or ccl clasp ecl mezzano mkcl sicl)
   (:shadow #+(or clasp ecl mkcl)
            #:interactive-stream-p
