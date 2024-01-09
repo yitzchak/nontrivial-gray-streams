@@ -571,7 +571,7 @@ returns the integer as the result.
 | [File String Length][]       |          |             |         | ✓         |           |           |         |               | ✓           |          |          |
 | [External Format][]          |          |             | ✓       | ✓         |           |           |         |               | ✓           |          |          |
 | [INTERACTIVE-STREAM-P][]     | ✓        |             | ✓       | ✓         |           | ✓         | ✓       |               | ✓           | ✓        | ✓        |
-| [Line Length][]              | ✓        |             | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
+| [Line Length][]              | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
 
 1. The generic versions of STREAMP and FILE-LENGTH are in conflict
    with each other in CCL. The ANSI specification requires FILE-LENGTH

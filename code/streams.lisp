@@ -13,7 +13,7 @@
 (setf (fdefinition 'nontrivial-gray-streams:interactive-stream-p)
       #'stream-interactive-p)
 
-#+lispworks
+#+(or allegro lispworks)
 (setf (fdefinition 'nontrivial-gray-streams:stream-line-length)
       #'stream-output-width)
 

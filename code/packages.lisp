@@ -133,7 +133,7 @@
                      #+ecl '#:gray)
     (pushnew :gray-streams-line-length *features*))
 
-  #+(or ccl clasp cmucl mezzano lispworks sbcl sicl)
+  #+(or allegro ccl clasp cmucl mezzano lispworks sbcl sicl)
   (pushnew :gray-streams-line-length *features*))
 
 (defpackage #:nontrivial-gray-streams
@@ -190,10 +190,10 @@
                 #+ccl
                 #:stream-length
                 #:stream-line-column
-                #+gray-streams-line-length
+                #+(and gray-streams-line-length (not (or allegro lispworks)))
                 #:stream-line-length
                 #:stream-listen
-                #+lispworks
+                #+(or allegro lispworks)
                 #:stream-output-width
                 #:stream-peek-char
                 #+(or ccl clisp)
