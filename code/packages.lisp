@@ -89,7 +89,7 @@
   #+(or mezzano sicl)
   (pushnew :gray-streams-file-length/get *features*)
 
-  #+(or abcl clasp)
+  #+(or abcl clasp ecl)
   (when (find-symbol (string '#:stream-file-string-length)
                      #+abcl '#:gray-streams
                      #+cmucl '#:ext
