@@ -568,7 +568,7 @@ returns the integer as the result.
 | [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Length][]              | ✓        |             | ✓¹      | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
-| [File String Length][]       |          |             |         | ✓         |           |           |         |               | ✓           |          |          |
+| [File String Length][]       |          |             |         | ✓         |           |           | ✓       |               | ✓           |          |          |
 | [External Format][]          |          |             | ✓       | ✓         |           |           |         |               | ✓           |          |          |
 | [INTERACTIVE-STREAM-P][]     | ✓        |             | ✓       | ✓         |           | ✓         | ✓       |               | ✓           | ✓        | ✓        |
 | [Line Length][]              | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           |          | ✓        |
