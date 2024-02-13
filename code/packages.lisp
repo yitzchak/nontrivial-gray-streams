@@ -29,11 +29,11 @@
   #+(or ccl mezzano sicl)
   (pushnew :gray-streams-pathname *features*)
 
-  #+(or clasp ecl cmucl)
+  #+(or clasp ecl)
   (when (typep (fdefinition 'cl:pathname) 'generic-function)
     (pushnew :gray-streams-pathname *features*))
 
-  #+(or clasp cmucl ecl sicl)
+  #+(or clasp ecl sicl)
   (when (typep (fdefinition 'cl:truename) 'generic-function)
     (pushnew :gray-streams-truename *features*))
 

@@ -562,8 +562,8 @@ returns the integer as the result.
 | [STREAMP][]                  | ✓        |             | ✓¹      | ✓         |           |           | ✓       | ✓             | ✓           | ✓        |          |
 | [INPUT-STREAM-P][]           | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [OUTPUT-STREAM-P][]          | ✓        | ✓           | ✓       | ✓         |           | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
-| [PATHNAME][]                 | ✓        |             | ✓       | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
-| [TRUENAME][]                 | ✓        |             |         | ✓         |           | ✓         | ✓       |               | ✓           |          |          |
+| [PATHNAME][]                 | ✓        |             | ✓       | ✓         |           |           | ✓       |               | ✓           |          |          |
+| [TRUENAME][]                 | ✓        |             |         | ✓         |           |           | ✓       |               | ✓           |          |          |
 | [SETF STREAM-ELEMENT-TYPE][] | ✓        |             |         | ✓         | ✓         | ✓         |         |               |             |          |          |
 | [Sequence][]                 | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
 | [File Position][]            | ✓        | ✓           | ✓       | ✓         | ✓         | ✓         | ✓       | ✓             | ✓           | ✓        | ✓        |
