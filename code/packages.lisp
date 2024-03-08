@@ -12,7 +12,7 @@
   (when (fboundp '(setf gray-streams::gray-stream-element-type))
     (pushnew :gray-streams-element-type/setf *features*))
 
-  #+clasp
+  #+(or clasp ecl)
   (when (fboundp '(setf gray:stream-element-type))
     (pushnew :gray-streams-element-type/setf *features*))
 
@@ -107,7 +107,7 @@
     (pushnew :gray-streams-external-format *features*)
     (pushnew :gray-streams-external-format/setf *features*))
 
-  #+cmucl
+  #+(or cmucl ecl)
   (when (typep (fdefinition 'cl:stream-external-format) 'generic-function)
     (pushnew :gray-streams-external-format *features*)
     (pushnew :gray-streams-external-format/setf *features*))

@@ -113,7 +113,7 @@
 	 (not (eq char :eof))
 	 (progn (stream-unread-char stream char) t))))
 
-#+(or abcl ecl sbcl)
+#+(or abcl cmucl ecl sbcl)
 (defmethod stream-advance-to-column (stream column)
   (if (and (output-stream-p stream)
            (subtypep (stream-element-type stream) 'character))
@@ -136,14 +136,14 @@
 (defmethod stream-line-column ((stream xp::xp-structure))
   (ext:charpos stream))
 
-#+sbcl
+#+(or cmucl sbcl)
 (defmethod stream-line-column (stream)
   (when (and (output-stream-p stream)
              (subtypep (stream-element-type stream) 'character))
     #+ecl (sys:file-column stream)
     #+sbcl (sb-kernel:charpos stream)))
 
-#+sbcl
+#+(or cmucl sbcl)
 (defmethod stream-line-length (stream)
   nil)
 
