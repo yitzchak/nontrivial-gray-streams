@@ -128,6 +128,15 @@
          (return t))
       (call-next-method)))
 
+#+ecl
+(defmethod stream-line-column (stream)
+  (declare (ignore stream))
+  nil)
+
+#+ecl
+(defmethod stream-line-column ((stream ext:ansi-stream))
+  (si:file-column stream))
+
 #+abcl
 (defmethod stream-line-column ((stream sys::system-stream))
   (ext:charpos stream))
