@@ -149,7 +149,7 @@
 (defmethod stream-line-column (stream)
   (when (and (output-stream-p stream)
              (subtypep (stream-element-type stream) 'character))
-    #+ecl (sys:file-column stream)
+    #+cmucl (lisp::charpos stream)
     #+sbcl (sb-kernel:charpos stream)))
 
 #+(or cmucl sbcl)
