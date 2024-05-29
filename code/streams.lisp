@@ -113,7 +113,7 @@
 	 (not (eq char :eof))
 	 (progn (stream-unread-char stream char) t))))
 
-#+(or abcl allegro cmucl ecl sbcl)
+#+(or abcl allegro ccl cmucl ecl sbcl)
 (defmethod stream-advance-to-column (stream column)
   (if (and (output-stream-p stream)
            (subtypep (stream-element-type stream) 'character))
