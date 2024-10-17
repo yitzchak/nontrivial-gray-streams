@@ -2,7 +2,8 @@
 
 #+(or abcl cmucl genera
       (and (or clasp ecl) gray-streams-module))
-(require '#:gray-streams)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require '#:gray-streams))
 
 #+(and (or ecl clasp) (not gray-streams-module))
 (eval-when (:compile-toplevel :load-toplevel :execute)
