@@ -1,20 +1,19 @@
 # nontrivial-gray-streams
 
-nontrivial-gray-streams is a compability system for [Gray streams][]
+nontrivial-gray-streams is a compatibility system for [Gray streams][]
 which is an extension to Common Lisp that makes it possible to
 implement Common Lisp streams using generic functions. The original
 proposal was not accepted into the CL specification, but all modern CL
-implmentations include support for this protocol because of its
+implementations include support for this protocol because of its
 usefulness.
 
-nontrivial-gray-streams performs a simalar function as
-[trivial-gray-streams][] albeit with some different
-philosophies. 
+nontrivial-gray-streams performs a similar function as
+[trivial-gray-streams][] albeit with some different philosophies.
 
-Firstly, nontrivial-gray-streams exposes and documents the most
-common extensions to the Gray stream protocol. In exposing each
-extension it adds feature words for conditional compilation that
-indicate the level and type of support for that extension.
+Firstly, nontrivial-gray-streams exposes and documents the most common
+extensions to the Gray stream protocol. In exposing each extension it
+adds feature words for conditional compilation that indicate the level
+and type of support for that extension.
 
 Secondly, unlike [trivial-gray-streams][], it does not introduce its
 own subclasses of the fundamental stream classes. Instead it exports
@@ -23,7 +22,7 @@ directly. [trivial-gray-streams][] subclasses these classes so that it
 can define its own version of the [Sequence Extensions][Sequence] and
 the [File Position Extensions][File Position]. There is some variation
 in the signatures of the generic functions of those extensions in the
-various CL implmentations, which [trivial-gray-streams][] tries to
+various CL implementations, which [trivial-gray-streams][] tries to
 work around via this mechanism. nontrivial-gray-streams exports these
 extensions exactly as they appear and adds feature keywords as needed
 to distinguish the differences.
@@ -255,7 +254,7 @@ return NIL.
 
 > The orignal proposal does not specify the numerical type of columns
 > in this function or in [STREAM-ADVANCE-TO-COLUMN][]. The ANSI Common
-> Lisp specification exclicitly allows real numbers for the purpose of
+> Lisp specification explicitly allows real numbers for the purpose of
 > typesetting variable-width characters. Many implementations seem to
 > assume that the return from STREAM-LINE-COLUMN or the column number
 > passed to [STREAM-ADVANCE-TO-COLUMN][] is an integer, but this does
@@ -271,7 +270,7 @@ return NIL.
 > unidirectional streams it is not clear how it would apply to
 > bidirectional streams. Specifically, in the case of TWO-WAY-STREAM,
 > for which stream should STREAM-LINE-COLUMN be forwarded to? In order
-> work seamlessly for bidirectional streams, perhapsi t would be
+> work seamlessly for bidirectional streams, perhaps it would be
 > better if this generic function had been named
 > STREAM-OUTPUT-COLUMN. Then the corresponding STREAM-OUTPUT-LINE,
 > STREAM-INPUT-COLUMN, and STREAM-INPUT-LINE could be added and fit
