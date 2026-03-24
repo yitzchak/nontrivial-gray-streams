@@ -35,11 +35,11 @@
   (pushnew :gray-streams-pathname *features*)
 
   #+(or clasp ecl)
-  (when (typep (fdefinition 'cl:pathname) 'generic-function)
+  (when #+building-clasp t #-building-clasp (typep (fdefinition 'cl:pathname) 'generic-function)
     (pushnew :gray-streams-pathname *features*))
 
   #+(or clasp ecl sicl)
-  (when (typep (fdefinition 'cl:truename) 'generic-function)
+  (when #+building-clasp t #-building-clasp (typep (fdefinition 'cl:truename) 'generic-function)
     (pushnew :gray-streams-truename *features*))
 
   #+abcl
