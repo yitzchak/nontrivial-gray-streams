@@ -139,7 +139,16 @@
     (pushnew :gray-streams-line-length *features*))
 
   #+(or allegro ccl clasp cmucl mezzano lispworks sbcl sicl)
-  (pushnew :gray-streams-line-length *features*))
+  (pushnew :gray-streams-line-length *features*)
+
+  #+clasp
+  (pushnew :gray-streams-line-number *features*)
+
+  #+clasp
+  (pushnew :gray-streams-input-line *features*)
+
+  #+clasp
+  (pushnew :gray-streams-input-column *features*))
 
 (defpackage #:nontrivial-gray-streams
   (:use #:common-lisp)
@@ -190,6 +199,10 @@
                 #:stream-finish-output
                 #:stream-force-output
                 #:stream-fresh-line
+                #+gray-streams-input-line
+                #:stream-input-column
+                #+gray-streams-input-column
+                #:stream-input-line
                 #+(or clasp ecl mkcl)
                 #:stream-interactive-p
                 #+ccl
@@ -197,6 +210,8 @@
                 #:stream-line-column
                 #+(and gray-streams-line-length (not (or allegro lispworks)))
                 #:stream-line-length
+                #+gray-streams-line-number
+                #:stream-line-number
                 #:stream-listen
                 #+(or allegro lispworks)
                 #:stream-output-width
@@ -251,11 +266,17 @@
            #:stream-finish-output
            #:stream-force-output
            #:stream-fresh-line
+           #+gray-streams-input-line
+           #:stream-input-column
+           #+gray-streams-input-column
+           #:stream-input-line
            #+gray-streams-interactive
            #:interactive-stream-p
            #:stream-line-column
            #+gray-streams-line-length
            #:stream-line-length
+           #+gray-streams-line-number
+           #:stream-line-number
            #:stream-listen
            #:stream-peek-char
            #:stream-read-byte
