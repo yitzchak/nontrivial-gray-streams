@@ -30,7 +30,7 @@ jobs:
       options: --security-opt seccomp:unconfined
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
     - name: Setup Lisp Environment
       run: |
         make-rc
