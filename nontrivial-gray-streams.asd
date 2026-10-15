@@ -8,7 +8,7 @@
   :homepage "https://github.com/yitzchak/nontrivial-gray-streams"
   :bug-tracker "https://github.com/yitzchak/nontrivial-gray-streams/issues"
   :source-control (:git "https://github.com/yitzchak/nontrivial-gray-streams.git")
-  :if-feature (:or :abcl :allegro :ccl :clasp :clisp :cmucl :ecl :genera
+  :if-feature (:or :abcl :allegro :ccl :clasp :clisp :cmucl :dotcl :ecl :genera
                    :lispworks :mezzano :mkcl :sicl :sbcl)
   :in-order-to ((asdf:test-op (asdf:test-op #:nontrivial-gray-streams/test)))
   :components ((:module "code"

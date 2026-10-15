@@ -5,6 +5,10 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (require '#:gray-streams))
 
+#+dotcl
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "dotcl-gray"))
+
 #+(and (or ecl clasp) (not gray-streams-module))
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (gray::redefine-cl-functions))
@@ -28,7 +32,7 @@
   #+(or abcl ccl clasp ecl lispworks mezzano mkcl sicl)
   (pushnew :gray-streams-streamp *features*)
 
-  #+(or abcl allegro ccl clasp cmucl ecl lispworks mezzano mkcl sbcl sicl)
+  #+(or abcl allegro ccl clasp cmucl dotcl ecl lispworks mezzano mkcl sbcl sicl)
   (pushnew :gray-streams-directionp *features*)
 
   #+(or ccl mezzano sicl)
@@ -50,10 +54,10 @@
   #+mezzano
   (pushnew :gray-streams-truename *features*)
 
-  #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
+  #+(or abcl allegro ccl clasp clisp cmucl dotcl ecl genera lispworks mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-sequence *features*)
 
-  #+(or abcl allegro clasp cmucl ecl genera mezzano mkcl sicl sbcl)
+  #+(or abcl allegro clasp cmucl dotcl ecl genera mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-sequence/optional *features*)
 
   #+(or ccl lispworks)
@@ -62,7 +66,7 @@
   #+clisp
   (pushnew :gray-streams-sequence/key *features*)
 
-  #+(or abcl allegro ccl clasp clisp cmucl ecl genera lispworks mezzano mkcl sicl sbcl)
+  #+(or abcl allegro ccl clasp clisp cmucl dotcl ecl genera lispworks mezzano mkcl sicl sbcl)
   (pushnew :gray-streams-file-position *features*)
 
   #+(or abcl allegro ccl clasp ecl mezzano mkcl sicl sbcl)
@@ -71,10 +75,10 @@
   #+clisp
   (pushnew :gray-streams-file-position/required *features*)
 
-  #+(or cmucl genera lispworks)
+  #+(or cmucl dotcl genera lispworks)
   (pushnew :gray-streams-file-position/get *features*)
 
-  #+(or cmucl genera lispworks)
+  #+(or cmucl dotcl genera lispworks)
   (pushnew :gray-streams-file-position/setf *features*)
 
   #+(or abcl clasp cmucl ecl sicl)
@@ -125,7 +129,7 @@
                      '#:gray-streams)
     (pushnew :gray-streams-interactive *features*))
 
-  #+(or ccl clasp ecl mezzano mkcl sbcl sicl)
+  #+(or ccl clasp dotcl ecl mezzano mkcl sbcl sicl)
   (pushnew :gray-streams-interactive *features*)
 
   #+cmucl
@@ -167,6 +171,7 @@
                 #+clasp #:gray
                 #+clisp #:gray
                 #+cmucl #:ext
+                #+dotcl #:dotcl-gray
                 #+ecl #:gray
                 #+genera #:gray-streams
                 #+lispworks #:stream
